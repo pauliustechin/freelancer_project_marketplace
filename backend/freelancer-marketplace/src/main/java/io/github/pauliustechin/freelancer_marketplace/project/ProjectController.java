@@ -3,6 +3,8 @@ package io.github.pauliustechin.freelancer_marketplace.project;
 import io.github.pauliustechin.freelancer_marketplace.project.dto.CreateProjectRequest;
 import io.github.pauliustechin.freelancer_marketplace.project.dto.ProjectResponse;
 import io.github.pauliustechin.freelancer_marketplace.project.dto.ProjectsListResponse;
+import io.github.pauliustechin.freelancer_marketplace.project.dto.UpdateProjectRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +24,24 @@ public class ProjectController {
     }
 
     @PostMapping
-    public ResponseEntity<ProjectResponse> createProject(@RequestBody CreateProjectRequest request) {
+    public ResponseEntity<ProjectResponse> createProject(@Valid @RequestBody CreateProjectRequest createRequest) {
 
-        ProjectResponse response = projectService.createProject(request);
-        System.out.println(response);
+        ProjectResponse response = projectService.createProject(createRequest);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    @PutMapping("/{projectId}")
+    public ResponseEntity<ProjectResponse> updateProject(@PathVariable Long projectId,
+                                                         @Valid @RequestBody UpdateProjectRequest updateRequest) {
+
+        ProjectResponse response = projectService.updateProject(projectId, updateRequest);
+
+        return ResponseEntity.ok().body(response);
+
+    }
+
+
 
 
 }

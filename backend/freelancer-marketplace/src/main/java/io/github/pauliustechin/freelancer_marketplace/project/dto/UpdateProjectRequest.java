@@ -1,26 +1,29 @@
 package io.github.pauliustechin.freelancer_marketplace.project.dto;
 
 import io.github.pauliustechin.freelancer_marketplace.project.ProjectStatus;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
 
 import java.time.LocalDate;
 
-@Data
-@AllArgsConstructor
-public class ProjectResponse {
+@Getter
+public class UpdateProjectRequest {
 
-    private Long projectId;
-
+    @NotBlank
     private String projectName;
 
+    @NotBlank
     private String description;
 
     private String projectFileUrl;
 
-    private ProjectStatus projectStatus;
-
+    @NotNull
     private LocalDate projectStart;
 
     private LocalDate projectEnd;
+
+    @NotNull
+    private ProjectStatus projectStatus;
+
 }

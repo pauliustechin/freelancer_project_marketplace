@@ -1,6 +1,7 @@
 package io.github.pauliustechin.freelancer_marketplace.project.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import java.time.LocalDate;
 
@@ -15,7 +16,7 @@ public class CreateProjectRequest{
 
     private String projectFileUrl;
 
-    @NotBlank
+    @NotNull
     private LocalDate projectStart;
 
     private LocalDate projectEnd;
