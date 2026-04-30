@@ -10,12 +10,6 @@ import java.util.List;
 @RestControllerAdvice
 public class MyGlobalExceptionHandler {
 
-    @ExceptionHandler(ProjectNotFoundException.class)
-    public ResponseEntity<ApiError> handleProjectNotFoundException(ProjectNotFoundException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new ApiError(404, "Not Found", e.getMessage(), null));
-    }
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiError> handleValidation(MethodArgumentNotValidException e) {
 
@@ -29,7 +23,16 @@ public class MyGlobalExceptionHandler {
                 .body(new ApiError(400, "Bad Request", "Validation failed.", fieldErrors));
     }
 
+    @ExceptionHandler(ProjectNotFoundException.class)
+    public ResponseEntity<ApiError> handleProjectNotFoundException(ProjectNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ApiError(404, "Not Found", e.getMessage(), null));
+    }
 
-
+    @ExceptionHandler(ProjectImmutableException.class)
+    public ResponseEntity<ApiError> handleCompletedProjectException(ProjectImmutableException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ApiError(409, "Conflict", e.getMessage(), null));
+    }
 
 }

@@ -1,5 +1,6 @@
 package io.github.pauliustechin.freelancer_marketplace.project;
 
+import io.github.pauliustechin.freelancer_marketplace.exception.ProjectImmutableException;
 import io.github.pauliustechin.freelancer_marketplace.exception.ProjectNotFoundException;
 import io.github.pauliustechin.freelancer_marketplace.project.dto.*;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +45,16 @@ public class ProjectServiceImpl implements ProjectService{
 
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(projectId));
+
+        ProjectStatus projectStatus = project.getProjectStatus();
+        ProjectStatus updateStatus = updateRequest.getProjectStatus();
+        if(projectStatus.equals(ProjectStatus.COMPLETED)) {
+            throw new ProjectImmutableException(projectId, projectStatus);
+        } else if(projectStatus.equals(ProjectStatus.IN_PROGRESS) && updateStatus.equals(ProjectStatus.OPEN)) {
+            throw new ProjectImmutableException(projectId, projectStatus, updateStatus);
+        } else if(projectStatus.equals(ProjectStatus.CANCELED)) {
+            throw new ProjectImmutableException(projectId, projectStatus);
+        }
 
         project.setProjectName(updateRequest.getProjectName());
         project.setDescription(updateRequest.getDescription());
