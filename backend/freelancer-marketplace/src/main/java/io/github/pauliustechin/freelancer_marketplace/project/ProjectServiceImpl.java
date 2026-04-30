@@ -67,4 +67,13 @@ public class ProjectServiceImpl implements ProjectService{
 
         return projectMapper.projectToProjectResponse(savedProject);
     }
+
+    @Override
+    public void deleteProject(Long projectId) {
+
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ProjectNotFoundException(projectId));
+
+        projectRepository.delete(project);
+    }
 }

@@ -10,4 +10,5 @@ public interface ProjectService {
     ProjectsListResponse getAllProjects();
     ProjectResponse createProject(CreateProjectRequest createRequest);
     ProjectResponse updateProject(Long projectId, UpdateProjectRequest updateRequest);
+    void deleteProject(Long projectId);
 }

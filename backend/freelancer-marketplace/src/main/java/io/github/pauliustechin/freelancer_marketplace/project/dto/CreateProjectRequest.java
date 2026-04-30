@@ -2,10 +2,12 @@ package io.github.pauliustechin.freelancer_marketplace.project.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import java.time.LocalDate;
 
 @Getter
+@AllArgsConstructor
 public class CreateProjectRequest{
 
     @NotBlank

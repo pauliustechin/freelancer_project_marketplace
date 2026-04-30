@@ -3,11 +3,13 @@ package io.github.pauliustechin.freelancer_marketplace.project.dto;
 import io.github.pauliustechin.freelancer_marketplace.project.ProjectStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.time.LocalDate;
 
-@Getter
+@Data
+@AllArgsConstructor
 public class UpdateProjectRequest {
 
     @NotBlank
