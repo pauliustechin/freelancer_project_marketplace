@@ -104,7 +104,7 @@ public class ProjectServiceTest {
 
         Mockito.verify(projectRepository).save(mappedProject);
         Assertions.assertEquals(result, projectResponse);
-        Assertions.assertEquals(1L, result.getProjectId());
+        Assertions.assertEquals(1L, result.getId());
         Assertions.assertEquals(ProjectStatus.OPEN, result.getProjectStatus());
 
     }

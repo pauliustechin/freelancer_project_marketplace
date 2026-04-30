@@ -1,11 +1,14 @@
 package io.github.pauliustechin.freelancer_marketplace.project;
 
+import io.github.pauliustechin.freelancer_marketplace.bid.BidRepository;
 import io.github.pauliustechin.freelancer_marketplace.exception.ProjectImmutableException;
 import io.github.pauliustechin.freelancer_marketplace.exception.ProjectNotFoundException;
 import io.github.pauliustechin.freelancer_marketplace.project.dto.*;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -14,7 +17,9 @@ public class ProjectServiceImpl implements ProjectService{
 
     private final ProjectRepository projectRepository;
     private final ProjectMapper projectMapper;
+    private final BidRepository bidRepository;
 
+    @Transactional(readOnly = true)
     @Override
     public ProjectsListResponse getAllProjects() {
 
@@ -26,16 +31,19 @@ public class ProjectServiceImpl implements ProjectService{
         return new ProjectsListResponse(projectResponses);
     }
 
+    @Transactional
     @Override
     public ProjectResponse createProject(CreateProjectRequest createRequest) {
 
         Project project = projectMapper.createProjectToProject(createRequest);
         project.setProjectStatus(ProjectStatus.OPEN);
+        project.setCreatedAt(Instant.now());
         Project savedProject = projectRepository.save(project);
 
         return projectMapper.projectToProjectResponse(savedProject);
     }
 
+    @Transactional
     @Override
     public ProjectResponse updateProject(Long projectId, UpdateProjectRequest updateRequest) {
 
@@ -62,18 +70,21 @@ public class ProjectServiceImpl implements ProjectService{
         project.setProjectStart(updateRequest.getProjectStart());
         project.setProjectEnd(updateRequest.getProjectEnd());
         project.setProjectStatus(updateRequest.getProjectStatus());
+        project.setUpdatedAt(Instant.now());
 
         Project savedProject = projectRepository.save(project);
 
         return projectMapper.projectToProjectResponse(savedProject);
     }
 
+    @Transactional
     @Override
     public void deleteProject(Long projectId) {
 
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(projectId));
 
+        bidRepository.deleteByProjectId(projectId);
         projectRepository.delete(project);
     }
 }

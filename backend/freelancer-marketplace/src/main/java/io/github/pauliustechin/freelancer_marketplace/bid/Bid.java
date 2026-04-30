@@ -1,0 +1,36 @@
+package io.github.pauliustechin.freelancer_marketplace.bid;
+
+import io.github.pauliustechin.freelancer_marketplace.project.Project;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+import java.time.Instant;
+
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Table(name = "bids")
+public class Bid {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private BigDecimal amount;
+
+    @Enumerated(EnumType.STRING)
+    private BidStatus bidStatus;
+
+    private Instant createdAt;
+
+    private Instant updatedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
+
+}
