@@ -29,6 +29,7 @@ public class BidServiceImpl implements BidService{
     private final ProjectMapper projectMapper;
     private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
+    private final ContractService contractService;
 
     @Override
     public BidListResponse getBidsByProject(Long projectId) {
@@ -76,7 +77,7 @@ public class BidServiceImpl implements BidService{
         Bid bid = bidMapper.createBidToBid(createRequest);
         bid.setCreatedAt(Instant.now());
         bid.setProject(project);
-        bid.setBidStatus(BidStatus.PENDING);
+        bid.setBidStatus(BidStatus.OPEN);
         bid.setBidder(user);
         Bid savedBid = bidRepository.save(bid);
 
@@ -98,10 +99,30 @@ public class BidServiceImpl implements BidService{
 
         Bid bid = bidRepository.findById(bidId)
                 .orElseThrow(() -> new ResourceNotFoundException("Bid", bidId));
+        BidStatus reqStatus = request.getStatus();
+        BidStatus bidStatus = bid.getBidStatus();
 
-        if(bid.getBidStatus().equals(BidStatus.CANCELED)) {
+        Project project = projectRepository.findById(bid.getProject().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Project", bid.getProject().getId()));
+
+        if(bidStatus.equals(BidStatus.PENDING)) {
+            if((reqStatus.equals(BidStatus.CONFIRMED)) || (reqStatus.equals(BidStatus.CANCELED))) {
+                Bid bidAfterDecision = contractService.confirmContract(reqStatus, bid);
+                BidResponse response = bidMapper.bidToBidResponse(bidAfterDecision);
+                response.setProjectSummaryResponse(projectMapper.projectToProjectSummaryResponse(project));
+                return response;
+            } else {
+                throw new IllegalBidStateException("Bid is accepted by client and waiting for bidder confirmation.");
+            }
+        }
+
+        if(bidStatus.equals(BidStatus.CANCELED) || bidStatus.equals(BidStatus.CONFIRMED)) {
             throw new IllegalBidStateException(bidId);
-        } else if(!(request.equals(BidStatus.CANCELED)) || !(request.equals(BidStatus.PENDING))) {
+
+        } else if(reqStatus.equals(BidStatus.CONFIRMED)) {
+            throw new IllegalBidStateException(request.getStatus());
+
+        } else if(!(reqStatus.equals(BidStatus.CANCELED)) && !(reqStatus.equals(BidStatus.OPEN))){
             throw new IllegalBidStateException(request.getStatus());
         }
 
@@ -110,8 +131,11 @@ public class BidServiceImpl implements BidService{
         bid.setAmount(request.getAmount());
 
         Bid savedBid = bidRepository.save(bid);
+        BidResponse response = bidMapper.bidToBidResponse(savedBid);
 
-        return bidMapper.bidToBidResponse(savedBid);
+        response.setProjectSummaryResponse(projectMapper.projectToProjectSummaryResponse(project));
+
+        return response;
     }
 
     @Transactional
@@ -134,25 +158,15 @@ public class BidServiceImpl implements BidService{
             throw new IllegalBidStateException();
         }
 
-        List<Bid> bids = bidRepository.findBidsByProjectId(bid.getProject().getId());
-
-        for(Bid b : bids) {
-            if(!b.equals(bid)) {
-                b.setUpdatedAt(Instant.now());
-                b.setBidStatus(BidStatus.REJECTED);
-                bidRepository.save(b);
-            }
-        }
-
-        project.setProjectStatus(ProjectStatus.IN_PROGRESS);
-        Project savedProjecet = projectRepository.save(project);
+        project.setProjectStatus(ProjectStatus.PENDING);
+        Project savedProject = projectRepository.save(project);
 
         bid.setUpdatedAt(Instant.now());
-        bid.setBidStatus(status);
+        bid.setBidStatus(BidStatus.PENDING);
         Bid savedBid = bidRepository.save(bid);
 
         BidResponse response = bidMapper.bidToBidResponse(savedBid);
-        response.setProjectSummaryResponse(projectMapper.projectToProjectSummaryResponse(savedProjecet));
+        response.setProjectSummaryResponse(projectMapper.projectToProjectSummaryResponse(savedProject));
 
         return response;
     }

@@ -4,16 +4,18 @@ import io.github.pauliustechin.freelancer_marketplace.bid.Bid;
 import io.github.pauliustechin.freelancer_marketplace.bid.BidRepository;
 import io.github.pauliustechin.freelancer_marketplace.bid.BidStatus;
 import io.github.pauliustechin.freelancer_marketplace.contract.dto.ContractMapper;
-import io.github.pauliustechin.freelancer_marketplace.contract.dto.ContractResponse;
-import io.github.pauliustechin.freelancer_marketplace.exception.ContractRejectedException;
 import io.github.pauliustechin.freelancer_marketplace.exception.IllegalBidStateException;
 import io.github.pauliustechin.freelancer_marketplace.exception.ResourceNotFoundException;
+import io.github.pauliustechin.freelancer_marketplace.project.Project;
+import io.github.pauliustechin.freelancer_marketplace.project.ProjectRepository;
+import io.github.pauliustechin.freelancer_marketplace.project.ProjectStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,34 +24,46 @@ public class ContractServiceImpl implements ContractService {
     private final BidRepository bidRepository;
     private final ContractMapper contractMapper;
     private final ContractRepository contractRepository;
+    private final ProjectRepository projectRepository;
 
     @Transactional
     @Override
-    public ContractResponse confirmContract(Long bidId, BidStatus bidStatus) {
+    public Bid confirmContract(BidStatus status, Bid bidFromDb) {
 
-        if(bidStatus.equals(BidStatus.CANCELED)) {
-            throw new ContractRejectedException();
+        Project project = projectRepository.findById(bidFromDb.getProject().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Project", bidFromDb.getProject().getId()));
+
+        if(status.equals(BidStatus.CANCELED)) {
+            project.setProjectStatus(ProjectStatus.OPEN);
+            projectRepository.save(project);
+
+            bidFromDb.setUpdatedAt(Instant.now());
+            bidFromDb.setBidStatus(BidStatus.CANCELED);
+            return bidRepository.save(bidFromDb);
         }
 
-        if(bidStatus == null || !(bidStatus.equals(BidStatus.CONFIRMED))) {
-            throw new IllegalBidStateException(bidStatus);
+        List<Bid> bids = bidRepository.findBidsByProjectId(project.getId());
+
+        for(Bid b : bids) {
+            if(!b.equals(bidFromDb)) {
+                b.setUpdatedAt(Instant.now());
+                b.setBidStatus(BidStatus.REJECTED);
+                bidRepository.save(b);
+            }
         }
-
-        Bid bid = bidRepository.findById(bidId)
-                .orElseThrow(() -> new ResourceNotFoundException("Bid", bidId));
-
-        bid.setBidStatus(BidStatus.CONFIRMED);
-        bidRepository.save(bid);
 
         Contract contract = new Contract();
-        contract.setBid(bid);
-        contract.setAgreedAmount(bid.getAmount());
+        contract.setBid(bidFromDb);
+        contract.setAgreedAmount(bidFromDb.getAmount());
         contract.setEscrowStatus(EscrowStatus.PENDING);
         contract.setCreatedAt(Instant.now());
         contract.setEscrowAmount(BigDecimal.ZERO);
+        contractRepository.save(contract);
 
-        Contract savedContract = contractRepository.save(contract);
+        project.setProjectStatus(ProjectStatus.IN_PROGRESS);
+        projectRepository.save(project);
 
-        return contractMapper.contractToContractResponse(savedContract);
+        bidFromDb.setBidStatus(BidStatus.CONFIRMED);
+        return bidRepository.save(bidFromDb);
     }
 }
