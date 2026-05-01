@@ -10,6 +10,7 @@ public interface ProjectMapper {
     Project createProjectToProject(CreateProjectRequest request);
 
     @Mapping(source = "id", target = "projectId")
+    @Mapping(source = "client.id", target = "clientId")
     ProjectResponse projectToProjectResponse(Project project);
 
     @Mapping(source = "id", target = "projectId")

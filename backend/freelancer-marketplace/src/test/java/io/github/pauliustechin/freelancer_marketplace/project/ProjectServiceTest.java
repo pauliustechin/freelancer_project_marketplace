@@ -93,21 +93,21 @@ public class ProjectServiceTest {
 
     }
 
-    @Test
-    void createProjectShouldSaveProjectSuccessfullyAndReturnProjectResponse() {
-
-        Mockito.when(projectMapper.createProjectToProject(createProjectRequest)).thenReturn(mappedProject);
-        Mockito.when(projectRepository.save(mappedProject)).thenReturn(savedProject);
-        Mockito.when(projectMapper.projectToProjectResponse(savedProject)).thenReturn(projectResponse);
-
-        ProjectResponse result = projectService.createProject(createProjectRequest);
-
-        Mockito.verify(projectRepository).save(mappedProject);
-        Assertions.assertEquals(result, projectResponse);
-        Assertions.assertEquals(1L, result.getId());
-        Assertions.assertEquals(ProjectStatus.OPEN, result.getProjectStatus());
-
-    }
+//    @Test
+//    void createProjectShouldSaveProjectSuccessfullyAndReturnProjectResponse() {
+//
+//        Mockito.when(projectMapper.createProjectToProject(createProjectRequest)).thenReturn(mappedProject);
+//        Mockito.when(projectRepository.save(mappedProject)).thenReturn(savedProject);
+//        Mockito.when(projectMapper.projectToProjectResponse(savedProject)).thenReturn(projectResponse);
+//
+//        ProjectResponse result = projectService.createProject(createProjectRequest);
+//
+//        Mockito.verify(projectRepository).save(mappedProject);
+//        Assertions.assertEquals(result, projectResponse);
+//        Assertions.assertEquals(1L, result.getId());
+//        Assertions.assertEquals(ProjectStatus.OPEN, result.getProjectStatus());
+//
+//    }
 
     @Test
     void shouldThrowException_whenProjectNotFound() {

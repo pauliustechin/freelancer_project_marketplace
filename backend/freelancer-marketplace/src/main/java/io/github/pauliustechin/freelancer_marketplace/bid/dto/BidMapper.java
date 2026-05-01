@@ -10,6 +10,7 @@ public interface BidMapper {
     Bid createBidToBid(CreateBidRequest request);
 
     @Mapping(source = "id", target = "bidId")
+    @Mapping(source = "bidder.id", target = "bidderId")
     BidResponse bidToBidResponse(Bid bid);
 
 }

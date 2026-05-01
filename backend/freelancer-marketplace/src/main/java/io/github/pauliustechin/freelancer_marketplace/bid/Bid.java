@@ -1,6 +1,7 @@
 package io.github.pauliustechin.freelancer_marketplace.bid;
 
 import io.github.pauliustechin.freelancer_marketplace.project.Project;
+import io.github.pauliustechin.freelancer_marketplace.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,5 +33,9 @@ public class Bid {
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User bidder;
 
 }

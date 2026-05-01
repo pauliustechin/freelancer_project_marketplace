@@ -1,6 +1,7 @@
 package io.github.pauliustechin.freelancer_marketplace.bid;
 
 import io.github.pauliustechin.freelancer_marketplace.bid.dto.*;
+import io.github.pauliustechin.freelancer_marketplace.exception.DuplicateBidException;
 import io.github.pauliustechin.freelancer_marketplace.exception.IllegalBidStateException;
 import io.github.pauliustechin.freelancer_marketplace.exception.ResourceNotFoundException;
 import io.github.pauliustechin.freelancer_marketplace.project.Project;
@@ -8,6 +9,8 @@ import io.github.pauliustechin.freelancer_marketplace.project.ProjectRepository;
 import io.github.pauliustechin.freelancer_marketplace.project.ProjectStatus;
 import io.github.pauliustechin.freelancer_marketplace.project.dto.ProjectMapper;
 import io.github.pauliustechin.freelancer_marketplace.project.dto.ProjectSummaryResponse;
+import io.github.pauliustechin.freelancer_marketplace.user.User;
+import io.github.pauliustechin.freelancer_marketplace.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +27,7 @@ public class BidServiceImpl implements BidService{
     private final BidMapper bidMapper;
     private final ProjectMapper projectMapper;
     private final ProjectRepository projectRepository;
+    private final UserRepository userRepository;
 
     @Override
     public BidListResponse getBidsByProject(Long projectId) {
@@ -58,18 +62,27 @@ public class BidServiceImpl implements BidService{
             throw new ResourceNotFoundException("Project", projectId);
         }
 
+        if(bidRepository.existsByProjectId(projectId)) {
+            throw new DuplicateBidException(projectId);
+        }
+
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ResourceNotFoundException("Project", projectId));
+
+        User user = userRepository.findById(createRequest.getBidderId())
+                .orElseThrow(() -> new ResourceNotFoundException("Bidder", createRequest.getBidderId()));
 
         Bid bid = bidMapper.createBidToBid(createRequest);
         bid.setCreatedAt(Instant.now());
         bid.setProject(project);
         bid.setBidStatus(BidStatus.PENDING);
+        bid.setBidder(user);
         Bid savedBid = bidRepository.save(bid);
 
         BidResponse bidResponse = bidMapper.bidToBidResponse(savedBid);
         ProjectSummaryResponse projectSummaryResponse = projectMapper.projectToProjectSummaryResponse(project);
         bidResponse.setProjectSummaryResponse(projectSummaryResponse);
+        bidResponse.setBidderId(user.getId());
 
         return bidResponse;
     }

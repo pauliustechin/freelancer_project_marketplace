@@ -41,4 +41,10 @@ public class MyGlobalExceptionHandler {
                 .body(new ApiError(409, "Conflict", e.getMessage(), null));
     }
 
+    @ExceptionHandler(DuplicateBidException.class)
+    public ResponseEntity<ApiError> handleIllegalBidStateException(DuplicateBidException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ApiError(409, "Conflict", e.getMessage(), null));
+    }
+
 }

@@ -4,6 +4,8 @@ import io.github.pauliustechin.freelancer_marketplace.bid.BidRepository;
 import io.github.pauliustechin.freelancer_marketplace.exception.IllegalProjectStateException;
 import io.github.pauliustechin.freelancer_marketplace.exception.ResourceNotFoundException;
 import io.github.pauliustechin.freelancer_marketplace.project.dto.*;
+import io.github.pauliustechin.freelancer_marketplace.user.User;
+import io.github.pauliustechin.freelancer_marketplace.user.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ public class ProjectServiceImpl implements ProjectService{
     private final ProjectRepository projectRepository;
     private final ProjectMapper projectMapper;
     private final BidRepository bidRepository;
+    private final UserRepository userRepository;
 
     @Override
     public ProjectsListResponse getAllProjects() {
@@ -32,14 +35,21 @@ public class ProjectServiceImpl implements ProjectService{
 
     @Transactional
     @Override
-    public ProjectResponse createProject(CreateProjectRequest createRequest) {
+    public ProjectResponse createProject(CreateProjectRequest createRequest, Long clientId) {
+
+        User user = userRepository.findById(clientId)
+                .orElseThrow(() -> new ResourceNotFoundException("Client", clientId));
 
         Project project = projectMapper.createProjectToProject(createRequest);
         project.setProjectStatus(ProjectStatus.OPEN);
+        project.setClient(user);
         project.setCreatedAt(Instant.now());
         Project savedProject = projectRepository.save(project);
 
-        return projectMapper.projectToProjectResponse(savedProject);
+        ProjectResponse response = projectMapper.projectToProjectResponse(savedProject);
+        response.setClientId(user.getId());
+
+        return response;
     }
 
     @Transactional

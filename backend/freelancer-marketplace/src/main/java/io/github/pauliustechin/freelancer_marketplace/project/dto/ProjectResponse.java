@@ -23,4 +23,6 @@ public class ProjectResponse {
     private LocalDate projectStart;
 
     private LocalDate projectEnd;
+
+    private Long clientId;
 }

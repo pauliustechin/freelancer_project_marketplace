@@ -1,6 +1,7 @@
 package io.github.pauliustechin.freelancer_marketplace.project;
 
 import io.github.pauliustechin.freelancer_marketplace.bid.Bid;
+import io.github.pauliustechin.freelancer_marketplace.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -41,6 +42,10 @@ public class Project {
 
     @OneToMany(mappedBy = "project")
     private Set<Bid> bid = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User client;
 
     public Project(Long id, String projectName, String description, String projectFileUrl, ProjectStatus projectStatus, LocalDate projectStart, LocalDate projectEnd) {
         this.id = id;

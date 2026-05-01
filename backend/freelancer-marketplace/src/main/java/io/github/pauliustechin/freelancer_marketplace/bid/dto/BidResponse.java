@@ -14,6 +14,7 @@ public class BidResponse {
     private Long bidId;
     private BigDecimal amount;
     private BidStatus bidStatus;
+    private Long bidderId;
     private ProjectSummaryResponse projectSummaryResponse;
 
 }

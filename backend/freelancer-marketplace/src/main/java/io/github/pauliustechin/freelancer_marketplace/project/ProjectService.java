@@ -8,7 +8,7 @@ import io.github.pauliustechin.freelancer_marketplace.project.dto.UpdateProjectR
 public interface ProjectService {
 
     ProjectsListResponse getAllProjects();
-    ProjectResponse createProject(CreateProjectRequest createRequest);
+    ProjectResponse createProject(CreateProjectRequest createRequest, Long clientId);
     ProjectResponse updateProject(Long projectId, UpdateProjectRequest updateRequest);
     void deleteProject(Long projectId);
 }
