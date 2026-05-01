@@ -52,6 +52,4 @@ public class BidController {
         return ResponseEntity.ok().body(response);
     }
 
-
-
 }

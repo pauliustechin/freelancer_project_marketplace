@@ -2,12 +2,14 @@ package io.github.pauliustechin.freelancer_marketplace.project.dto;
 
 import io.github.pauliustechin.freelancer_marketplace.project.ProjectStatus;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
+@Builder
 public class ProjectResponse {
 
     private Long projectId;

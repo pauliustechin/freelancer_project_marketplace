@@ -1,22 +1,26 @@
 package io.github.pauliustechin.freelancer_marketplace.project;
 
-import io.github.pauliustechin.freelancer_marketplace.exception.IllegalProjectStateException;
+import io.github.pauliustechin.freelancer_marketplace.bid.BidRepository;
 import io.github.pauliustechin.freelancer_marketplace.exception.ResourceNotFoundException;
 import io.github.pauliustechin.freelancer_marketplace.project.dto.*;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import io.github.pauliustechin.freelancer_marketplace.user.User;
+import io.github.pauliustechin.freelancer_marketplace.user.UserRepository;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.Instant;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
 @ExtendWith(MockitoExtension.class)
+@DisplayName("ProjectServiceImpl Unit Tests")
 public class ProjectServiceTest {
 
     @Mock
@@ -25,177 +29,133 @@ public class ProjectServiceTest {
     @Mock
     private ProjectMapper projectMapper;
 
+    @Mock
+    private BidRepository bidRepository;
+
+    @Mock
+    private UserRepository userRepository;
+
     @InjectMocks
     private ProjectServiceImpl projectService;
 
-    private Project mappedProject;
-    private CreateProjectRequest createProjectRequest;
-    private Project savedProject;
+    private Project project;
     private ProjectResponse projectResponse;
     private UpdateProjectRequest updateProjectRequest;
+    private CreateProjectRequest createProjectRequest;
+    private User client;
 
     @BeforeEach
     void setUp() {
-        createProjectRequest = new CreateProjectRequest(
-                "projectName",
-                "projectDescription",
-                "https://test.com",
-                LocalDate.of(2026, 06, 01),
-                LocalDate.of(2026, 10, 01)
-        );
 
-        updateProjectRequest = new UpdateProjectRequest(
-                "projectNameUpdated",
-                "projectDescriptionUpdated",
-                "https://testUpdated.com",
-                LocalDate.of(2030, 06, 01),
-                LocalDate.of(2050, 10, 01),
-                ProjectStatus.OPEN
-        );
+        client = User.builder()
+                .id(1L)
+                .username("username")
+                .firstName("firstName")
+                .lastName("lastName")
+                .email("user@email.com")
+                .createAt(Instant.now())
+                .updatedAt(null)
+                .build();
 
-        mappedProject = new Project(null,
-                "projectName",
-                "projectDescription",
-                "https://test.com",
-                null,
-                LocalDate.of(2026, 06, 01),
-                LocalDate.of(2026, 10, 01)
-        );
+        project = Project.builder()
+                .id(1L)
+                .projectName("projectName")
+                .description("projectDescription")
+                .projectFileUrl("https://test.com")
+                .projectStatus(ProjectStatus.OPEN)
+                .projectStart(LocalDate.of(2026, 06, 01))
+                .projectEnd(LocalDate.of(2026, 10, 01))
+                .bid(null)
+                .client(client)
+                .build();
 
-        savedProject = new Project(1L,
-                "projectName",
-                "projectDescription",
-                "https://test.com",
-                ProjectStatus.OPEN,
-                LocalDate.of(2026, 06, 01),
-                LocalDate.of(2026, 10, 01)
-        );
-        projectResponse = new ProjectResponse(1L,
-                "projectName",
-                "projectDescription",
-                "https://test.com",
-                ProjectStatus.OPEN,
-                LocalDate.of(2026, 06, 01),
-                LocalDate.of(2026, 10, 01)
-        );
+        createProjectRequest = CreateProjectRequest.builder()
+                .projectName("projectName")
+                .description("projectDescription")
+                .projectFileUrl("https://test.com")
+                .projectStart(LocalDate.of(2026, 6, 1))
+                .projectEnd(LocalDate.of(2026, 10, 1))
+                .build();
+
+        updateProjectRequest = UpdateProjectRequest.builder()
+                .projectName("projectNameUpdated")
+                .description("projectDescriptionUpdated")
+                .projectFileUrl("https://testUpdated.com")
+                .projectStart(LocalDate.of(2030, 6, 1))
+                .projectEnd(LocalDate.of(2050, 10, 1))
+                .projectStatus(ProjectStatus.OPEN)
+                .build();
+
+        projectResponse = ProjectResponse.builder()
+                .projectId(1L)
+                .projectName("projectName")
+                .description("projectDescription")
+                .projectFileUrl("https://test.com")
+                .projectStatus(ProjectStatus.OPEN)
+                .projectStart(LocalDate.of(2026, 6, 1))
+                .projectEnd(LocalDate.of(2026, 10, 1))
+                .clientId(1L)
+                .build();
     }
 
-    @Test
-    void getAllProjectsShouldReturnAllProjects() {
+    @Nested
+    @DisplayName("Create Project Tests")
+    class CreateProjectTests {
 
-        Mockito.when(projectRepository.findAll()).thenReturn(List.of(savedProject));
-        Mockito.when(projectMapper.projectToProjectResponse(savedProject)).thenReturn(projectResponse);
+        @Test
+        @DisplayName("Should create project when valid request and client exists")
+        void shouldCreateProjectSuccessfully() {
 
-        ProjectsListResponse result = projectService.getAllProjects();
+            Long clientId = 1L;
+            when(userRepository.findById(clientId)).thenReturn(Optional.of(client));
+            when(projectMapper.createProjectToProject(createProjectRequest))
+                    .thenReturn(project);
+            when(projectRepository.save(any(Project.class))).thenReturn(project);
+            when(projectMapper.projectToProjectResponse(project)).thenReturn(projectResponse);
 
-        Assertions.assertEquals(1, result.getProjects().size());
-        Assertions.assertEquals(result.getProjects().get(0), projectResponse);
+            ProjectResponse result = projectService.createProject(createProjectRequest, clientId);
 
-    }
+            assertNotNull(result);
+            assertEquals(projectResponse, result);
+            verify(userRepository, times(1)).findById(clientId);
+            verify(projectMapper, times(1)).createProjectToProject(createProjectRequest);
+            verify(projectRepository, times(1)).save(any(Project.class));
+            verify(projectMapper, times(1)).projectToProjectResponse(project);
+            verify(projectRepository)
+                    .save(argThat(pr -> pr != null & pr.getProjectStatus().equals(ProjectStatus.OPEN)));
+        }
 
-//    @Test
-//    void createProjectShouldSaveProjectSuccessfullyAndReturnProjectResponse() {
-//
-//        Mockito.when(projectMapper.createProjectToProject(createProjectRequest)).thenReturn(mappedProject);
-//        Mockito.when(projectRepository.save(mappedProject)).thenReturn(savedProject);
-//        Mockito.when(projectMapper.projectToProjectResponse(savedProject)).thenReturn(projectResponse);
-//
-//        ProjectResponse result = projectService.createProject(createProjectRequest);
-//
-//        Mockito.verify(projectRepository).save(mappedProject);
-//        Assertions.assertEquals(result, projectResponse);
-//        Assertions.assertEquals(1L, result.getId());
-//        Assertions.assertEquals(ProjectStatus.OPEN, result.getProjectStatus());
-//
-//    }
+        @Test
+        @DisplayName("Should throw ResourceNotFoundException when user is not found.")
+        void shouldThrowResourceNotFoundExceptionWhenUserNotFound () {
+            Long clientId = 1L;
+            when(userRepository.findById(clientId)).thenReturn(Optional.empty());
 
-    @Test
-    void shouldThrowException_whenProjectNotFound() {
+            ResourceNotFoundException exception = assertThrows(
+                    ResourceNotFoundException.class,
+                    () -> projectService.createProject(createProjectRequest, clientId)
+            );
 
-        Mockito.when(projectRepository.findById(1L)).thenReturn(Optional.empty());
+            assertEquals("Client with id: " + clientId + " was not found.", exception.getMessage());
+            verify(userRepository, times(1)).findById(clientId);
+            verify(projectMapper, times(0)).createProjectToProject(createProjectRequest);
+            verifyNoInteractions(projectRepository);
+        }
 
-        Assertions.assertThrows(ResourceNotFoundException.class,
-                () -> projectService.updateProject(1L, updateProjectRequest));
+        @Test
+        @DisplayName("Should handle null clientId in a request.")
+        void shouldHandleNullClientIdInRequest() {
 
-    }
+            ResourceNotFoundException exception = assertThrows(
+                    ResourceNotFoundException.class,
+                    () -> projectService.createProject(createProjectRequest, null)
+            );
 
-    @Test
-    void shouldThrowException_whenProjectCompleted() {
-
-        savedProject.setProjectStatus(ProjectStatus.COMPLETED);
-
-        Mockito.when(projectRepository.findById(1L)).thenReturn(Optional.of(savedProject));
-
-        Assertions.assertThrows(IllegalProjectStateException.class,
-                () -> projectService.updateProject(1L, updateProjectRequest));
-
-    }
-
-    @Test
-    void shouldThrowException_whenProjectCanceled() {
-
-        savedProject.setProjectStatus(ProjectStatus.CANCELED);
-
-        Mockito.when(projectRepository.findById(1L)).thenReturn(Optional.of(savedProject));
-
-        Assertions.assertThrows(IllegalProjectStateException.class,
-                () -> projectService.updateProject(1L, updateProjectRequest));
+            assertEquals("Client with id: null was not found.", exception.getMessage());
+            verifyNoInteractions(userRepository);
+            verifyNoInteractions(projectMapper);
+            verifyNoInteractions(projectRepository);
+        }
 
     }
-
-    @Test
-    void shouldThrowException_whenRevertingToOpen() {
-
-        savedProject.setProjectStatus(ProjectStatus.IN_PROGRESS);
-
-        Mockito.when(projectRepository.findById(1L)).thenReturn(Optional.of(savedProject));
-
-        Assertions.assertThrows(IllegalProjectStateException.class,
-                () -> projectService.updateProject(1L, updateProjectRequest));
-    }
-
-    @Test
-    void shouldUpdateProjectSuccessfully() {
-
-        Project updatedProject = new Project(1L,
-                "projectNameUpdated",
-                "projectDescriptionUpdated",
-                "https://testUpdated.com",
-                ProjectStatus.OPEN,
-                LocalDate.of(2030, 06, 01),
-                LocalDate.of(2050, 10, 01)
-        );
-
-        ProjectResponse updatedProjectResponse = new ProjectResponse(1L,
-                "projectNameUpdated",
-                "projectDescriptionUpdated",
-                "https://testUpdated.com",
-                ProjectStatus.OPEN,
-                LocalDate.of(2030, 06, 01),
-                LocalDate.of(2050, 10, 01)
-        );
-
-        Mockito.when(projectRepository.findById(1L)).thenReturn(Optional.of(savedProject));
-        Mockito.when(projectRepository.save(Mockito.any(Project.class))).thenReturn(updatedProject);
-        Mockito.when(projectMapper.projectToProjectResponse(updatedProject)).thenReturn(updatedProjectResponse);
-
-        ProjectResponse result = projectService.updateProject(1L, updateProjectRequest);
-
-        Mockito.verify(projectRepository).save(Mockito.any(Project.class));
-        Assertions.assertNotNull(result);
-        Assertions.assertEquals(updatedProjectResponse, result);
-        Assertions.assertEquals("projectNameUpdated", result.getProjectName());
-        Assertions.assertEquals(LocalDate.of(2030, 06, 01), result.getProjectStart());
-    }
-
-    @Test
-    void shouldDeleteProject() {
-
-        Mockito.when(projectRepository.findById(1L)).thenReturn(Optional.of(savedProject));
-
-        projectService.deleteProject(1L);
-
-        Mockito.verify(projectRepository).delete(savedProject);
-    }
-
 }

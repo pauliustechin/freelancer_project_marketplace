@@ -4,6 +4,7 @@ import io.github.pauliustechin.freelancer_marketplace.bid.Bid;
 import io.github.pauliustechin.freelancer_marketplace.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.Instant;
@@ -17,6 +18,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 public class Project {
 
     @Id

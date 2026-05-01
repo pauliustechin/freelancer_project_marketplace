@@ -37,6 +37,10 @@ public class ProjectServiceImpl implements ProjectService{
     @Override
     public ProjectResponse createProject(CreateProjectRequest createRequest, Long clientId) {
 
+        if(clientId == null) {
+            throw new ResourceNotFoundException("Client", clientId);
+        }
+
         User user = userRepository.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Client", clientId));
 
