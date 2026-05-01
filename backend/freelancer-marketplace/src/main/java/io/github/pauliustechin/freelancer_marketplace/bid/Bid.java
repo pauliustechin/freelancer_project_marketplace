@@ -1,5 +1,6 @@
 package io.github.pauliustechin.freelancer_marketplace.bid;
 
+import io.github.pauliustechin.freelancer_marketplace.contract.Contract;
 import io.github.pauliustechin.freelancer_marketplace.project.Project;
 import io.github.pauliustechin.freelancer_marketplace.user.User;
 import jakarta.persistence.*;
@@ -37,5 +38,8 @@ public class Bid {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User bidder;
+
+    @OneToOne(mappedBy = "bid")
+    private Contract contract;
 
 }

@@ -8,7 +8,7 @@ public class IllegalBidStateException extends RuntimeException {
     }
 
     public IllegalBidStateException(BidStatus status) {
-        super("You are trying update bid status to " + status + ". Bidder can only cancel bid.");
+        super("You are trying update bid status to " + status + ". Bidder can only cancel bid or confirm contract.");
     }
 
     public IllegalBidStateException() {

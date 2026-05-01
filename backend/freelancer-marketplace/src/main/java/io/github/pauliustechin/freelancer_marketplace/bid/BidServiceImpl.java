@@ -1,6 +1,7 @@
 package io.github.pauliustechin.freelancer_marketplace.bid;
 
 import io.github.pauliustechin.freelancer_marketplace.bid.dto.*;
+import io.github.pauliustechin.freelancer_marketplace.contract.ContractService;
 import io.github.pauliustechin.freelancer_marketplace.exception.DuplicateBidException;
 import io.github.pauliustechin.freelancer_marketplace.exception.IllegalBidStateException;
 import io.github.pauliustechin.freelancer_marketplace.exception.ResourceNotFoundException;

@@ -47,4 +47,10 @@ public class MyGlobalExceptionHandler {
                 .body(new ApiError(409, "Conflict", e.getMessage(), null));
     }
 
+    @ExceptionHandler(ContractRejectedException.class)
+    public ResponseEntity<ApiError> handleIllegalBidStateException(ContractRejectedException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ApiError(409, "Conflict", e.getMessage(), null));
+    }
+
 }
