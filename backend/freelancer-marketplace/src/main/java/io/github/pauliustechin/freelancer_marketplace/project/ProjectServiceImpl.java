@@ -1,8 +1,8 @@
 package io.github.pauliustechin.freelancer_marketplace.project;
 
 import io.github.pauliustechin.freelancer_marketplace.bid.BidRepository;
-import io.github.pauliustechin.freelancer_marketplace.exception.ProjectImmutableException;
-import io.github.pauliustechin.freelancer_marketplace.exception.ProjectNotFoundException;
+import io.github.pauliustechin.freelancer_marketplace.exception.IllegalProjectStateException;
+import io.github.pauliustechin.freelancer_marketplace.exception.ResourceNotFoundException;
 import io.github.pauliustechin.freelancer_marketplace.project.dto.*;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,6 @@ public class ProjectServiceImpl implements ProjectService{
     private final ProjectMapper projectMapper;
     private final BidRepository bidRepository;
 
-    @Transactional(readOnly = true)
     @Override
     public ProjectsListResponse getAllProjects() {
 
@@ -48,20 +47,20 @@ public class ProjectServiceImpl implements ProjectService{
     public ProjectResponse updateProject(Long projectId, UpdateProjectRequest updateRequest) {
 
         if(projectId == null) {
-            throw new ProjectNotFoundException(projectId);
+            throw new ResourceNotFoundException("Project", projectId);
         }
 
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new ProjectNotFoundException(projectId));
+                .orElseThrow(() -> new ResourceNotFoundException("Procject", projectId));
 
         ProjectStatus projectStatus = project.getProjectStatus();
         ProjectStatus updateStatus = updateRequest.getProjectStatus();
-        if(projectStatus.equals(ProjectStatus.COMPLETED)) {
-            throw new ProjectImmutableException(projectId, projectStatus);
-        } else if(projectStatus.equals(ProjectStatus.IN_PROGRESS) && updateStatus.equals(ProjectStatus.OPEN)) {
-            throw new ProjectImmutableException(projectId, projectStatus, updateStatus);
-        } else if(projectStatus.equals(ProjectStatus.CANCELED)) {
-            throw new ProjectImmutableException(projectId, projectStatus);
+        if(projectStatus.equals(ProjectStatus.COMPLETED) || projectStatus.equals(ProjectStatus.CANCELED)) {
+            throw new IllegalProjectStateException(projectId, projectStatus);
+        } else if(projectStatus.equals(ProjectStatus.IN_PROGRESS) && updateStatus.equals(ProjectStatus.CANCELED)) {
+            throw new IllegalProjectStateException(projectId, projectStatus, updateStatus);
+        } else if(projectStatus.equals(ProjectStatus.OPEN) && !(updateStatus.equals(ProjectStatus.CANCELED))) {
+            throw new IllegalProjectStateException();
         }
 
         project.setProjectName(updateRequest.getProjectName());
@@ -82,7 +81,7 @@ public class ProjectServiceImpl implements ProjectService{
     public void deleteProject(Long projectId) {
 
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new ProjectNotFoundException(projectId));
+                .orElseThrow(() -> new ResourceNotFoundException("Project", projectId));
 
         bidRepository.deleteByProjectId(projectId);
         projectRepository.delete(project);

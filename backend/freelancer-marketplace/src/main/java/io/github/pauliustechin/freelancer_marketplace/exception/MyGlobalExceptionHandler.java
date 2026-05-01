@@ -23,14 +23,20 @@ public class MyGlobalExceptionHandler {
                 .body(new ApiError(400, "Bad Request", "Validation failed.", fieldErrors));
     }
 
-    @ExceptionHandler(ProjectNotFoundException.class)
-    public ResponseEntity<ApiError> handleProjectNotFoundException(ProjectNotFoundException e) {
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ApiError> handleProjectNotFoundException(ResourceNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ApiError(404, "Not Found", e.getMessage(), null));
     }
 
-    @ExceptionHandler(ProjectImmutableException.class)
-    public ResponseEntity<ApiError> handleCompletedProjectException(ProjectImmutableException e) {
+    @ExceptionHandler(IllegalProjectStateException.class)
+    public ResponseEntity<ApiError> handleIllegalProjectStateException(IllegalProjectStateException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ApiError(409, "Conflict", e.getMessage(), null));
+    }
+
+    @ExceptionHandler(IllegalBidStateException.class)
+    public ResponseEntity<ApiError> handleIllegalBidStateException(IllegalBidStateException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(new ApiError(409, "Conflict", e.getMessage(), null));
     }

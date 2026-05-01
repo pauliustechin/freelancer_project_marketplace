@@ -1,7 +1,7 @@
 package io.github.pauliustechin.freelancer_marketplace.project;
 
-import io.github.pauliustechin.freelancer_marketplace.exception.ProjectImmutableException;
-import io.github.pauliustechin.freelancer_marketplace.exception.ProjectNotFoundException;
+import io.github.pauliustechin.freelancer_marketplace.exception.IllegalProjectStateException;
+import io.github.pauliustechin.freelancer_marketplace.exception.ResourceNotFoundException;
 import io.github.pauliustechin.freelancer_marketplace.project.dto.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -114,7 +114,7 @@ public class ProjectServiceTest {
 
         Mockito.when(projectRepository.findById(1L)).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(ProjectNotFoundException.class,
+        Assertions.assertThrows(ResourceNotFoundException.class,
                 () -> projectService.updateProject(1L, updateProjectRequest));
 
     }
@@ -126,7 +126,7 @@ public class ProjectServiceTest {
 
         Mockito.when(projectRepository.findById(1L)).thenReturn(Optional.of(savedProject));
 
-        Assertions.assertThrows(ProjectImmutableException.class,
+        Assertions.assertThrows(IllegalProjectStateException.class,
                 () -> projectService.updateProject(1L, updateProjectRequest));
 
     }
@@ -138,7 +138,7 @@ public class ProjectServiceTest {
 
         Mockito.when(projectRepository.findById(1L)).thenReturn(Optional.of(savedProject));
 
-        Assertions.assertThrows(ProjectImmutableException.class,
+        Assertions.assertThrows(IllegalProjectStateException.class,
                 () -> projectService.updateProject(1L, updateProjectRequest));
 
     }
@@ -150,7 +150,7 @@ public class ProjectServiceTest {
 
         Mockito.when(projectRepository.findById(1L)).thenReturn(Optional.of(savedProject));
 
-        Assertions.assertThrows(ProjectImmutableException.class,
+        Assertions.assertThrows(IllegalProjectStateException.class,
                 () -> projectService.updateProject(1L, updateProjectRequest));
     }
 

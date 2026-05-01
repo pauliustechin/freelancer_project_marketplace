@@ -12,5 +12,4 @@ public class ProjectSummaryResponse {
     private ProjectStatus projectStatus;
     private String projectFileUrl;
     private LocalDate projectStart;
-    private LocalDate projectEnd;
 }

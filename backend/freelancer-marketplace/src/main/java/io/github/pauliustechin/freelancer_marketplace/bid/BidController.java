@@ -3,6 +3,7 @@ package io.github.pauliustechin.freelancer_marketplace.bid;
 import io.github.pauliustechin.freelancer_marketplace.bid.dto.BidListResponse;
 import io.github.pauliustechin.freelancer_marketplace.bid.dto.BidResponse;
 import io.github.pauliustechin.freelancer_marketplace.bid.dto.CreateBidRequest;
+import io.github.pauliustechin.freelancer_marketplace.bid.dto.UpdateBidRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class BidController {
 
         BidListResponse response = bidService.getBidsByProject(projectId);
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok().body(response);
     }
 
     @PostMapping("/projects/{projectId}/bids")
@@ -32,5 +33,25 @@ public class BidController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    @PutMapping("/bids/{bidId}")
+    public ResponseEntity<BidResponse> updateBid(@PathVariable Long bidId,
+                                                 @Valid @RequestBody UpdateBidRequest request) {
+
+        BidResponse response = bidService.updateBid(bidId, request);
+
+        return ResponseEntity.ok().body(response);
+    }
+
+    @PatchMapping("/bids/{bidId}")
+    public ResponseEntity<BidResponse> updateBidStatus(@PathVariable Long bidId,
+                                                       @RequestParam BidStatus status) {
+
+        BidResponse response = bidService.updateBidStatus(bidId, status);
+
+        return ResponseEntity.ok().body(response);
+    }
+
+
 
 }

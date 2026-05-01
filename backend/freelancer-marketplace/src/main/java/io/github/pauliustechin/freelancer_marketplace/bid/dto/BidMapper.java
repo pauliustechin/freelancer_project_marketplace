@@ -8,6 +8,7 @@ import org.mapstruct.Mapping;
 public interface BidMapper {
 
     Bid createBidToBid(CreateBidRequest request);
+
     @Mapping(source = "id", target = "bidId")
     BidResponse bidToBidResponse(Bid bid);
 

@@ -1,12 +1,12 @@
 package io.github.pauliustechin.freelancer_marketplace.bid.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.List;
 
 @AllArgsConstructor
-@Setter
+@Data
 public class BidListResponse {
 
     private List<BidResponse> bids;
