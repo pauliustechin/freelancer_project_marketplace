@@ -1,10 +1,17 @@
 package io.github.pauliustechin.freelancer_marketplace.project;
 
-import io.github.pauliustechin.freelancer_marketplace.bid.BidRepository;
+import io.github.pauliustechin.freelancer_marketplace.model.bid.BidRepository;
 import io.github.pauliustechin.freelancer_marketplace.exception.ResourceNotFoundException;
-import io.github.pauliustechin.freelancer_marketplace.project.dto.*;
-import io.github.pauliustechin.freelancer_marketplace.user.User;
-import io.github.pauliustechin.freelancer_marketplace.user.UserRepository;
+import io.github.pauliustechin.freelancer_marketplace.model.project.Project;
+import io.github.pauliustechin.freelancer_marketplace.model.project.ProjectRepository;
+import io.github.pauliustechin.freelancer_marketplace.model.project.ProjectServiceImpl;
+import io.github.pauliustechin.freelancer_marketplace.model.project.ProjectStatus;
+import io.github.pauliustechin.freelancer_marketplace.model.project.dto.CreateProjectRequest;
+import io.github.pauliustechin.freelancer_marketplace.model.project.dto.ProjectMapper;
+import io.github.pauliustechin.freelancer_marketplace.model.project.dto.ProjectResponse;
+import io.github.pauliustechin.freelancer_marketplace.model.project.dto.UpdateProjectRequest;
+import io.github.pauliustechin.freelancer_marketplace.model.user.User;
+import io.github.pauliustechin.freelancer_marketplace.model.user.UserRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -122,7 +129,7 @@ public class ProjectServiceTest {
             verify(projectRepository, times(1)).save(any(Project.class));
             verify(projectMapper, times(1)).projectToProjectResponse(project);
             verify(projectRepository)
-                    .save(argThat(pr -> pr != null & pr.getProjectStatus().equals(ProjectStatus.OPEN)));
+                    .save(argThat(pr -> pr != null && pr.getProjectStatus().equals(ProjectStatus.OPEN)));
         }
 
         @Test
@@ -156,6 +163,5 @@ public class ProjectServiceTest {
             verifyNoInteractions(projectMapper);
             verifyNoInteractions(projectRepository);
         }
-
     }
 }
