@@ -87,7 +87,6 @@ public class AuthServiceImpl implements AuthService{
 
         Authentication authentication;
 
-        System.out.println(request.getPassword());
         try {
             authentication = authenticationManager
                     .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));

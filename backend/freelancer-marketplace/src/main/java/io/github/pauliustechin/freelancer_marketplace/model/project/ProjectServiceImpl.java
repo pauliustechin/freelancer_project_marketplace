@@ -6,12 +6,19 @@ import io.github.pauliustechin.freelancer_marketplace.exception.ResourceNotFound
 import io.github.pauliustechin.freelancer_marketplace.model.project.dto.*;
 import io.github.pauliustechin.freelancer_marketplace.model.user.User;
 import io.github.pauliustechin.freelancer_marketplace.model.user.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -23,14 +30,52 @@ public class ProjectServiceImpl implements ProjectService{
     private final UserRepository userRepository;
 
     @Override
-    public ProjectsListResponse getAllProjects() {
+    @Transactional
+    public ProjectListResponse searchForProject(
+            ProjectStatus status,
+            String projectName,
+            LocalDate startsAfter,
+            Pageable pageable
+    ) {
 
-        List<Project> projects = projectRepository.findAll();
-        List<ProjectResponse> projectResponses = projects.stream()
+        Specification<Project> specification = Specification
+                .where(ProjectSpecification.hasStatus(status))
+                .and(ProjectSpecification.hasName(projectName))
+                .and(ProjectSpecification.startsAfter(startsAfter));
+
+        Page<Project> pageProjects = projectRepository.findAll(specification, pageable);
+
+        Set<Long> projectIds = pageProjects.stream()
+                .map(project -> project.getId())
+                .collect(Collectors.toSet());
+
+        Map<Long, Long> bidCountByProject = bidRepository.getProjectsWithBidCount(projectIds)
+                .stream()
+                .collect(Collectors.toMap(
+                        row -> (Long) row[0],
+                        row -> (Long) row[1]
+                ));
+
+
+        List<ProjectResponse> projects = pageProjects.stream()
                 .map(project -> projectMapper.projectToProjectResponse(project))
+                .map(response -> {
+                    Long bidCount = bidCountByProject.get(response.getProjectId());
+                    response.setBidCount(bidCount != null ? bidCount : 0);
+                    return response;
+                })
                 .toList();
 
-        return new ProjectsListResponse(projectResponses);
+        ProjectListResponse response = new ProjectListResponse();
+        response.setContent(projects);
+        response.setNumber(pageProjects.getNumber());
+        response.setSize(pageProjects.getSize());
+        response.setTotalElements(pageProjects.getTotalElements());
+        response.setTotalPages(pageProjects.getTotalPages());
+        response.setFirst(pageProjects.isFirst());
+        response.setLast(pageProjects.isLast());
+
+        return response;
     }
 
     @Transactional

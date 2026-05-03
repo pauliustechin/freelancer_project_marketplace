@@ -64,8 +64,8 @@ public class BidServiceImpl implements BidService{
             throw new ResourceNotFoundException("Project", projectId);
         }
 
-        if(bidRepository.existsByProjectId(projectId)) {
-            throw new DuplicateBidException(projectId);
+        if(bidRepository.existsByBidderIdAndProjectId(createRequest.getBidderId(), projectId)) {
+            throw new DuplicateBidException(createRequest.getBidderId());
         }
 
         Project project = projectRepository.findById(projectId)

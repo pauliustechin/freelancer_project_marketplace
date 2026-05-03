@@ -27,4 +27,6 @@ public class ProjectResponse {
     private LocalDate projectEnd;
 
     private Long clientId;
+
+    private long bidCount;
 }

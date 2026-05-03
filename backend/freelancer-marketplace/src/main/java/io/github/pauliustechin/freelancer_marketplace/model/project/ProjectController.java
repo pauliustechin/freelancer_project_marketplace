@@ -2,13 +2,17 @@ package io.github.pauliustechin.freelancer_marketplace.model.project;
 
 import io.github.pauliustechin.freelancer_marketplace.model.project.dto.CreateProjectRequest;
 import io.github.pauliustechin.freelancer_marketplace.model.project.dto.ProjectResponse;
-import io.github.pauliustechin.freelancer_marketplace.model.project.dto.ProjectsListResponse;
+import io.github.pauliustechin.freelancer_marketplace.model.project.dto.ProjectListResponse;
 import io.github.pauliustechin.freelancer_marketplace.model.project.dto.UpdateProjectRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RequiredArgsConstructor
 @RestController
@@ -18,9 +22,16 @@ public class ProjectController {
     private final ProjectService projectService;
 
     @GetMapping("/projects")
-    public ResponseEntity<ProjectsListResponse> getAllProjects() {
+    public ResponseEntity<ProjectListResponse> searchForProjects(
+            @RequestParam(required = false) ProjectStatus status,
+            @RequestParam(required = false) String projectName,
+            @RequestParam(required = false) LocalDate projectStart,
+            @PageableDefault(page = 0, size = 10, sort="createdAt") Pageable pageable
+    ) {
 
-        return ResponseEntity.ok().body(projectService.getAllProjects());
+        ProjectListResponse projectListResponse = projectService.searchForProject(status, projectName, projectStart, pageable);
+
+        return ResponseEntity.ok().body(projectListResponse);
     }
 
     @PostMapping("/users/{clientId}/projects")
