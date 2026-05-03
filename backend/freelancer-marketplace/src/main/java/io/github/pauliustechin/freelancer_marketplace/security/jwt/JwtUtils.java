@@ -51,7 +51,7 @@ public class JwtUtils {
 
         ResponseCookie cookie = ResponseCookie.from(jwtCookie, jwt)
                 .path("/")
-                .maxAge(jwtExpirationMs)
+                .maxAge(60*60)
                 .httpOnly(true)
                 .build();
 

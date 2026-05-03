@@ -2,6 +2,7 @@ package io.github.pauliustechin.freelancer_marketplace.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -49,6 +50,24 @@ public class MyGlobalExceptionHandler {
 
     @ExceptionHandler(ContractRejectedException.class)
     public ResponseEntity<ApiError> handleIllegalBidStateException(ContractRejectedException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ApiError(409, "Conflict", e.getMessage(), null));
+    }
+
+    @ExceptionHandler(DuplicateEmailException.class)
+    public ResponseEntity<ApiError> handleProjectWithSameNameException(DuplicateEmailException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ApiError(409, "Conflict", e.getMessage(), null));
+    }
+
+    @ExceptionHandler(DuplicateUsernameException.class)
+    public ResponseEntity<ApiError> handleProjectWithSameNameException(DuplicateUsernameException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ApiError(409, "Conflict", e.getMessage(), null));
+    }
+
+    @ExceptionHandler(UserAuthenticationException.class)
+    public ResponseEntity<ApiError> handleProjectWithSameNameException(UserAuthenticationException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(new ApiError(409, "Conflict", e.getMessage(), null));
     }

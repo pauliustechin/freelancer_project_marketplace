@@ -1,6 +1,6 @@
 package io.github.pauliustechin.freelancer_marketplace.model.user;
 
-import io.github.pauliustechin.freelancer_marketplace.model.user.role.Role;
+import io.github.pauliustechin.freelancer_marketplace.model.role.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,13 +1,13 @@
-package io.github.pauliustechin.freelancer_marketplace.model.user.role;
+package io.github.pauliustechin.freelancer_marketplace.model.role;
 
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@NoArgsConstructor
 @Data
 @Table(name = "roles")
+@NoArgsConstructor
 public class Role {
 
     @Id
@@ -19,4 +19,7 @@ public class Role {
     @Column(length = 20, name = "role_name")
     private AppRole roleName;
 
+    public Role(AppRole roleName) {
+        this.roleName = roleName;
+    }
 }
