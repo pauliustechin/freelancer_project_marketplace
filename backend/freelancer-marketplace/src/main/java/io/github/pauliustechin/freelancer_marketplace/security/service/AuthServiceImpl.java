@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService{
 
-    private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(AuthServiceImpl.class);
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
@@ -102,14 +102,18 @@ public class AuthServiceImpl implements AuthService{
                 .map(GrantedAuthority::getAuthority)
                 .toList();
 
-
         AuthResponse response = new AuthResponse(
                 "Auth successful",
                 Instant.now().plus(Duration.ofHours(jwtCookie.getMaxAge().toHours())),
-                userDetails.getEmail(), roles);
+                userDetails.getUsername(),
+                userDetails.getId(),
+                roles);
 
         logger.info("User logged in successfully: userId={}, username={}", userDetails.getId(), userDetails.getUsername());
 
         return new LoginSuccess(response, jwtCookie);
     }
+
+
+
 }

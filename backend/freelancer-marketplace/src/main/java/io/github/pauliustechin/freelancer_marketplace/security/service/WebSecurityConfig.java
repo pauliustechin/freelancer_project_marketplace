@@ -3,6 +3,7 @@ package io.github.pauliustechin.freelancer_marketplace.security.service;
 import io.github.pauliustechin.freelancer_marketplace.model.role.AppRole;
 import io.github.pauliustechin.freelancer_marketplace.model.role.Role;
 import io.github.pauliustechin.freelancer_marketplace.model.role.RoleRepository;
+import io.github.pauliustechin.freelancer_marketplace.model.user.User;
 import io.github.pauliustechin.freelancer_marketplace.model.user.UserRepository;
 import io.github.pauliustechin.freelancer_marketplace.security.jwt.AuthEntryPointJwt;
 import io.github.pauliustechin.freelancer_marketplace.security.jwt.AuthTokenFilter;
@@ -11,10 +12,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -28,10 +31,12 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.Set;
 
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class WebSecurityConfig {
 
     @Autowired
@@ -91,13 +96,13 @@ public class WebSecurityConfig {
                 )
                 .authorizeHttpRequests(auth ->
                 auth
-//                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/**").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/v3/api-docs/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/api/test/**").permitAll()
                         .requestMatchers("/images/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/freelancers").permitAll()
                         .anyRequest().authenticated());
 
         http.authenticationProvider(authenticationProvider());
@@ -127,13 +132,13 @@ public class WebSecurityConfig {
     @Bean
     public CommandLineRunner initData(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            Role buyerRole = roleRepository.findByRoleName(AppRole.ROLE_BUYER)
+            Role bidderRole = roleRepository.findByRoleName(AppRole.ROLE_BUYER)
                     .orElseGet(() -> {
                         Role newUserRole = new Role(AppRole.ROLE_BUYER);
                         return roleRepository.save(newUserRole);
                     });
 
-            Role sellerRole = roleRepository.findByRoleName(AppRole.ROLE_SELLER)
+            Role clientRole = roleRepository.findByRoleName(AppRole.ROLE_SELLER)
                     .orElseGet(() -> {
                         Role newUserRole = new Role(AppRole.ROLE_SELLER);
                         return roleRepository.save(newUserRole);
@@ -145,28 +150,31 @@ public class WebSecurityConfig {
                         return roleRepository.save(newAdminRole);
                     });
 
-//            Set<Role> userRoles = Set.of(userRole);
-//            Set<Role> adminRoles = Set.of(userRole, adminRole);
-//
-//            if (!userRepository.existsByEmail("user@example.com")) {
-//                User user = new User("user1", "user@example.com", passwordEncoder.encode("password"));
-//                userRepository.save(user);
-//            }
-//
-//            if (!userRepository.existsByEmail("admin@example.com")) {
-//                User admin = new User("admin", "admin@example.com", passwordEncoder.encode("password"));
-//                userRepository.save(admin);
-//            }
-//
-//            userRepository.findByEmail("user@example.com").ifPresent(user -> {
-//                user.setRoles(userRoles);
-//                userRepository.save(user);
-//            });
-//
-//            userRepository.findByEmail("admin@example.com").ifPresent(admin -> {
-//                admin.setRoles(adminRoles);
-//                userRepository.save(admin);
-//            });
+            Set<Role> bidderRoles = Set.of(bidderRole);
+            Set<Role> clientRoles = Set.of(clientRole);
+            Set<Role> adminRoles = Set.of(adminRole);
+
+
+            if (!userRepository.existsByEmail("bidder@example.com")) {
+
+                User bidder = new User("bidder", "bidder", "bidder", "user@example.com", passwordEncoder().encode("password"));
+                bidder.setRoles(bidderRoles);
+                userRepository.save(bidder);
+            }
+
+            if (!userRepository.existsByEmail("client@example.com")) {
+
+                User client = new User("client", "client", "client", "client@example.com", passwordEncoder().encode("password"));
+                client.setRoles(clientRoles);
+                userRepository.save(client);
+            }
+
+            if (!userRepository.existsByEmail("admin@example.com")) {
+
+                User admin = new User("admin", "admin", "admin", "admin@example.com", passwordEncoder().encode("password"));
+                admin.setRoles(adminRoles);
+                userRepository.save(admin);
+            }
         };
     }
 

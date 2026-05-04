@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -17,10 +18,12 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
+
 public class ProjectController {
 
     private final ProjectService projectService;
 
+    @PreAuthorize("hasAnyRole('SELLER', 'BUYER', 'ADMIN')")
     @GetMapping("/projects")
     public ResponseEntity<ProjectListResponse> searchForProjects(
             @RequestParam(required = false) ProjectStatus status,
@@ -34,6 +37,7 @@ public class ProjectController {
         return ResponseEntity.ok().body(projectListResponse);
     }
 
+    @PreAuthorize("hasRole('SELLER')")
     @PostMapping("/users/{clientId}/projects")
     public ResponseEntity<ProjectResponse> createProject(@Valid @RequestBody CreateProjectRequest createRequest,
                                                          @PathVariable Long clientId) {

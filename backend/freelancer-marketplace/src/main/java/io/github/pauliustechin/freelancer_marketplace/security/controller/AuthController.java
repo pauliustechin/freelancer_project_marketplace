@@ -5,7 +5,10 @@ import io.github.pauliustechin.freelancer_marketplace.security.request.*;
 import io.github.pauliustechin.freelancer_marketplace.security.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +39,17 @@ public class AuthController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, loginSuccess.getCookie().toString())
                 .body(loginSuccess.getResponse());
+
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<LogoutResponse> logout() {
+
+        ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(new LogoutResponse("Logout successful."));
 
     }
 

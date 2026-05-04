@@ -14,6 +14,9 @@ public interface UserMapper {
     @Mapping(source = "id", target = "userId")
     RegisterResponse userRegisterToResponse(User user);
 
+    @Mapping(source = "id", target = "freelancerId")
+    FreelancerResponse userToFreelancerResponse(User user);
+
 }
 
 
