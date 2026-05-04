@@ -1,0 +1,43 @@
+const InputField = ({
+  label,
+  id,
+  type,
+  required,
+  errors,
+  register,
+  min,
+  max,
+  placeholder
+}) => {
+  return (
+    <div>
+      <label htmlFor={id}>{label}</label>
+      <input 
+        type={type}
+        id={id}
+        className="border m-2 rounded-lg p-1"
+        placeholder={placeholder}
+        {...register(id, {
+          required: required ? {value: required, message: `This field is required`} : null,
+          minLength: min ? {value: min, message: `Minimum ${min} characters is required`} : null,
+          maxLength: max ? {value: max, message: `Maximum ${min} characters is required`} : null,
+          pattern: 
+              type === "email" ? 
+                {
+                  value: /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+com+$/,
+                  message: "Invalid email"
+                } 
+              : type === "url" ?
+                {
+                  value: /^(https?:\/\/)?(([a-zA-Z0-9\u00a1-\uffff-]+\.)+[a-zA-Z\u00a1-\uffff]{2,})(:\d{2,5})?(\/[^\s]*)?$/,
+                  message: "Please enter a valid url"
+                }
+              : null  
+        })}
+      />
+      <p className="my-error">{errors[id]?.message}</p>
+    </div>
+  )
+}
+
+export default InputField
