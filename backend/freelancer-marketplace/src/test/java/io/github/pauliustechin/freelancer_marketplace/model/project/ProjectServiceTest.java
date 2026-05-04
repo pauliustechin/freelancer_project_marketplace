@@ -1,11 +1,7 @@
-package io.github.pauliustechin.freelancer_marketplace.project;
+package io.github.pauliustechin.freelancer_marketplace.model.project;
 
 import io.github.pauliustechin.freelancer_marketplace.model.bid.BidRepository;
 import io.github.pauliustechin.freelancer_marketplace.exception.ResourceNotFoundException;
-import io.github.pauliustechin.freelancer_marketplace.model.project.Project;
-import io.github.pauliustechin.freelancer_marketplace.model.project.ProjectRepository;
-import io.github.pauliustechin.freelancer_marketplace.model.project.ProjectServiceImpl;
-import io.github.pauliustechin.freelancer_marketplace.model.project.ProjectStatus;
 import io.github.pauliustechin.freelancer_marketplace.model.project.dto.CreateProjectRequest;
 import io.github.pauliustechin.freelancer_marketplace.model.project.dto.ProjectMapper;
 import io.github.pauliustechin.freelancer_marketplace.model.project.dto.ProjectResponse;
@@ -106,7 +102,7 @@ public class ProjectServiceTest {
     }
 
     @Nested
-    @DisplayName("Create Project Tests")
+    @DisplayName("Create Project Service Tests")
     class CreateProjectTests {
 
         @Test
