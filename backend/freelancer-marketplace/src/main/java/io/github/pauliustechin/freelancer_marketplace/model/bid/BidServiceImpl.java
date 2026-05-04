@@ -12,7 +12,10 @@ import io.github.pauliustechin.freelancer_marketplace.model.project.dto.ProjectM
 import io.github.pauliustechin.freelancer_marketplace.model.project.dto.ProjectSummaryResponse;
 import io.github.pauliustechin.freelancer_marketplace.model.user.User;
 import io.github.pauliustechin.freelancer_marketplace.model.user.UserRepository;
+import io.github.pauliustechin.freelancer_marketplace.security.jwt.JwtUtils;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +26,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class BidServiceImpl implements BidService{
+
+    private static final Logger logger = LoggerFactory.getLogger(BidServiceImpl.class);
 
     private final BidRepository bidRepository;
     private final BidMapper bidMapper;
@@ -35,7 +40,7 @@ public class BidServiceImpl implements BidService{
     public BidListResponse getBidsByProject(Long projectId) {
 
         if(projectId == null) {
-            throw new ResourceNotFoundException("Project", projectId);
+            throw new ResourceNotFoundException("projectId");
         }
 
         Project project = projectRepository.findById(projectId)
@@ -86,6 +91,8 @@ public class BidServiceImpl implements BidService{
         bidResponse.setProjectSummaryResponse(projectSummaryResponse);
         bidResponse.setBidderId(user.getId());
 
+        logger.info("Bid created successfully for projectId={}, userId={}, bidId={}", projectId, user.getId(), bidResponse.getBidId());
+
         return bidResponse;
     }
 
@@ -135,6 +142,8 @@ public class BidServiceImpl implements BidService{
 
         response.setProjectSummaryResponse(projectMapper.projectToProjectSummaryResponse(project));
 
+        logger.info("Bid updated successfully for bidId={}.", savedBid.getId());
+
         return response;
     }
 
@@ -167,6 +176,8 @@ public class BidServiceImpl implements BidService{
 
         BidResponse response = bidMapper.bidToBidResponse(savedBid);
         response.setProjectSummaryResponse(projectMapper.projectToProjectSummaryResponse(savedProject));
+
+        logger.info("Bid status updated successfully for bidId={}.", savedBid.getId());
 
         return response;
     }

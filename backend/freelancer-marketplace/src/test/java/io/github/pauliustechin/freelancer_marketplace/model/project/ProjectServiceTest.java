@@ -24,7 +24,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("ProjectServiceImpl Unit Tests")
-public class ProjectServiceTest {
+class ProjectServiceTest {
 
     @Mock
     private ProjectRepository projectRepository;

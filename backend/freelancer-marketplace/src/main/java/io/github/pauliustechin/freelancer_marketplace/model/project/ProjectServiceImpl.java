@@ -3,9 +3,12 @@ package io.github.pauliustechin.freelancer_marketplace.model.project;
 import io.github.pauliustechin.freelancer_marketplace.model.bid.BidRepository;
 import io.github.pauliustechin.freelancer_marketplace.exception.IllegalProjectStateException;
 import io.github.pauliustechin.freelancer_marketplace.exception.ResourceNotFoundException;
+import io.github.pauliustechin.freelancer_marketplace.model.contract.ContractServiceImpl;
 import io.github.pauliustechin.freelancer_marketplace.model.project.dto.*;
 import io.github.pauliustechin.freelancer_marketplace.model.user.User;
 import io.github.pauliustechin.freelancer_marketplace.model.user.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -22,6 +25,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class ProjectServiceImpl implements ProjectService{
+
+    private static final Logger logger = LoggerFactory.getLogger(ContractServiceImpl.class);
 
     private final ProjectRepository projectRepository;
     private final ProjectMapper projectMapper;
@@ -97,6 +102,8 @@ public class ProjectServiceImpl implements ProjectService{
         ProjectResponse response = projectMapper.projectToProjectResponse(savedProject);
         response.setClientId(user.getId());
 
+        logger.info("Project created successfully clientId={}, projectId={}", user.getId(), savedProject.getId());
+
         return response;
     }
 
@@ -131,6 +138,8 @@ public class ProjectServiceImpl implements ProjectService{
 
         Project savedProject = projectRepository.save(project);
 
+        logger.info("Project updated successfully with projectId={}", savedProject.getId());
+
         return projectMapper.projectToProjectResponse(savedProject);
     }
 
@@ -143,5 +152,7 @@ public class ProjectServiceImpl implements ProjectService{
 
         bidRepository.deleteByProjectId(projectId);
         projectRepository.delete(project);
+
+        logger.info("Project deleted successfully with projectId={}", projectId);
     }
 }
