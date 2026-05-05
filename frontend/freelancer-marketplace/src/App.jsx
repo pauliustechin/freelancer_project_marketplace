@@ -6,12 +6,13 @@ import RegisterPage from "./pages/auth/RegisterPage";
 import Header from "./components/shared/Header";
 import Footer from "./components/shared/Footer";
 import PrivateRoute from "./components/shared/PrivateRoute";
-import ClientPage from "./pages/private/ClientPage";
+import ClientPage from "./pages/private/clientPage/ClientPage";
 import FreelancerPage from "./pages/private/FreelancerPage";
 import AdminPage from "./pages/private/AdminPage";
 import AuthProvider from "./pages/auth/AuthProvider";
 import useProjectsStore from "./store/projectsStore";
 import ProjectInfo from "./pages/public/projects/ProjectInfo";
+import ClientProjectBids from "./pages/private/clientPage/ClientProjectBids";
 
 import "./App.css";
 import { useEffect } from "react";
@@ -42,6 +43,8 @@ function App() {
           <Route path="/" element={<PrivateRoute clientOnly />}>
             <Route path="/client" element={<ClientPage />} />
           </Route>
+
+          <Route path="/client/projects/:projectId" element={<ClientProjectBids />} />
 
           <Route path="/" element={<PrivateRoute freelancerOnly />}>
             <Route path="/freelancer" element={<FreelancerPage />} />
