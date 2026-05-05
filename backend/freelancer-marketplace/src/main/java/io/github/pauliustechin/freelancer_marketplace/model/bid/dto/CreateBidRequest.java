@@ -15,7 +15,4 @@ public class CreateBidRequest {
     @Positive
     private BigDecimal amount;
 
-    @NotNull
-    private Long bidderId;
-
 }

@@ -103,6 +103,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/test/**").permitAll()
                         .requestMatchers("/images/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/freelancers").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/projects").permitAll()
                         .anyRequest().authenticated());
 
         http.authenticationProvider(authenticationProvider());
@@ -132,15 +133,15 @@ public class WebSecurityConfig {
     @Bean
     public CommandLineRunner initData(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
-            Role bidderRole = roleRepository.findByRoleName(AppRole.ROLE_BUYER)
+            Role bidderRole = roleRepository.findByRoleName(AppRole.ROLE_SELLER)
                     .orElseGet(() -> {
-                        Role newUserRole = new Role(AppRole.ROLE_BUYER);
+                        Role newUserRole = new Role(AppRole.ROLE_SELLER);
                         return roleRepository.save(newUserRole);
                     });
 
-            Role clientRole = roleRepository.findByRoleName(AppRole.ROLE_SELLER)
+            Role clientRole = roleRepository.findByRoleName(AppRole.ROLE_CLIENT)
                     .orElseGet(() -> {
-                        Role newUserRole = new Role(AppRole.ROLE_SELLER);
+                        Role newUserRole = new Role(AppRole.ROLE_CLIENT);
                         return roleRepository.save(newUserRole);
                     });
 

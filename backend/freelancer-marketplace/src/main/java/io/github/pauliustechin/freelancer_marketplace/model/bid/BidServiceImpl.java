@@ -1,5 +1,6 @@
 package io.github.pauliustechin.freelancer_marketplace.model.bid;
 
+import io.github.pauliustechin.freelancer_marketplace.exception.NotAllowedApiActionException;
 import io.github.pauliustechin.freelancer_marketplace.model.bid.dto.*;
 import io.github.pauliustechin.freelancer_marketplace.model.contract.ContractService;
 import io.github.pauliustechin.freelancer_marketplace.exception.DuplicateBidException;
@@ -10,12 +11,16 @@ import io.github.pauliustechin.freelancer_marketplace.model.project.ProjectRepos
 import io.github.pauliustechin.freelancer_marketplace.model.project.ProjectStatus;
 import io.github.pauliustechin.freelancer_marketplace.model.project.dto.ProjectMapper;
 import io.github.pauliustechin.freelancer_marketplace.model.project.dto.ProjectSummaryResponse;
+import io.github.pauliustechin.freelancer_marketplace.model.role.AppRole;
+import io.github.pauliustechin.freelancer_marketplace.model.role.Role;
 import io.github.pauliustechin.freelancer_marketplace.model.user.User;
 import io.github.pauliustechin.freelancer_marketplace.model.user.UserRepository;
 import io.github.pauliustechin.freelancer_marketplace.security.jwt.JwtUtils;
+import io.github.pauliustechin.freelancer_marketplace.security.service.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,21 +68,30 @@ public class BidServiceImpl implements BidService{
 
     @Transactional
     @Override
-    public BidResponse createBid(Long projectId, CreateBidRequest createRequest) {
+    public BidResponse createBid(Long projectId, CreateBidRequest createRequest, Authentication authentication) {
 
         if(projectId == null) {
             throw new ResourceNotFoundException("Project", projectId);
         }
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        if(bidRepository.existsByBidderIdAndProjectId(createRequest.getBidderId(), projectId)) {
-            throw new DuplicateBidException(createRequest.getBidderId());
+        boolean isSeller = userDetails.getAuthorities().stream()
+                .anyMatch(r -> r.getAuthority().equals(AppRole.ROLE_SELLER.name()));
+        if (!isSeller) {
+            throw new NotAllowedApiActionException("Only freelancers are allowed to place a bid");
         }
+
+
+        if(bidRepository.existsByBidderIdAndProjectId(userDetails.getId(), projectId)) {
+            throw new DuplicateBidException(userDetails.getId());
+        }
+
+        User user = userRepository.findById(userDetails.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Bidder", userDetails.getId()));
 
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ResourceNotFoundException("Project", projectId));
 
-        User user = userRepository.findById(createRequest.getBidderId())
-                .orElseThrow(() -> new ResourceNotFoundException("Bidder", createRequest.getBidderId()));
 
         Bid bid = bidMapper.createBidToBid(createRequest);
         bid.setCreatedAt(Instant.now());

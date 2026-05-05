@@ -1,11 +1,12 @@
 package io.github.pauliustechin.freelancer_marketplace.model.role;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @Table(name = "roles")
 @NoArgsConstructor
 public class Role {

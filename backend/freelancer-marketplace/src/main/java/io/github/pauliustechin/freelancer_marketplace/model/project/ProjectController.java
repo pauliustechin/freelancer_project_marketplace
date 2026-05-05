@@ -23,7 +23,6 @@ public class ProjectController {
 
     private final ProjectService projectService;
 
-    @PreAuthorize("hasAnyRole('SELLER', 'BUYER', 'ADMIN')")
     @GetMapping("/projects")
     public ResponseEntity<ProjectListResponse> searchForProjects(
             @RequestParam(required = false) ProjectStatus status,
@@ -37,7 +36,7 @@ public class ProjectController {
         return ResponseEntity.ok().body(projectListResponse);
     }
 
-    @PreAuthorize("hasRole('SELLER')")
+    @PreAuthorize("hasRole('CLIENT')")
     @PostMapping("/users/{clientId}/projects")
     public ResponseEntity<ProjectResponse> createProject(@Valid @RequestBody CreateProjectRequest createRequest,
                                                          @PathVariable Long clientId) {

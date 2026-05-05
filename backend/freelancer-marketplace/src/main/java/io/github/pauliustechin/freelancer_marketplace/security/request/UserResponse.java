@@ -2,12 +2,17 @@ package io.github.pauliustechin.freelancer_marketplace.security.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 public class UserResponse {
 
+    private Long userId;
     private String username;
     private List<String> roles;
 

@@ -2,10 +2,7 @@ package io.github.pauliustechin.freelancer_marketplace.model.user;
 
 import io.github.pauliustechin.freelancer_marketplace.model.role.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.Instant;
 import java.util.HashSet;
@@ -17,10 +14,12 @@ import java.util.Set;
             @UniqueConstraint(columnNames = "username"),
             @UniqueConstraint(columnNames = "email")
         })
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 public class User {
 
     @Id
@@ -41,6 +40,7 @@ public class User {
 
     private Instant updatedAt;
 
+    @Enumerated(EnumType.STRING)
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),

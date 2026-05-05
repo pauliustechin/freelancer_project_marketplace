@@ -4,9 +4,7 @@ import io.github.pauliustechin.freelancer_marketplace.model.contract.Contract;
 import io.github.pauliustechin.freelancer_marketplace.model.project.Project;
 import io.github.pauliustechin.freelancer_marketplace.model.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -14,7 +12,8 @@ import java.time.Instant;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Table(name = "bids")
 public class Bid {
 

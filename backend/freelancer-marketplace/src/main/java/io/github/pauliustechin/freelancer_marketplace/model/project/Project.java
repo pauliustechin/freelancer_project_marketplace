@@ -3,10 +3,8 @@ package io.github.pauliustechin.freelancer_marketplace.model.project;
 import io.github.pauliustechin.freelancer_marketplace.model.bid.Bid;
 import io.github.pauliustechin.freelancer_marketplace.model.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -17,7 +15,8 @@ import java.util.Set;
 @Table(name = "projects")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Builder
 public class Project {
 

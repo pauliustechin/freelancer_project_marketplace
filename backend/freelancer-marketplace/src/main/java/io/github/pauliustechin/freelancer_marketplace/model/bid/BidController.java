@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -27,9 +28,10 @@ public class BidController {
 
     @PostMapping("/projects/{projectId}/bids")
     public ResponseEntity<BidResponse> createBid(@PathVariable Long projectId,
-                                                 @Valid @RequestBody CreateBidRequest request) {
+                                                 @Valid @RequestBody CreateBidRequest request,
+                                                 Authentication authentication) {
 
-        BidResponse response = bidService.createBid(projectId, request);
+        BidResponse response = bidService.createBid(projectId, request, authentication);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

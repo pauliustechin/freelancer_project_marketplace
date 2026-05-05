@@ -17,7 +17,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<FreelancerResponse> getAllFreelancers() {
 
-        List<User> freelancers = userRepository.findUsersByRole(AppRole.ROLE_BUYER);
+        List<User> freelancers = userRepository.findUsersByRole(AppRole.ROLE_SELLER);
         List<FreelancerResponse> response = freelancers.stream()
                 .map(user -> {
                     return userMapper.userToFreelancerResponse(user);

@@ -3,6 +3,7 @@ package io.github.pauliustechin.freelancer_marketplace.security.controller;
 import io.github.pauliustechin.freelancer_marketplace.security.jwt.JwtUtils;
 import io.github.pauliustechin.freelancer_marketplace.security.request.*;
 import io.github.pauliustechin.freelancer_marketplace.security.service.AuthService;
+import io.github.pauliustechin.freelancer_marketplace.security.service.UserDetailsImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -11,7 +12,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -51,6 +56,19 @@ public class AuthController {
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .body(new LogoutResponse("Logout successful."));
 
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserResponse> me(Authentication authentication) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(item -> item.getAuthority())
+                .toList();
+
+        UserResponse response = new UserResponse(userDetails.getId(), userDetails.getUsername(), roles);
+
+        return ResponseEntity.ok().body(response);
     }
 
 
