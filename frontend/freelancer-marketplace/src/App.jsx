@@ -1,7 +1,7 @@
 import HomePage from "./pages/public/HomePage";
 import LoginPage from "./pages/auth/LoginPage";
 import { Routes, Route } from "react-router";
-import ProjectsPage from "./pages/public/ProjectsPage";
+import ProjectsPage from "./pages/public/projects/ProjectsPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import Header from "./components/shared/Header";
 import Footer from "./components/shared/Footer";
@@ -9,11 +9,20 @@ import PrivateRoute from "./components/shared/PrivateRoute";
 import ClientPage from "./pages/private/ClientPage";
 import FreelancerPage from "./pages/private/FreelancerPage";
 import AdminPage from "./pages/private/AdminPage";
-import AuthProvider from "./store/AuthProvider";
+import AuthProvider from "./pages/auth/AuthProvider";
+import useProjectsStore from "./store/projectsStore";
+import ProjectInfo from "./pages/public/projects/ProjectInfo";
 
 import "./App.css";
+import { useEffect } from "react";
 
 function App() {
+
+  const { fetchProjects } = useProjectsStore(state => state);
+
+  useEffect(() => {
+    fetchProjects();
+  }, [fetchProjects]);
 
   return (
     <>
@@ -21,7 +30,9 @@ function App() {
         <Header />
         <Routes>
           <Route index element={<HomePage />} />
+
           <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/projects/:projectId" element={<ProjectInfo />} />
 
           <Route path="/" element={<PrivateRoute publicPage />}>
             <Route path="/login" element={<LoginPage />} />

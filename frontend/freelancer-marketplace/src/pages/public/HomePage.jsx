@@ -1,17 +1,33 @@
-import useProjectsStore from '../../store/projectsStore';
-import { Link } from 'react-router';
+import useProjectsStore from "../../store/projectsStore";
+import ProjectCard from "./projects/ProjectCard";
 
 const HomePage = () => {
-
-  const { projects } = useProjectsStore(state => state);
+  const { projects } = useProjectsStore((state) => state);
 
   return (
-    <main>
-    <p>HOME PAGE</p>
-    <div>{projects.map(project => <p key={project.projectId}>{project.projectName}</p>)}</div>
-    <Link to="/login"><button>login</button></Link>
-    </main>
-  )
-}
+    <main className="flex flex-col">
+      <p>HOME PAGE</p>
+      <section className="flex flex-col gap-2 p-4">
+        <div className="flex justify-between">
+          <p className="text-2xl font-bold text-start text-slate-700">
+            OPEN PROJECTS
+          </p>
+          <p className="text-lg font-bold text-end text-slate-700 underline">
+            All projects
+          </p>
+        </div>
 
-export default HomePage
+        <div className="flex h-80 gap-4 justify-between">
+          {projects.slice(0, 3).map((project) => (
+            <ProjectCard
+              key={project.projectId}
+              project={project}
+            ></ProjectCard>
+          ))}
+        </div>
+      </section>
+    </main>
+  );
+};
+
+export default HomePage;

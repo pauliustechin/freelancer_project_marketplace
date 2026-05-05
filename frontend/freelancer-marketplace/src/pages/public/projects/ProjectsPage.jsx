@@ -1,4 +1,4 @@
-import useProjectsStore from "../../store/projectsStore";
+import useProjectsStore from "../../../store/projectsStore";
 import { Link } from "react-router";
 
 const ProjectsPage = () => {
@@ -12,7 +12,6 @@ const ProjectsPage = () => {
       <div>{projects.map(project => <p key={project.projectId}>{project.projectName}</p>)}</div>
     </main>
   )
-   
 }
 
 export default ProjectsPage

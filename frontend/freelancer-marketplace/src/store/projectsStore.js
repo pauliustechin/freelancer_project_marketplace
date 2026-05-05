@@ -7,7 +7,7 @@ const useProjectsStore = create(
   devtools((set) => ({
     projects: [],
 
-    searchForProjects: async () => {
+    fetchProjects: async () => {
       try {
         const { data } = await api.get(`/projects`, {withCredentials: true});
         set(() => ({ projects: [...data.content] }));

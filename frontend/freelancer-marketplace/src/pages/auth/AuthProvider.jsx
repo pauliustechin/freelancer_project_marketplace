@@ -1,10 +1,9 @@
 import { useEffect } from "react";
-import useUsersStore from "./usersStore";
+import useUsersStore from "../../store/usersStore";
 
 const AuthProvider = ({ children }) => {
 
-  const { fetchCurrentUser } = useUsersStore(state => state);
-  const { loggedOutOrAuthenticated } = useUsersStore(state => state); 
+  const { fetchCurrentUser, loggedOutOrAuthenticated } = useUsersStore(state => state);
 
   useEffect(() => {
     fetchCurrentUser();
