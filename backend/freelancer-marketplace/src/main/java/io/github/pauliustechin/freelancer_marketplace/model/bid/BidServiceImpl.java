@@ -51,16 +51,10 @@ public class BidServiceImpl implements BidService{
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ResourceNotFoundException("Project", projectId));
 
-        ProjectSummaryResponse summaryResponse = projectMapper.projectToProjectSummaryResponse(project);
-
-        List<Bid> bids = new ArrayList<>(bidRepository.findBidsByProjectId(projectId));
+        List<Bid> bids = bidRepository.findBidsByProjectId(projectId);
 
         List<BidResponse> bidResponses = bids.stream()
                 .map(bid -> bidMapper.bidToBidResponse(bid))
-                .map(br -> {
-                    br.setProjectSummaryResponse(summaryResponse);
-                    return br;
-                })
                 .toList();
 
         return new BidListResponse(bidResponses);
@@ -92,7 +86,6 @@ public class BidServiceImpl implements BidService{
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ResourceNotFoundException("Project", projectId));
 
-
         Bid bid = bidMapper.createBidToBid(createRequest);
         bid.setCreatedAt(Instant.now());
         bid.setProject(project);
@@ -102,8 +95,8 @@ public class BidServiceImpl implements BidService{
 
         BidResponse bidResponse = bidMapper.bidToBidResponse(savedBid);
         ProjectSummaryResponse projectSummaryResponse = projectMapper.projectToProjectSummaryResponse(project);
-        bidResponse.setProjectSummaryResponse(projectSummaryResponse);
-        bidResponse.setBidderId(user.getId());
+//        bidResponse.setProjectSummaryResponse(projectSummaryResponse);
+//        bidResponse.setBidderId(user.getId());
 
         logger.info("Bid created successfully for projectId={}, userId={}, bidId={}", projectId, user.getId(), bidResponse.getBidId());
 
@@ -130,7 +123,6 @@ public class BidServiceImpl implements BidService{
             if((reqStatus.equals(BidStatus.CONFIRMED)) || (reqStatus.equals(BidStatus.CANCELED))) {
                 Bid bidAfterDecision = contractService.confirmContract(reqStatus, bid);
                 BidResponse response = bidMapper.bidToBidResponse(bidAfterDecision);
-                response.setProjectSummaryResponse(projectMapper.projectToProjectSummaryResponse(project));
                 return response;
             } else {
                 throw new IllegalBidStateException("Bid is accepted by client and waiting for bidder confirmation.");
@@ -153,8 +145,6 @@ public class BidServiceImpl implements BidService{
 
         Bid savedBid = bidRepository.save(bid);
         BidResponse response = bidMapper.bidToBidResponse(savedBid);
-
-        response.setProjectSummaryResponse(projectMapper.projectToProjectSummaryResponse(project));
 
         logger.info("Bid updated successfully for bidId={}.", savedBid.getId());
 
@@ -189,7 +179,6 @@ public class BidServiceImpl implements BidService{
         Bid savedBid = bidRepository.save(bid);
 
         BidResponse response = bidMapper.bidToBidResponse(savedBid);
-        response.setProjectSummaryResponse(projectMapper.projectToProjectSummaryResponse(savedProject));
 
         logger.info("Bid status updated successfully for bidId={}.", savedBid.getId());
 

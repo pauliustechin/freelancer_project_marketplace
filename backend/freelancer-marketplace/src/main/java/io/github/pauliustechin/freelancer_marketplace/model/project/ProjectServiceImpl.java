@@ -7,11 +7,14 @@ import io.github.pauliustechin.freelancer_marketplace.model.contract.ContractSer
 import io.github.pauliustechin.freelancer_marketplace.model.project.dto.*;
 import io.github.pauliustechin.freelancer_marketplace.model.user.User;
 import io.github.pauliustechin.freelancer_marketplace.model.user.UserRepository;
+import io.github.pauliustechin.freelancer_marketplace.security.service.UserDetailsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -80,6 +83,22 @@ public class ProjectServiceImpl implements ProjectService{
         response.setLast(pageProjects.isLast());
 
         return response;
+    }
+
+    @Override
+    public List<ProjectResponse> getClientProjects(Authentication authentication) {
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+        List<Project> projects = projectRepository.findProjectsByClientId(userDetails.getId());
+
+        for(Project pr : projects) {
+            System.out.println(pr);
+        }
+
+        return projects.stream()
+                .map(pr -> projectMapper.projectToProjectResponse(pr))
+                .toList();
     }
 
     @Transactional

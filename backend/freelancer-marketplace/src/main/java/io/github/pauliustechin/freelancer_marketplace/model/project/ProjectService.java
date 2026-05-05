@@ -5,8 +5,10 @@ import io.github.pauliustechin.freelancer_marketplace.model.project.dto.ProjectR
 import io.github.pauliustechin.freelancer_marketplace.model.project.dto.ProjectListResponse;
 import io.github.pauliustechin.freelancer_marketplace.model.project.dto.UpdateProjectRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface ProjectService {
 
@@ -14,4 +16,5 @@ public interface ProjectService {
     ProjectResponse updateProject(Long projectId, UpdateProjectRequest updateRequest);
     void deleteProject(Long projectId);
     ProjectListResponse searchForProject(ProjectStatus status, String projectName, LocalDate projectStart, Pageable pageable);
+    List<ProjectResponse> getClientProjects(Authentication authentication);
 }

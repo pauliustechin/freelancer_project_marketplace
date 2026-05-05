@@ -11,9 +11,11 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -34,6 +36,15 @@ public class ProjectController {
         ProjectListResponse projectListResponse = projectService.searchForProject(status, projectName, projectStart, pageable);
 
         return ResponseEntity.ok().body(projectListResponse);
+    }
+
+    @PreAuthorize("hasRole('CLIENT')")
+    @GetMapping("/users/{clientId}/projects")
+    public ResponseEntity<List<ProjectResponse>> getClientProjects(Authentication authentication) {
+
+        List<ProjectResponse> response = projectService.getClientProjects(authentication);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PreAuthorize("hasRole('CLIENT')")
