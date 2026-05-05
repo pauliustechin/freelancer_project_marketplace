@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import useUsersStore from "../store/usersStore";
+import useUsersStore from "../../store/usersStore";
 import { Link, useNavigate, useLocation } from "react-router";
 
 const Header = () => {

@@ -1,4 +1,4 @@
-import InputField from "../../shared/InputField";
+import InputField from "../../components/shared/InputField";
 import { Link } from "react-router";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";

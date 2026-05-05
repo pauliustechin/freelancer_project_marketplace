@@ -5,7 +5,7 @@ import api from "../api/api";
 const initialState = {
   "username": null,
   "userId": null,
-  "userRoles": []
+  "roles": []
 }
 
 const useUsersStore = create(
@@ -13,14 +13,15 @@ const useUsersStore = create(
   devtools((set) => ({
 
     user: initialState,
+    isLoading: false,
+    loggedOutOrAuthenticated: false,
 
-    loginUser: async (formData, navigate, searchForProjects) => {
+    loginUser: async (formData, navigate) => {
       try {
         const { data } = await api.post(`/auth/login`, formData, { withCredentials: true });
         console.log(data)
         set(() => ({ user: {...data} }))
         navigate("/");
-        searchForProjects();
       } catch (error) {
         console.log(error);
       }
@@ -28,7 +29,7 @@ const useUsersStore = create(
 
     registerNewAccount: async (formData, navigate) => {
       try {
-        await api.post(`/auth/register`, formData);
+        await api.post(`/auth/register`, formData, { withCredentials: true });
         navigate("/");
       } catch (error) {
         console.log(error);
@@ -37,14 +38,25 @@ const useUsersStore = create(
 
     logoutUser: async (navigate) => {
       try {
-        await api.post(`/auth/logout`, { withCredentials: "include" });
-        set(() => ({ user: initialState}))
+        await api.post(`/auth/logout`, {}, { withCredentials: true });
+        set(() => ({ user: initialState }))
         navigate("/");
       } catch (error) {
         console.log(error);
       }
     },
 
+    fetchCurrentUser: async () => {
+      try {
+        set({ isLoading : true })
+        const { data } = await api.get("/auth/me", { withCredentials: true });
+        set(() => ({ user: data, loggedOutOrAuthenticated: true }));
+      } catch {
+        set({ user: initialState, loggedOutOrAuthenticated: true });
+      } finally {
+        set({ isLoading: false })
+      }
+    },
 
   })),
 );

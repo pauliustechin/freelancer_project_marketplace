@@ -9,14 +9,12 @@ const useProjectsStore = create(
 
     searchForProjects: async () => {
       try {
-        const { data } = await api.get(`/projects`, {withCredentials: "include"});
+        const { data } = await api.get(`/projects`, {withCredentials: true});
         set(() => ({ projects: [...data.content] }));
       } catch (error) {
         console.log(error);
       }
     },
-
-
 
   })),
 );

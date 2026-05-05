@@ -1,15 +1,13 @@
 import { Link } from "react-router";
 import { useForm } from "react-hook-form";
-import InputField from "../../shared/InputField";
+import InputField from "../../components/shared/InputField";
 import { useNavigate } from "react-router";
 import useUsersStore from "../../store/usersStore";
-import useProjectsStore from "../../store/projectsStore";
 
 const LoginPage = () => {
 
   const navigate = useNavigate();
   const { loginUser } = useUsersStore(state => state);
-  const { searchForProjects } = useProjectsStore(state => state);
 
   const {
     register,
@@ -20,7 +18,7 @@ const LoginPage = () => {
 
 
   const onSubmit = (formData) => {
-    loginUser(formData, navigate, searchForProjects);
+    loginUser(formData, navigate);
     reset();
   }
 
