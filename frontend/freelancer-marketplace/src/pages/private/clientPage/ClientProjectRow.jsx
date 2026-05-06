@@ -13,7 +13,7 @@ const ClientProjectRow = ({ project, index }) => {
     <>
       <tr>
         <th>{index}</th>
-        <td onClick={handleOpen}>{projectName}</td>
+        <td onClick={handleOpen} className="underline">{projectName}</td>
         <td>{description}</td>
         <td>0</td>
       </tr>

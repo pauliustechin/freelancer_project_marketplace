@@ -7,6 +7,7 @@ const useBidsStore = create(
   devtools((set) => ({
 
     projectBids: [],
+    freelancerBids: [],
 
     placeBid: async (projectId, navigate, formData) => {
       try {
@@ -26,11 +27,27 @@ const useBidsStore = create(
       }
     },
 
+    fetchFreelancerBids: async (userId) => {
+      try {
+        const { data } = await api.get(`/users/${userId}/bids`, {withCredentials: true});
+        set(() => ({ freelancerBids: [...data.bids] }));
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     acceptBid: async (bidId, navigate, formData) => {
       try {
-        console.log(formData)
         await api.patch(`/bids/${bidId}`, null, { params: formData, withCredentials: true });
         navigate("/client")
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    updateBid: async (bidId, formData) => {
+      try {
+        await api.put(`/bids/${bidId}`, formData, { withCredentials: true });
       } catch (error) {
         console.log(error);
       }

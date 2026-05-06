@@ -4,16 +4,20 @@ import ClientProjectBid from "./ProjectBidRow";
 import { useParams, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import ConfirmationModal from "../../../components/shared/ConfirmationModal";
+import { ConfirmationStatus } from "../../../enums/confirmationStatus";
 
 const ProjectBids = () => {
+
   const { projectId } = useParams();
-  const navigate = useNavigate();
   const { fetchBidsByProject, projectBids, acceptBid } = useBidsStore((state) => state);
+
+  const navigate = useNavigate();
   const { register, watch, handleSubmit } = useForm();
   const selectedBid = watch("selectedBid");
+
   const [ open, setOpen ] = useState(false);
   const [ message, setMessage ] = useState("");
-  const [ status, setStatus ] = useState(false);
+  const [ status, setStatus ] = useState(ConfirmationStatus.WAITING);
 
   const onSubmit = () => {
     const bid = projectBids.find(b => b.bidId === Number(selectedBid));
@@ -23,7 +27,7 @@ const ProjectBids = () => {
   };
 
   useEffect(() => {
-    if (status) {
+    if (status === ConfirmationStatus.ACCEPTED) {
       acceptBid(selectedBid, navigate, {
         status: "ACCEPTED"
       });
@@ -57,6 +61,7 @@ const ProjectBids = () => {
                       bid={bid}
                       index={index}
                       register={register}
+                      projectId={projectId}
                     />
                   );
                 })}
@@ -72,7 +77,7 @@ const ProjectBids = () => {
           ACCEPT
         </button>
       </form>
-      <ConfirmationModal open={open} setOpen={setOpen} setStatus={setStatus} message={message}></ConfirmationModal>
+      <ConfirmationModal open={open} setOpen={setOpen} setStatus={setStatus} message={message} confirmButton={"ACCEPT"}></ConfirmationModal>
     </>
   );
 };

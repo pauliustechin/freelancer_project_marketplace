@@ -7,7 +7,7 @@ import Header from "./components/shared/Header";
 import Footer from "./components/shared/Footer";
 import PrivateRoute from "./components/shared/PrivateRoute";
 import ClientPage from "./pages/private/clientPage/ClientPage";
-import FreelancerPage from "./pages/private/FreelancerPage";
+import FreelancerPage from "./pages/private/freelancerPage/FreelancerPage";
 import AdminPage from "./pages/private/AdminPage";
 import AuthProvider from "./pages/auth/AuthProvider";
 import useProjectsStore from "./store/projectsStore";
