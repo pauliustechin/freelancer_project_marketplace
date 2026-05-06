@@ -41,4 +41,11 @@ public class Bid {
     @OneToOne(mappedBy = "bid")
     private Contract contract;
 
+    public Bid(BigDecimal amount, BidStatus bidStatus, Instant createdAt, Project project, User bidder) {
+        this.amount = amount;
+        this.bidStatus = bidStatus;
+        this.createdAt = createdAt;
+        this.project = project;
+        this.bidder = bidder;
+    }
 }

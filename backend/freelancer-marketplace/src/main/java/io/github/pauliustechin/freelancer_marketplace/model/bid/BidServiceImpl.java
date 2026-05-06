@@ -12,10 +12,8 @@ import io.github.pauliustechin.freelancer_marketplace.model.project.ProjectStatu
 import io.github.pauliustechin.freelancer_marketplace.model.project.dto.ProjectMapper;
 import io.github.pauliustechin.freelancer_marketplace.model.project.dto.ProjectSummaryResponse;
 import io.github.pauliustechin.freelancer_marketplace.model.role.AppRole;
-import io.github.pauliustechin.freelancer_marketplace.model.role.Role;
 import io.github.pauliustechin.freelancer_marketplace.model.user.User;
 import io.github.pauliustechin.freelancer_marketplace.model.user.UserRepository;
-import io.github.pauliustechin.freelancer_marketplace.security.jwt.JwtUtils;
 import io.github.pauliustechin.freelancer_marketplace.security.service.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -25,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -42,7 +39,25 @@ public class BidServiceImpl implements BidService{
     private final ContractService contractService;
 
     @Override
-    public BidListResponse getBidsByProject(Long projectId) {
+    public BidListResponse getFreelancerBids(Long userId) {
+
+        List<Bid> bids = bidRepository.findBidsByBidderId(userId);
+
+        List<BidResponse> bidResponses = bids.stream()
+                .map(bid -> {
+                    Project project = bid.getProject();
+                    ProjectSummaryResponse projectSummary = projectMapper.projectToProjectSummaryResponse(project);
+                    BidResponse response = bidMapper.bidToBidResponse(bid);
+                    response.setProjectSummary(projectSummary);
+                    return response;
+                })
+                .toList();
+
+        return new BidListResponse(bidResponses);
+    }
+
+    @Override
+    public ClientBidListResponse getBidsByProject(Long projectId) {
 
         if(projectId == null) {
             throw new ResourceNotFoundException("projectId");
@@ -53,11 +68,11 @@ public class BidServiceImpl implements BidService{
 
         List<Bid> bids = bidRepository.findBidsByProjectId(projectId);
 
-        List<BidResponse> bidResponses = bids.stream()
-                .map(bid -> bidMapper.bidToBidResponse(bid))
+        List<ClientBidResponse> bidResponses = bids.stream()
+                .map(bid -> bidMapper.bidToClientBidResponse(bid))
                 .toList();
 
-        return new BidListResponse(bidResponses);
+        return new ClientBidListResponse(bidResponses);
     }
 
     @Transactional
@@ -95,8 +110,7 @@ public class BidServiceImpl implements BidService{
 
         BidResponse bidResponse = bidMapper.bidToBidResponse(savedBid);
         ProjectSummaryResponse projectSummaryResponse = projectMapper.projectToProjectSummaryResponse(project);
-//        bidResponse.setProjectSummaryResponse(projectSummaryResponse);
-//        bidResponse.setBidderId(user.getId());
+        bidResponse.setProjectSummary(projectSummaryResponse);
 
         logger.info("Bid created successfully for projectId={}, userId={}, bidId={}", projectId, user.getId(), bidResponse.getBidId());
 
@@ -146,6 +160,9 @@ public class BidServiceImpl implements BidService{
         Bid savedBid = bidRepository.save(bid);
         BidResponse response = bidMapper.bidToBidResponse(savedBid);
 
+        ProjectSummaryResponse projectSummary = projectMapper.projectToProjectSummaryResponse(project);
+        response.setProjectSummary(projectSummary);
+
         logger.info("Bid updated successfully for bidId={}.", savedBid.getId());
 
         return response;
@@ -153,7 +170,7 @@ public class BidServiceImpl implements BidService{
 
     @Transactional
     @Override
-    public BidResponse updateBidStatus(Long bidId, BidStatus status) {
+    public ClientBidResponse updateBidStatus(Long bidId, BidStatus status) {
 
         if(bidId == null) {
             throw new ResourceNotFoundException("Bid", bidId);
@@ -172,16 +189,18 @@ public class BidServiceImpl implements BidService{
         }
 
         project.setProjectStatus(ProjectStatus.PENDING);
-        Project savedProject = projectRepository.save(project);
+        projectRepository.save(project);
 
         bid.setUpdatedAt(Instant.now());
         bid.setBidStatus(BidStatus.PENDING);
         Bid savedBid = bidRepository.save(bid);
 
-        BidResponse response = bidMapper.bidToBidResponse(savedBid);
+        ClientBidResponse response = bidMapper.bidToClientBidResponse(savedBid);
 
         logger.info("Bid status updated successfully for bidId={}.", savedBid.getId());
 
         return response;
     }
+
+
 }

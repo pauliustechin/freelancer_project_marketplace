@@ -13,6 +13,9 @@ public interface BidMapper {
 
     @Mapping(source = "id", target = "bidId")
     @Mapping(source = "bidder", target = "freelancer")
+    ClientBidResponse bidToClientBidResponse(Bid bid);
+
+    @Mapping(source = "id", target = "bidId")
     BidResponse bidToBidResponse(Bid bid);
 
 }

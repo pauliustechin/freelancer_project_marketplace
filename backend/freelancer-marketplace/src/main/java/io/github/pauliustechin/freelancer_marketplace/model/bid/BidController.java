@@ -1,13 +1,11 @@
 package io.github.pauliustechin.freelancer_marketplace.model.bid;
 
-import io.github.pauliustechin.freelancer_marketplace.model.bid.dto.BidListResponse;
-import io.github.pauliustechin.freelancer_marketplace.model.bid.dto.BidResponse;
-import io.github.pauliustechin.freelancer_marketplace.model.bid.dto.CreateBidRequest;
-import io.github.pauliustechin.freelancer_marketplace.model.bid.dto.UpdateBidRequest;
+import io.github.pauliustechin.freelancer_marketplace.model.bid.dto.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,10 +16,19 @@ public class BidController {
 
     private final BidService bidService;
 
-    @GetMapping("/projects/{projectId}/bids")
-    public ResponseEntity<BidListResponse> getBidsByProject(@PathVariable Long projectId) {
+    @PreAuthorize("hasRole('SELLER')")
+    @GetMapping("/users/{userId}/bids")
+    public ResponseEntity<BidListResponse> getFreelancerBids(@PathVariable Long userId) {
 
-        BidListResponse response = bidService.getBidsByProject(projectId);
+        BidListResponse response = bidService.getFreelancerBids(userId);
+
+        return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping("/projects/{projectId}/bids")
+    public ResponseEntity<ClientBidListResponse> getBidsByProject(@PathVariable Long projectId) {
+
+        ClientBidListResponse response = bidService.getBidsByProject(projectId);
 
         return ResponseEntity.ok().body(response);
     }
@@ -46,10 +53,10 @@ public class BidController {
     }
 
     @PatchMapping("/bids/{bidId}")
-    public ResponseEntity<BidResponse> updateBidStatus(@PathVariable Long bidId,
+    public ResponseEntity<ClientBidResponse> updateBidStatus(@PathVariable Long bidId,
                                                        @RequestParam BidStatus status) {
 
-        BidResponse response = bidService.updateBidStatus(bidId, status);
+        ClientBidResponse response = bidService.updateBidStatus(bidId, status);
 
         return ResponseEntity.ok().body(response);
     }

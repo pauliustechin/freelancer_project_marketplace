@@ -18,6 +18,7 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
     void deleteByProjectId(Long projectId);
 
     List<Bid> findBidsByProjectId(Long projectId);
+    List<Bid> findBidsByBidderId(Long bidderId);
 
     boolean existsByBidderIdAndProjectId(Long userId, Long projectId);
 
