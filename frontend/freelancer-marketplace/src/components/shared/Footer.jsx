@@ -6,8 +6,6 @@ const Footer = () => {
   return (
     <footer>Freelancer Marketplace {year}</footer>
   )
-
-  
 }
 
 export default Footer

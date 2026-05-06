@@ -23,6 +23,8 @@ const Header = () => {
   return (
     <header className="bg-white h-fit flex justify-between items-center p-8 shadow-lg">
 
+      <Link to="/" className="underline"><h1>GO TO HOME PAGE</h1></Link>
+
       {((location.pathname === "/login") || (location.pathname === "/register")) 
       ? null : user.username ? 
       <button onClick={handleLogout} className="my-button w-20">Logout</button> : 

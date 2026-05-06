@@ -17,10 +17,20 @@ const useBidsStore = create(
       }
     },
 
-      fetchBidsByProject: async (projectId) => {
+    fetchBidsByProject: async (projectId) => {
       try {
         const { data } = await api.get(`/projects/${projectId}/bids`, {withCredentials: true});
         set(() => ({ projectBids: [...data.bids] }));
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    acceptBid: async (bidId, navigate, formData) => {
+      try {
+        console.log(formData)
+        await api.patch(`/bids/${bidId}`, null, { params: formData, withCredentials: true });
+        navigate("/client")
       } catch (error) {
         console.log(error);
       }

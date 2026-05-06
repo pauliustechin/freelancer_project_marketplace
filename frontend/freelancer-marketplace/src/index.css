@@ -12,6 +12,12 @@ body {
   width: 100vw;
 }
 
+button:disabled {
+  background-color: gray;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 @layer components {
   .my-error {
     color: #ac1f1f;

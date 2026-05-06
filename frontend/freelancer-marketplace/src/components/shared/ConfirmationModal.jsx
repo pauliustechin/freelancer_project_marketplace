@@ -1,27 +1,9 @@
-import InputField from "../../../components/shared/InputField";
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
-import useBidsStore from "../../../store/bidsStore";
-import { useParams } from "react-router";
 import { useRef } from "react";
 import { useEffect } from "react";
 
-const PlaceBidModal = ({ open, setOpen }) => {
+const ConfirmationModal = ({ open, setOpen, message, setStatus }) => {
 
-  const navigate = useNavigate();
-  const { placeBid } = useBidsStore();
-  const { projectId } = useParams()
   const modalRef = useRef(null);
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  const onSubmit = (formData) => {
-    placeBid(projectId, navigate, formData);
-  }
 
   useEffect(() => {
     if (open) {
@@ -34,20 +16,15 @@ const PlaceBidModal = ({ open, setOpen }) => {
       <dialog ref={modalRef} className="modal">
         <div className="modal-box">
           <div className="modal-action flex flex-col">
-            <h3 className="font-bold text-lg">Place a bid</h3>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <InputField 
-                register={register}
-                id="amount"
-                type="number"
-                placeholder="amount"
-                required
-                errors={errors}
-              />
+            <h3 className="font-bold text-lg">{message}</h3>
               <div className="flex gap-2 font-bold text-white justify-end mt-6">
                 <button 
                   type="submit"
                   className="btn btn-primary w-20 bg-green-400" 
+                  onClick={() => {
+                    setStatus(true);
+                    modalRef.current?.close();
+                  }}
                 >Apply</button>
                 <button 
                   type="button" 
@@ -58,7 +35,6 @@ const PlaceBidModal = ({ open, setOpen }) => {
                   }}
                 >Close</button>
               </div>
-            </form>
           </div>
         </div>
       </dialog>
@@ -67,4 +43,4 @@ const PlaceBidModal = ({ open, setOpen }) => {
 
 }
 
-export default PlaceBidModal;
+export default ConfirmationModal;

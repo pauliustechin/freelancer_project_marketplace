@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router";
 
-const ClientProject = ({ project, index }) => {
+const ClientProjectRow = ({ project, index }) => {
+
   const { projectName, description } = project;
   const navigate = useNavigate();
 
@@ -20,4 +21,4 @@ const ClientProject = ({ project, index }) => {
   );
 };
 
-export default ClientProject;
+export default ClientProjectRow;

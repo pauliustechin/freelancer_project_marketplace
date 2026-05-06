@@ -10,7 +10,7 @@ const useProjectsStore = create(
 
     fetchProjects: async () => {
       try {
-        const { data } = await api.get(`/projects`, {withCredentials: true});
+        const { data } = await api.get(`/projects`);
         set(() => ({ projects: [...data.content] }));
       } catch (error) {
         console.log(error);
@@ -20,7 +20,6 @@ const useProjectsStore = create(
     fetchClientProjects: async (clientId) => {
       try {
         const { data } = await api.get(`/users/${clientId}/projects`, {withCredentials: true});
-        console.log(data)
         set(() => ({ clientProjects: [...data] }));
       } catch (error) {
         console.log(error);

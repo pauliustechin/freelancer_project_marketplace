@@ -12,7 +12,7 @@ import AdminPage from "./pages/private/AdminPage";
 import AuthProvider from "./pages/auth/AuthProvider";
 import useProjectsStore from "./store/projectsStore";
 import ProjectInfo from "./pages/public/projects/ProjectInfo";
-import ClientProjectBids from "./pages/private/clientPage/ClientProjectBids";
+import ClientProjectBids from "./pages/private/clientPage/ProjectBids";
 
 import "./App.css";
 import { useEffect } from "react";
