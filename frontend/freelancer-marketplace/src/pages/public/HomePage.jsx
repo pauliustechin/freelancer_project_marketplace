@@ -62,7 +62,7 @@ const HomePage = () => {
 
 
       <section className="flex flex-col gap-4 p-4 text-start">
-          <h1 className="text-3xl font-bold">Features Opportunities</h1>
+          <h1 className="text-3xl font-bold">Featured Opportunities</h1>
           <div className="flex justify-between">
             <p className="w-[60%]">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Minus voluptates ipsa deserunt possimus, vitae error rem quo, aliquam officiis reiciendis, quam laborum dicta repudiandae consequuntur doloribus at facere quisquam odio.</p>
             <button className="btn primary bg-white">View all projects</button>
@@ -73,6 +73,7 @@ const HomePage = () => {
               <ProjectCard
                 key={project.projectId}
                 project={project}
+                styling="w-80"
               ></ProjectCard>
             ))}
           </div>
@@ -87,7 +88,7 @@ const HomePage = () => {
         </div>
       </section>
       <div>
-        
+
       </div>
     </main>
   );

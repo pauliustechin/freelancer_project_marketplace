@@ -5,7 +5,7 @@ const Footer = () => {
 
   return (
     <footer className="bg-slate-800 text-start pt-10">
-      <div className="flex gap-15 p-4">
+      <div className="flex gap-15 p-4 ml-10">
         <div className="w-[35%]">
           <h1 className="text-lg text-white font-bold">
             [logo]FreelancerMarketplace
@@ -38,7 +38,7 @@ const Footer = () => {
         </nav>
       </div>
 
-      <div className="p-4">
+      <div className="p-4 ml-10 mr-10">
         <hr className="border-gray-500" />
         <p className="text-gray-400 p-1">{year} Freelancer Marketplace </p>
       </div>

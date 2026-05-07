@@ -25,7 +25,7 @@ const Header = () => {
             <h1>[logo]FreelancerMarketplace</h1>
           </Link>
           <nav className="flex gap-2">
-            <NavLink>Find work</NavLink>
+            <NavLink to="/projects">Find work</NavLink>
             <NavLink>Find talent</NavLink>
             <NavLink>Why us</NavLink>
             <NavLink>Enterprise</NavLink>
