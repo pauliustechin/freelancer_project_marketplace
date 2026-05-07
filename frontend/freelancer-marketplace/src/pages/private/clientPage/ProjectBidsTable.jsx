@@ -7,29 +7,32 @@ import ConfirmationModal from "../../../components/shared/ConfirmationModal";
 import { ConfirmationStatus } from "../../../enums/confirmationStatus";
 
 const ProjectBidsTable = () => {
-
   const { projectId } = useParams();
-  const { fetchBidsByProject, projectBids, acceptBid } = useBidsStore((state) => state);
+  const { fetchBidsByProject, projectBids, acceptBid } = useBidsStore(
+    (state) => state,
+  );
 
   const navigate = useNavigate();
   const { register, watch, handleSubmit } = useForm();
   const selectedBid = watch("selectedBid");
 
-  const [ open, setOpen ] = useState(false);
-  const [ message, setMessage ] = useState("");
-  const [ status, setStatus ] = useState(ConfirmationStatus.WAITING);
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [status, setStatus] = useState(ConfirmationStatus.WAITING);
 
   const onSubmit = () => {
-    const bid = projectBids.find(b => b.bidId === Number(selectedBid));
+    const bid = projectBids.find((b) => b.bidId === Number(selectedBid));
     if (!bid) return;
-    setMessage(`Are you sure you want to accept bid from ${bid.freelancer.firstName + ", amount: " + bid.amount} $`)
+    setMessage(
+      `Are you sure you want to accept bid from ${bid.freelancer.firstName + ", amount: " + bid.amount} $`,
+    );
     setOpen(true);
   };
 
   useEffect(() => {
     if (status === ConfirmationStatus.ACCEPTED) {
       acceptBid(selectedBid, navigate, {
-        status: "ACCEPTED"
+        status: "ACCEPTED",
       });
     }
   }, [status]);
@@ -43,14 +46,16 @@ const ProjectBidsTable = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
         <div className="modal-action flex flex-col">
           <div className="overflow-x-auto">
-            <table className="table">
-              <thead>
+            <table className="table bg-slate-700">
+              <thead className="text-gray-400">
                 <tr>
                   <th></th>
-                  <th>Freelancer</th>
-                  <th>Email</th>
-                  <th>Status</th>
-                  <th>Amount</th>
+                  <th>FEELANCER</th>
+                  <th className="text-center">STATUS</th>
+                  <th>BID AMOUNT</th>
+                  <th>EMAIL</th>
+                  <th>DATE</th>
+                  <th className="text-end">ACCEPT BID</th>
                 </tr>
               </thead>
               <tbody>
@@ -71,13 +76,19 @@ const ProjectBidsTable = () => {
         </div>
         <button
           type="submit"
-          className={`btn btn-primary w-28 bg-green-400 font-bold text-white m-4 self-end
+          className={`btn btn-primary w-28 bg-cyan-600 font-bold text-white m-4 self-end border-none 
           ${!selectedBid ? "invisible" : ""}`}
         >
           ACCEPT
         </button>
       </form>
-      <ConfirmationModal open={open} setOpen={setOpen} setStatus={setStatus} message={message} confirmButton={"ACCEPT"}></ConfirmationModal>
+      <ConfirmationModal
+        open={open}
+        setOpen={setOpen}
+        setStatus={setStatus}
+        message={message}
+        confirmButton={"ACCEPT"}
+      ></ConfirmationModal>
     </>
   );
 };

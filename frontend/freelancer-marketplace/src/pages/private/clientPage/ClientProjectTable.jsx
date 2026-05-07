@@ -3,8 +3,6 @@ import useProjectsStore from "../../../store/projectsStore";
 import useUsersStore from "../../../store/usersStore";
 import { useEffect } from "react";
 
-
-
 const ClientProjectTable = () => {
   const { user } = useUsersStore((state) => state);
   const { fetchClientProjects, clientProjects } = useProjectsStore(
@@ -17,6 +15,7 @@ const ClientProjectTable = () => {
 
   return (
     <div className="overflow-x-auto">
+      <h1 className="text-start text-2xl font-bold p-2">Projects</h1>
       <table className="table bg-slate-700">
         <thead className="text-gray-400">
           <tr>
@@ -26,7 +25,7 @@ const ClientProjectTable = () => {
             <th>BUDGET</th>
             <th>START DATE</th>
             <th className="text-center">BIDS</th>
-            <th>ACTIONS</th>
+            <th className="text-end">ACTIONS</th>
           </tr>
         </thead>
         <tbody>

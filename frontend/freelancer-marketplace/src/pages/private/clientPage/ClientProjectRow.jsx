@@ -14,7 +14,7 @@ const ClientProjectRow = ({ project, index }) => {
     <>
       <tr>
         <th>{index}</th>
-        <td onClick={handleOpen} className="underline">
+        <td className="underline">
           <p>{projectName}</p>
           <p>
             {description.length > 20
@@ -23,7 +23,7 @@ const ClientProjectRow = ({ project, index }) => {
           </p>
         </td>
         <td className="flex justify-center">
-          <div className="text-cyan-600 font-bold bg-cyan-400/20 p-2 rounded-xl w-fit">
+          <div className="text-cyan-500 font-bold bg-cyan-400/15 p-2 rounded-xl w-fit">
             {projectStatus}
           </div>
         </td>
@@ -32,12 +32,15 @@ const ClientProjectRow = ({ project, index }) => {
         <td className="text-center">
           <p className="bg-gray-300/20 rounded-4xl max-fit p-1">12</p>
         </td>
-        <td className="flex gap-2 items-center">
+        <td className="flex gap-2 items-center justify-end">
           <MdEdit />
           <MdDeleteOutline />
-          <div className="text-cyan-600 font-bold bg-cyan-400/20 p-2 rounded-xl w-fit">
-            {projectStatus}
-          </div>
+          <button
+            className="btn btn-primary text-cyan-500 font-bold bg-cyan-400/15 p-2 rounded-xl w-fit border-none outline-none"
+            onClick={handleOpen}
+          >
+            View bids
+          </button>
         </td>
       </tr>
     </>

@@ -37,13 +37,13 @@ function App() {
           </Route>
 
           <Route path="/" element={<PrivateRoute clientOnly />}>
-            <Route path="/client" element={<ClientPage />} />
+            <Route path="client" element={<ClientPage />}>
+              <Route
+                path="projects/:projectId"
+                element={<ProjectBidsTable />}
+              />
+            </Route>
           </Route>
-
-          <Route
-            path="/client/projects/:projectId"
-            element={<ProjectBidsTable />}
-          />
 
           <Route path="/" element={<PrivateRoute freelancerOnly />}>
             <Route path="/freelancer" element={<FreelancerPage />} />
