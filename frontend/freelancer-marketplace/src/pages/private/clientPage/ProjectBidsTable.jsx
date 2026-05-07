@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import ConfirmationModal from "../../../components/shared/ConfirmationModal";
 import { ConfirmationStatus } from "../../../enums/confirmationStatus";
 
-const ProjectBids = () => {
+const ProjectBidsTable = () => {
 
   const { projectId } = useParams();
   const { fetchBidsByProject, projectBids, acceptBid } = useBidsStore((state) => state);
@@ -82,4 +82,4 @@ const ProjectBids = () => {
   );
 };
 
-export default ProjectBids;
+export default ProjectBidsTable;

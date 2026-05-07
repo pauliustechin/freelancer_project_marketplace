@@ -1,6 +1,7 @@
 import HomePage from "./pages/public/HomePage";
 import LoginPage from "./pages/auth/LoginPage";
 import { Routes, Route } from "react-router";
+import { useEffect } from "react";
 import ProjectsPage from "./pages/public/projects/ProjectsPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import Header from "./components/shared/Header";
@@ -12,10 +13,11 @@ import AdminPage from "./pages/private/AdminPage";
 import AuthProvider from "./pages/auth/AuthProvider";
 import useProjectsStore from "./store/projectsStore";
 import ProjectInfo from "./pages/public/projects/ProjectInfo";
-import ClientProjectBids from "./pages/private/clientPage/ProjectBids";
-
+import ProjectBidsTable from "./pages/private/clientPage/ProjectBidsTable";
 import "./App.css";
-import { useEffect } from "react";
+
+
+
 
 function App() {
 
@@ -44,7 +46,7 @@ function App() {
             <Route path="/client" element={<ClientPage />} />
           </Route>
 
-          <Route path="/client/projects/:projectId" element={<ClientProjectBids />} />
+          <Route path="/client/projects/:projectId" element={<ProjectBidsTable />} />
 
           <Route path="/" element={<PrivateRoute freelancerOnly />}>
             <Route path="/freelancer" element={<FreelancerPage />} />

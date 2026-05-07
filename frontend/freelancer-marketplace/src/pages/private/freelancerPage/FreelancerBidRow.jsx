@@ -1,46 +1,29 @@
-import ConfirmationModal from "../../../components/shared/ConfirmationModal";
-import { useState, useEffect } from "react";
-import useBidsStore from "../../../store/bidsStore";
-import { ConfirmationStatus } from "../../../enums/confirmationStatus";
+import { useNavigate } from "react-router";
 
-const FreelancerBidRow = ({ bid, index }) => {
+const FreelancerBidRow = ({ bid, index, setMessage, setBid, setOpen }) => {
 
   const {
     amount,
     bidStatus,
-    projectSummary: { projectName, projectStart }
+    projectSummary: { projectId, projectName, projectStart }
   } = bid;
 
-  const { updateBid } = useBidsStore(state => state);
-
-  const [ open, setOpen ] = useState(false);
-  const [ message, setMessage ] = useState(false);
-  const [ status, setStatus ] = useState(ConfirmationStatus.WAITING);
+  const navigate = useNavigate();
 
   const handleOpen = () => {
-    setMessage("Are you sure you want to confirm your bid? Once confirmed, this action cannot be undone.")
-    setOpen(true);
-  };
+      setMessage(
+        "Are you sure you want to confirm your bid? Once confirmed, this action cannot be undone.",
+      );
+      setBid(bid);
+      setOpen(true);
+    };
 
-  useEffect(() => {
-    if (status === ConfirmationStatus.ACCEPTED) {
-      updateBid(bid.bidId, {
-        "amount" : amount,
-        "status" : "CONFIRMED"
-      })
-    } else if (status === ConfirmationStatus.REJECTED) {
-        updateBid(bid.bidId, {
-          "amount" : amount,
-          "status" : "CANCELED"
-        })
-    }
-  }, [status]);
 
   return (
     <>
       <tr>
         <th>{index + 1}</th>
-        <td onClick={handleOpen} className="underline">{projectName}</td>
+        <td onClick={() => navigate(`/projects/${projectId}`)} className="underline">{projectName}</td>
         <td>{projectStart}</td>
         <td>{bidStatus}</td>
         <td>{amount} $</td>
@@ -51,7 +34,6 @@ const FreelancerBidRow = ({ bid, index }) => {
           >CONFIRM</button>}
         </td>
       </tr>
-      <ConfirmationModal open={open} setOpen={setOpen} message={message} confirmButton={"Confirm"} rejectButton={"Reject"} setStatus={setStatus}></ConfirmationModal>
     </>
   );
 };

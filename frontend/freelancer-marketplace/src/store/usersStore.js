@@ -19,7 +19,6 @@ const useUsersStore = create(
     loginUser: async (formData, navigate) => {
       try {
         const { data } = await api.post(`/auth/login`, formData, { withCredentials: true });
-        console.log(data)
         set(() => ({ user: {...data} }))
         navigate("/");
       } catch (error) {
