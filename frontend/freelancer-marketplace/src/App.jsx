@@ -1,11 +1,9 @@
 import HomePage from "./pages/public/HomePage";
 import LoginPage from "./pages/auth/LoginPage";
-import { Routes, Route, BrowserRouter } from "react-router";
+import { Routes, Route } from "react-router";
 import { useEffect } from "react";
 import ProjectsPage from "./pages/public/projects/ProjectsPage";
 import RegisterPage from "./pages/auth/RegisterPage";
-import Header from "./components/shared/Header";
-import Footer from "./components/shared/Footer";
 import PrivateRoute from "./components/shared/PrivateRoute";
 import ClientPage from "./pages/private/clientPage/ClientPage";
 import FreelancerPage from "./pages/private/freelancerPage/FreelancerPage";

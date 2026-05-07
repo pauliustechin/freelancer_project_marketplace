@@ -1,22 +1,16 @@
 import useProjectsStore from "../../../store/projectsStore";
-import { Link, Outlet } from "react-router";
+import { Outlet } from "react-router";
 import MyPagination from "../../../components/shared/MyPagination";
 import MyFiltering from "../../../components/shared/MyFiltering";
 import ProjectCard from "./ProjectCard";
-import ProjectInfo from "./ProjectInfo";
 import { useState } from "react";
-import { useParams } from "react-router";
 import Header from "../../../components/shared/Header";
 import Footer from "../../../components/shared/Footer";
 
 const ProjectsPage = () => {
+  
   const { projects } = useProjectsStore((state) => state);
   const [currentProjectId, setCurrentProjectId] = useState(null);
-
-  // const handleClick = (id) => {
-  //   setCurrentProject(id);
-  //   console.log(currentProject)
-  // }
 
   return (
     <>

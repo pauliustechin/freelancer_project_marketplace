@@ -1,4 +1,6 @@
 import useProjectsStore from "../../../store/projectsStore";
+import { MdEdit } from "react-icons/md";
+import { MdDeleteOutline } from "react-icons/md";
 
 const ProjectBidRow = ({ bid, index, register, projectId }) => {
 
@@ -28,6 +30,8 @@ const ProjectBidRow = ({ bid, index, register, projectId }) => {
             {...register("selectedBid")}
           />
         </td>
+        <td><MdEdit /></td>
+        <td><MdDeleteOutline /></td>
       </tr>
   );
 };
