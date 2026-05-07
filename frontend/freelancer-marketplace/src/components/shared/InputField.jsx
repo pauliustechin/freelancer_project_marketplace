@@ -10,12 +10,12 @@ const InputField = ({
   placeholder
 }) => {
   return (
-    <div>
+    <div className="flex items-center">
       <label htmlFor={id}>{label}</label>
       <input 
         type={type}
         id={id}
-        className="border m-2 rounded-lg p-1"
+        className="m-2 rounded-lg p-1"
         placeholder={placeholder}
         {...register(id, {
           required: required ? {value: required, message: `This field is required`} : null,

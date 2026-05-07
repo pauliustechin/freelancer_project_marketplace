@@ -37,10 +37,6 @@ const ProjectInfo = () => {
             <FaClockRotateLeft />
             <p> Posted 2h ago</p>
           </div>
-          <div className="flex font-bold">
-            <FaPeopleGroup />
-            <p>15 bids</p>
-          </div>
         </div>
         <div className="flex gap-2">
           <div className="w-[50%] h-fit rounded-2xl p-4 bg-gray-100 border border-gray-100">
@@ -76,12 +72,28 @@ const ProjectInfo = () => {
             <p>15 bids</p>
           </div>
         </div>
-        <button
-          className="mt-auto btn btn-primary w-36 self-end bg-slate-700 text-white"
-          onClick={handleOpen}
-        >
-          Place a bid
-        </button>
+        <div className="flex flex-col items-center gap-2">
+          {user.userId ? (
+            <button
+              className="mt-auto btn btn-primary w-full self-end bg-slate-700 text-white"
+              onClick={handleOpen}
+            >
+              Submit a proposal
+            </button>
+          ) : (
+            <>
+              <button
+                className="mt-auto btn btn-primary w-full self-end bg-slate-700 text-white"
+                onClick={handleOpen}
+              >
+                Sign in to Submit a Proposal
+              </button>
+              <p className="text-gray-400">
+                Don't have an account? <span className="underline text-slate-700 font-bold">Sign up</span>
+              </p>
+            </>
+          )}
+        </div>
       </div>
       <PlaceBidModal open={open} setOpen={setOpen}></PlaceBidModal>
     </aside>

@@ -26,37 +26,35 @@ function App() {
   return (
     <>
       <AuthProvider>
-          <Header />
-          <Routes>
-            <Route index element={<HomePage />} />
+        <Routes>
+          <Route index element={<HomePage />} />
 
-            <Route path="/projects" element={<ProjectsPage />}>
-              <Route path=":projectId" element={<ProjectInfo />} />
-            </Route>
+          <Route path="/projects" element={<ProjectsPage />}>
+            <Route path=":projectId" element={<ProjectInfo />} />
+          </Route>
 
-            <Route path="/" element={<PrivateRoute publicPage />}>
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-            </Route>
+          <Route path="/" element={<PrivateRoute publicPage />}>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+          </Route>
 
-            <Route path="/" element={<PrivateRoute clientOnly />}>
-              <Route path="/client" element={<ClientPage />} />
-            </Route>
+          <Route path="/" element={<PrivateRoute clientOnly />}>
+            <Route path="/client" element={<ClientPage />} />
+          </Route>
 
-            <Route
-              path="/client/projects/:projectId"
-              element={<ProjectBidsTable />}
-            />
+          <Route
+            path="/client/projects/:projectId"
+            element={<ProjectBidsTable />}
+          />
 
-            <Route path="/" element={<PrivateRoute freelancerOnly />}>
-              <Route path="/freelancer" element={<FreelancerPage />} />
-            </Route>
+          <Route path="/" element={<PrivateRoute freelancerOnly />}>
+            <Route path="/freelancer" element={<FreelancerPage />} />
+          </Route>
 
-            <Route path="/" element={<PrivateRoute adminOnly />}>
-              <Route path="/admin" element={<AdminPage />} />
-            </Route>
-          </Routes>
-          <Footer />
+          <Route path="/" element={<PrivateRoute adminOnly />}>
+            <Route path="/admin" element={<AdminPage />} />
+          </Route>
+        </Routes>
       </AuthProvider>
     </>
   );
