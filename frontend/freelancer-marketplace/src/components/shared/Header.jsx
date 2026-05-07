@@ -1,21 +1,10 @@
-import { useEffect } from "react";
 import useUsersStore from "../../store/usersStore";
-import { Link, useNavigate, useLocation, NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
+import ProfileDropdown from "./ProfileDropdown";
 
 const Header = () => {
-  const { user, logoutUser } = useUsersStore((state) => state);
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const isAdmin = user.roles?.includes("ROLE_ADMIN");
-  const isFreelancer = user.roles?.includes("ROLE_SELLER");
-  const isClient = user.roles?.includes("ROLE_CLIENT");
-
-  const handleLogout = () => {
-    logoutUser(navigate);
-  };
-
-  useEffect(() => {}, [user]);
+  
+  const { user } = useUsersStore((state) => state);
 
   return (
     <header className="bg-white h-fit w-full m-0 p-1">
@@ -32,11 +21,8 @@ const Header = () => {
           </nav>
         </div>
 
-        {location.pathname === "/login" ||
-        location.pathname === "/register" ? null : user.username ? (
-          <button onClick={handleLogout} className="my-button w-20">
-            Logout
-          </button>
+        { user.username ? (
+          <ProfileDropdown></ProfileDropdown>
         ) : (
           <div className="flex gap-2 font-bold">
             <Link to="/login">
@@ -49,22 +35,6 @@ const Header = () => {
             </Link>
           </div>
         )}
-
-        {isAdmin && location.pathname !== "/admin" ? (
-          <Link to="/admin">
-            <button className="my-button">AdminPanel</button>
-          </Link>
-        ) : null}
-        {isFreelancer && location.pathname !== "/freelancer" ? (
-          <Link to="/freelancer">
-            <button className="my-button">FreelancerPage</button>
-          </Link>
-        ) : null}
-        {isClient && location.pathname !== "/client" ? (
-          <Link to="/client">
-            <button className="my-button">ClientPage</button>
-          </Link>
-        ) : null}
       </div>
       <hr className="border-gray-100"/>
     </header>

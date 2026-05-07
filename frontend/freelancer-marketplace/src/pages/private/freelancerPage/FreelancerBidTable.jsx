@@ -22,25 +22,24 @@ const FreelancerBidTable = () => {
   });
 
   useEffect(() => {
-  const updateBidStatus = async () => {
-    if (status === ConfirmationStatus.ACCEPTED) {
-      await updateBid(bid.bidId, {
-        amount: bid.amount,
-        status: "CONFIRMED",
-      });
+    const updateBidStatus = async () => {
+      if (status === ConfirmationStatus.ACCEPTED) {
+        await updateBid(bid.bidId, {
+          amount: bid.amount,
+          status: "CONFIRMED",
+        });
 
-      await fetchFreelancerBids(user.userId);
+        await fetchFreelancerBids(user.userId);
+      } else if (status === ConfirmationStatus.REJECTED) {
+        await updateBid(bid.bidId, {
+          amount: bid.amount,
+          status: "CANCELED",
+        });
 
-    } else if (status === ConfirmationStatus.REJECTED) {
-      await updateBid(bid.bidId, {
-        amount: bid.amount,
-        status: "CANCELED",
-      });
-
-      await fetchFreelancerBids(user.userId);
-    }
-  };
-  updateBidStatus();
+        await fetchFreelancerBids(user.userId);
+      }
+    };
+    updateBidStatus();
   }, [status]);
 
   useEffect(() => {
@@ -48,15 +47,18 @@ const FreelancerBidTable = () => {
   }, [fetchFreelancerBids, user.userId]);
 
   return (
+    <>
       <div className="overflow-x-auto">
-        <table className="table">
-          <thead>
+        <h1 className="text-start text-2xl font-bold p-2">Recent bids</h1>
+        <table className="table bg-slate-700">
+          <thead className="text-gray-400">
             <tr>
               <th></th>
-              <th>Project Name</th>
-              <th>Project Start</th>
-              <th>BidStatus</th>
-              <th>Amount</th>
+              <th>PROJECT</th>
+              <th className="text-center">MY BID</th>
+              <th>STATUS</th>
+              <th>START DATE</th>
+              <th className="text-end">ACTIONS</th>
             </tr>
           </thead>
           <tbody>
@@ -81,6 +83,7 @@ const FreelancerBidTable = () => {
           setStatus={setStatus}
         ></ConfirmationModal>
       </div>
+    </>
   );
 };
 

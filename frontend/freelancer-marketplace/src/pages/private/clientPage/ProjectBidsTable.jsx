@@ -42,7 +42,8 @@ const ProjectBidsTable = () => {
   }, [fetchBidsByProject, projectId]);
 
   return (
-    <>
+    <div className="overflow-x-auto">
+      <h1 className="text-start text-2xl font-bold p-2">Project bids</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
         <div className="modal-action flex flex-col">
           <div className="overflow-x-auto">
@@ -89,7 +90,7 @@ const ProjectBidsTable = () => {
         message={message}
         confirmButton={"ACCEPT"}
       ></ConfirmationModal>
-    </>
+    </div>
   );
 };
 

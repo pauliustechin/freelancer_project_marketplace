@@ -1,6 +1,5 @@
 import useProjectsStore from "../../store/projectsStore";
 import ProjectCard from "./projects/ProjectCard";
-import { Link } from "react-router";
 import { FaArrowRight } from "react-icons/fa";
 import office from "../../assets/office.jpg";
 import Header from "../../components/shared/Header";

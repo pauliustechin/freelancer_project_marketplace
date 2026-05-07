@@ -31,7 +31,7 @@ const Footer = () => {
           <NavLink>Community</NavLink>
         </nav>
         <nav className="flex flex-col gap-3 text-gray-400">
-          <p className="text-white font-bold">For Clients</p>
+          <p className="text-white font-bold">Company</p>
           <NavLink>About us</NavLink>
           <NavLink>Careers</NavLink>
           <NavLink>Contact</NavLink>
