@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import useUsersStore from "../../store/usersStore";
 import { useNavigate } from "react-router";
 
-export default function ProfileDropdown() {
+export default function ProfileDropdown({ theme }) {
   const { user, logoutUser } = useUsersStore((state) => state);
   const navigate = useNavigate();
 
@@ -26,29 +26,29 @@ export default function ProfileDropdown() {
   useEffect(() => {}, [user]);
 
   return (
-    <Menu as="div" className="relative inline-block text-left">
-      <Menu.Button className="flex items-center gap-2 btn btn-primary border-none bg-slate-800 w-full p-4 rounded-xl">
+    <Menu as="div" className="relative inline-block text-left z-11">
+      <Menu.Button className={`flex items-center gap-2 btn btn-primary border-none w-full p-4 rounded-xl ${theme}`}>
         <CgProfile />
         Profile
       </Menu.Button>
 
-      <Menu.Items className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg p-4 flex flex-col gap-4">
+      <Menu.Items className="absolute right-0 mt-2 w-48 bg-slate-300/90 shadow-lg rounded-lg p-4 flex flex-col gap-4 outline-none">
         <Menu.Item>
-          <div className="flex items-center gap-2" onClick={handleNavigate}>
+          <div className="flex items-center gap-2 cursor-pointer" onClick={handleNavigate}>
             <CgProfile />
             <p>My Profile</p>
           </div>
         </Menu.Item>
 
         <Menu.Item>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 cursor-pointer">
             <IoSettingsOutline />
             <p>Settings</p>
           </div>
         </Menu.Item>
 
         <Menu.Item>
-          <div className="flex items-center gap-2" onClick={handleLogout}>
+          <div className="flex items-center gap-2 cursor-pointer" onClick={handleLogout}>
             <IoMdExit />
             <p>Logout</p>
           </div>

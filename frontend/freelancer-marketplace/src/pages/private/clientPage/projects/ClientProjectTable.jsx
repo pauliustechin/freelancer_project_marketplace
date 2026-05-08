@@ -1,6 +1,6 @@
 import ClientProject from "./ClientProjectRow";
-import useProjectsStore from "../../../store/projectsStore";
-import useUsersStore from "../../../store/usersStore";
+import useProjectsStore from "../../../../store/projectsStore";
+import useUsersStore from "../../../../store/usersStore";
 import { useEffect } from "react";
 
 const ClientProjectTable = () => {
@@ -15,7 +15,15 @@ const ClientProjectTable = () => {
 
   return (
     <div className="overflow-x-auto">
-      <h1 className="text-start text-2xl font-bold p-2">Projects</h1>
+      <div className="flex justify-between">
+        <h1 className="text-start text-2xl font-bold p-2">Projects</h1>
+        <div>
+          <button className="btn btn-primary text-lg bg-cyan-600 font-bold border-none">
+            + Create Project
+          </button>
+        </div>
+      </div>
+
       <table className="table bg-slate-700">
         <thead className="text-gray-400">
           <tr>

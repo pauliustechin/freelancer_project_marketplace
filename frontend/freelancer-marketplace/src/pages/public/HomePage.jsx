@@ -31,7 +31,7 @@ const HomePage = () => {
           </div>
         </section>
 
-        <img src={office} alt="office" className="w-full rounded-2xl mb-10" />
+        <img src={office} alt="office" className="w-full rounded-2xl mb-10 h-100 object-cover" />
 
         <div className="flex gap-2 justify-between w-full mb-10">
           <div

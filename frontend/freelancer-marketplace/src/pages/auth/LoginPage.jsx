@@ -23,7 +23,7 @@ const LoginPage = () => {
   };
 
   return (
-    <main className="flex h-full">
+    <main className="flex min-h-screen">
       <div className="w-[50%] bg-cyan-600 text-start p-15 pr-60 text-white flex flex-col gap-8">
         <Link to="/" className="text-3xl font-bold mb-10">
           <h1>[logo]FreelancerMarketplace</h1>

@@ -14,7 +14,6 @@ const useUsersStore = create(
 
     user: initialState,
     isLoading: false,
-    loggedOutOrAuthenticated: false,
 
     loginUser: async (formData, navigate) => {
       try {
@@ -49,9 +48,9 @@ const useUsersStore = create(
       try {
         set({ isLoading : true })
         const { data } = await api.get("/auth/me", { withCredentials: true });
-        set(() => ({ user: data, loggedOutOrAuthenticated: true }));
+        set(() => ({ user: data }));
       } catch {
-        set({ user: initialState, loggedOutOrAuthenticated: true });
+        set({ user: initialState});
       } finally {
         set({ isLoading: false })
       }

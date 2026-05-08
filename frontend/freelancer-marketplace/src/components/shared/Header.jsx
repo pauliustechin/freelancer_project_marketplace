@@ -22,7 +22,7 @@ const Header = () => {
         </div>
 
         { user.username ? (
-          <ProfileDropdown></ProfileDropdown>
+          <ProfileDropdown theme={"bg-slate-800"}></ProfileDropdown>
         ) : (
           <div className="flex gap-2 font-bold">
             <Link to="/login">

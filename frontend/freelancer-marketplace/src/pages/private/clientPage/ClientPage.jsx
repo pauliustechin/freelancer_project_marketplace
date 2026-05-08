@@ -1,35 +1,27 @@
-import ClientProjectTable from "./ClientProjectTable";
 import SideBar from "../../../components/shared/SideBar";
-import { useLocation, Outlet } from "react-router";
+import { Outlet } from "react-router";
+import ProfileDropdown from "../../../components/shared/ProfileDropdown";
 
 const ClientPage = () => {
-  const location = useLocation();
-  const isProjectBidTable =
-    location.pathname.substring(0, location.pathname.lastIndexOf("/")) ===
-    "/client/projects";
 
   return (
-    <SideBar role="client">
-      <main>
-        <div className="flex justify-between mb-6 items-center">
+    <main className="flex">
+      <SideBar role="client"></SideBar>
+      <div className="flex flex-col w-full">
+        <div className="flex justify-between items-center h-22 p-8 bg-slate-700 text-slate-200">
           <div className="text-start">
-            <h1 className="text-2xl font-bold">Client Dashboard</h1>
-            <p>Manage your active projects and review freelancer bids.</p>
+            <h1 className="text-2xl font-bold">Client panel</h1>
+            <p>Manage your projects and review freelancer bids.</p>
           </div>
-          <hr />
-          <div>
-            <button className="btn btn-primary text-lg bg-cyan-600 font-bold border-none">
-              + Create Project
-            </button>
+          <div className="text-black">
+            <ProfileDropdown
+              theme={"bg-slate-300 text-slate-800"}
+            ></ProfileDropdown>
           </div>
         </div>
-        {isProjectBidTable ? (
-          <Outlet></Outlet>
-        ) : (
-          <ClientProjectTable></ClientProjectTable>
-        )}
-      </main>
-    </SideBar>
+        <Outlet></Outlet>
+      </div>
+    </main>
   );
 };
 

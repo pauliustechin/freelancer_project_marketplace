@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import useBidsStore from "../../../store/bidsStore";
+import useBidsStore from "../../../../store/bidsStore";
 import ClientProjectBid from "./ProjectBidRow";
 import { useParams, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
-import ConfirmationModal from "../../../components/shared/ConfirmationModal";
-import { ConfirmationStatus } from "../../../enums/confirmationStatus";
+import ConfirmationModal from "../../../../components/shared/ConfirmationModal";
+import { ConfirmationStatus } from "../../../../enums/confirmationStatus";
 
 const ProjectBidsTable = () => {
   const { projectId } = useParams();
@@ -42,7 +42,7 @@ const ProjectBidsTable = () => {
   }, [fetchBidsByProject, projectId]);
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto text-slate-200 bg-slate-400 min-h-screen p-8">
       <h1 className="text-start text-2xl font-bold p-2">Project bids</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
         <div className="modal-action flex flex-col">

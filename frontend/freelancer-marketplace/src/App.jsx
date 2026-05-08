@@ -11,7 +11,10 @@ import AdminPage from "./pages/private/AdminPage";
 import AuthProvider from "./pages/auth/AuthProvider";
 import useProjectsStore from "./store/projectsStore";
 import ProjectInfo from "./pages/public/projects/ProjectInfo";
-import ProjectBidsTable from "./pages/private/clientPage/ProjectBidsTable";
+import ProjectBidsTable from "./pages/private/clientPage/projectBids/ProjectBidsTable";
+import ClientDashboard from "./pages/private/clientPage/dashboard/ClientDashboard";
+import CreateProject from "./pages/private/clientPage/projects/CreateProject";
+import FreelancerDashboard from "./pages/private/freelancerPage/freelancerDashboard/FreelancerDashboard";
 import "./App.css";
 
 function App() {
@@ -37,16 +40,17 @@ function App() {
           </Route>
 
           <Route path="/" element={<PrivateRoute clientOnly />}>
-            <Route path="client" element={<ClientPage />}>
-              <Route
-                path="projects/:projectId"
-                element={<ProjectBidsTable />}
-              />
+            <Route path="/client" element={<ClientPage />}>
+              <Route path="" element={<ClientDashboard/>}/>
+              <Route path="projects/:projectId" element={<ProjectBidsTable />}/>
+              <Route path="create-project" element={<CreateProject />}/>
             </Route>
           </Route>
 
           <Route path="/" element={<PrivateRoute freelancerOnly />}>
-            <Route path="/freelancer" element={<FreelancerPage />} />
+            <Route path="/freelancer" element={<FreelancerPage />} >
+              <Route path="" element={<FreelancerDashboard/>}/>
+            </Route>
           </Route>
 
           <Route path="/" element={<PrivateRoute adminOnly />}>

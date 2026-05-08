@@ -1,9 +1,9 @@
-import useBidsStore from "../../../store/bidsStore";
-import useUsersStore from "../../../store/usersStore";
+import useBidsStore from "../../../../store/bidsStore";
+import useUsersStore from "../../../../store/usersStore";
 import FreelancerBidRow from "./FreelancerBidRow";
-import ConfirmationModal from "../../../components/shared/ConfirmationModal";
+import ConfirmationModal from "../../../../components/shared/ConfirmationModal";
 import { useState, useEffect } from "react";
-import { ConfirmationStatus } from "../../../enums/confirmationStatus";
+import { ConfirmationStatus } from "../../../../enums/confirmationStatus";
 
 const FreelancerBidTable = () => {
   const { user } = useUsersStore((state) => state);

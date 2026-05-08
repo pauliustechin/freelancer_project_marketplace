@@ -14,9 +14,9 @@ const ClientProjectRow = ({ project, index }) => {
     <>
       <tr>
         <th>{index}</th>
-        <td className="underline">
-          <p>{projectName}</p>
-          <p>
+        <td>
+          <p className="font-bold">{projectName}</p>
+          <p className="text-sm text-gray-400">
             {description.length > 20
               ? description.slice(0, 20) + "..."
               : description}
