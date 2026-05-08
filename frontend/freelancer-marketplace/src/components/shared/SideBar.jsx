@@ -1,12 +1,20 @@
 import { Link, NavLink } from "react-router";
 import { IoSettingsOutline } from "react-icons/io5";
-import { clientNavigation, freelancerNavigation, adminNavigation } from "../../utils/userNavigation";
+import {
+  clientNavigation,
+  freelancerNavigation,
+  adminNavigation,
+} from "../../utils/userNavigation";
 
 const SideBar = ({ role }) => {
-
-  const sideBarLayout = role === "client" ? clientNavigation : 
-                        role === "freelancer" ? freelancerNavigation :
-                        role === "admin" ? adminNavigation : null;
+  const sideBarLayout =
+    role === "client"
+      ? clientNavigation
+      : role === "freelancer"
+        ? freelancerNavigation
+        : role === "admin"
+          ? adminNavigation
+          : null;
 
   return (
     <aside className="drawer lg:drawer-open w-fit bg-slate-700">
@@ -27,7 +35,15 @@ const SideBar = ({ role }) => {
               {sideBarLayout?.map((item, index) => (
                 <li key={index} className="flex items-center gap-4">
                   <item.icon />
-                  <NavLink to={item.href}>{item.name}</NavLink>
+                  <NavLink
+                    end
+                    className={({ isActive }) =>
+                      isActive && "text-white border-b-2 border-cyan-600"
+                    }
+                    to={item.href}
+                  >
+                    {item.name}
+                  </NavLink>
                 </li>
               ))}
             </ul>

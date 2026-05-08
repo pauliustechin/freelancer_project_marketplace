@@ -2,6 +2,7 @@ import ClientProject from "./ClientProjectRow";
 import useProjectsStore from "../../../../store/projectsStore";
 import useUsersStore from "../../../../store/usersStore";
 import { useEffect } from "react";
+import { Link } from "react-router";
 
 const ClientProjectTable = () => {
   const { user } = useUsersStore((state) => state);
@@ -18,9 +19,11 @@ const ClientProjectTable = () => {
       <div className="flex justify-between">
         <h1 className="text-start text-2xl font-bold p-2">Projects</h1>
         <div>
-          <button className="btn btn-primary text-lg bg-cyan-600 font-bold border-none">
-            + Create Project
-          </button>
+          <Link to="/client/create-project">
+            <button className="btn btn-primary text-lg bg-cyan-600 font-bold border-none">
+              + Create Project
+            </button>
+          </Link>
         </div>
       </div>
 

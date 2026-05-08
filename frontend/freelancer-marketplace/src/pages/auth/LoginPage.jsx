@@ -42,7 +42,7 @@ const LoginPage = () => {
         </p>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="w-full flex flex-col items-start gap-4 "
+          className="w-[70%] flex flex-col gap-4"
         >
           <InputField
             register={register}
@@ -68,7 +68,7 @@ const LoginPage = () => {
 
           <button
             type="submit"
-            className="btn btn-primary bg-cyan-600 border-none w-[50%]"
+            className="btn btn-primary bg-cyan-600 border-none w-[80%] self-center"
           >
             Sign in
           </button>

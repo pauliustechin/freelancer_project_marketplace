@@ -5,7 +5,7 @@ import { useNavigate } from "react-router";
 import useUsersStore from "../../store/usersStore";
 import { CiUser } from "react-icons/ci";
 import { TbLockPassword } from "react-icons/tb";
-import { MdAlternateEmail } from "react-icons/md";
+import { HiOutlineMail } from "react-icons/hi";
 import { TiUserOutline } from "react-icons/ti";
 
 const RegisterPage = () => {
@@ -44,7 +44,7 @@ const RegisterPage = () => {
           <p className="text-gray-400">Please enter your details.</p>
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="w-full flex flex-col items-start gap-4 "
+            className="w-[70%] flex flex-col gap-4"
           >
             <InputField
               register={register}
@@ -84,7 +84,7 @@ const RegisterPage = () => {
               id="email"
               type="email"
               placeholder="email"
-              label={<MdAlternateEmail />}
+              label={<HiOutlineMail />}
               required
               errors={errors}
             />
@@ -100,7 +100,7 @@ const RegisterPage = () => {
               errors={errors}
             />
 
-            <div className="flex gap-4 w-full">
+            <div className="flex gap-4 w-full justify-center">
               <label className="flex gap-2">
                 <input type="radio" value="ROLE_SELLER" {...register("role")} />
                 Freelancer
@@ -114,7 +114,7 @@ const RegisterPage = () => {
 
             <button
               type="submit"
-              className="btn btn-primary bg-cyan-600 border-none w-[50%]"
+              className="btn btn-primary bg-cyan-600 border-none w-[80%] self-center"
             >
               Sign up
             </button>

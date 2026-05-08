@@ -7,7 +7,7 @@ export const clientNavigation = [
     href: "/client", 
     icon: MdBusinessCenter,
   }, {
-    name: "Create Project", 
+    name: "Add Project", 
     href: "/client/create-project", 
     icon: CgAddR
   }
