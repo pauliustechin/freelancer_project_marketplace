@@ -24,8 +24,6 @@ public class UserServiceImpl implements UserService {
                 })
                 .toList();
 
-        System.out.println(response.getFirst());
-
         return response;
     }
 }

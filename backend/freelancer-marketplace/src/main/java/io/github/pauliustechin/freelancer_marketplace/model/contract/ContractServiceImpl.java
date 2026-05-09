@@ -51,7 +51,9 @@ public class ContractServiceImpl implements ContractService {
         for(Bid b : bids) {
             if(!b.equals(bidFromDb)) {
                 b.setUpdatedAt(Instant.now());
-                b.setBidStatus(BidStatus.REJECTED);
+                if (b.getBidStatus() == BidStatus.OPEN) {
+                    b.setBidStatus(BidStatus.REJECTED);
+                }
                 bidRepository.save(b);
             }
         }

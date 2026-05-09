@@ -92,10 +92,6 @@ public class ProjectServiceImpl implements ProjectService{
 
         List<Project> projects = projectRepository.findProjectsByClientId(userDetails.getId());
 
-        for(Project pr : projects) {
-            System.out.println(pr);
-        }
-
         return projects.stream()
                 .map(pr -> projectMapper.projectToProjectResponse(pr))
                 .toList();

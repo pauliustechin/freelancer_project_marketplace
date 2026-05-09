@@ -12,7 +12,8 @@ public class ProjectSpecification {
 
     public static Specification<Project> hasName(String name) {
         return (((root, query, criteriaBuilder) ->
-                name == null ? null : criteriaBuilder.like(root.get("projectName"), name)));
+                name == null ? null : criteriaBuilder.like(criteriaBuilder.lower(root.get("projectName")),
+                                                    "%" + name.toLowerCase() + "%")));
     }
 
     public static Specification<Project> startsAfter(LocalDate date) {

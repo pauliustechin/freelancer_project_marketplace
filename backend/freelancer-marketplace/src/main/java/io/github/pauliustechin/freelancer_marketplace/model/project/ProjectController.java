@@ -7,6 +7,7 @@ import io.github.pauliustechin.freelancer_marketplace.model.project.dto.UpdatePr
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class ProjectController {
             @RequestParam(required = false) ProjectStatus status,
             @RequestParam(required = false) String projectName,
             @RequestParam(required = false) LocalDate projectStart,
-            @PageableDefault(page = 0, size = 10, sort="createdAt") Pageable pageable
+            @PageableDefault(page = 0, size = 10, sort="createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
 
         ProjectListResponse projectListResponse = projectService.searchForProject(status, projectName, projectStart, pageable);

@@ -48,7 +48,7 @@ public class Project {
     @JoinColumn(name = "user_id")
     private User client;
 
-    public Project(Long id, String projectName, String description, String projectFileUrl, ProjectStatus projectStatus, LocalDate projectStart, LocalDate projectEnd, User client) {
+    public Project(Long id, String projectName, String description, String projectFileUrl, ProjectStatus projectStatus, LocalDate projectStart, LocalDate projectEnd, Instant createdAt, User client) {
         this.id = id;
         this.projectName = projectName;
         this.description = description;
@@ -56,6 +56,7 @@ public class Project {
         this.projectStatus = projectStatus;
         this.projectStart = projectStart;
         this.projectEnd = projectEnd;
+        this.createdAt = createdAt;
         this.client = client;
     }
 }
