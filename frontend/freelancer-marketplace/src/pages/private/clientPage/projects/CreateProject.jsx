@@ -63,7 +63,7 @@ const CreateProject = () => {
           </div>
 
           <div>
-            <div className="flex text-start">
+            <div className="flex text-start gap-4">
               <div>
                 <label htmlFor="projectName" className="text-slate-300">
                   Start Date

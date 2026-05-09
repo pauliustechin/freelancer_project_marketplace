@@ -24,7 +24,7 @@ const ProjectInfo = () => {
   };
 
   return (
-    <aside className="h-full w-[40%] p-8 mt-28">
+    <aside className="h-full w-[40%] p-8 mt-29">
       <div
         className="text-start text-2xl font-bold"
         onClick={handleOpen}

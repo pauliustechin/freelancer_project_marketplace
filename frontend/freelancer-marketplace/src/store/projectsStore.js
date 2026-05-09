@@ -7,11 +7,12 @@ const useProjectsStore = create(
   devtools((set) => ({
     projects: [],
     clientProjects: [],
+    totalPages: 0,
 
     fetchProjects: async (filterParams) => {
       try {
         const { data } = await api.get(`/projects${filterParams ? filterParams : ""}`);
-        set(() => ({ projects: [...data.content] }));
+        set(() => ({ projects: [...data.content], totalPages: data.totalPages }));
       } catch (error) {
         console.log(error);
       }

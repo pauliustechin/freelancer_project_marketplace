@@ -4,8 +4,9 @@ import { FiArrowDown, FiArrowUp, FiRefreshCw, FiSearch } from "react-icons/fi";
 import { useNavigate } from "react-router";
 import MyDatePicker from "../../../components/shared/MyDatePicker";
 
-const ProjectFilter = () => {
+const ProjectFilter = ({ setPage }) => {
   const navigate = useNavigate();
+
   const [sortOrder, setSortOrder] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [startDate, setStartDate] = useState(new Date());
@@ -13,6 +14,7 @@ const ProjectFilter = () => {
 
   useEffect(() => {
     const params = new URLSearchParams();
+    console.log("render filter");
 
     if (pageSize) {
       params.set("size", pageSize);
@@ -26,20 +28,23 @@ const ProjectFilter = () => {
       params.set("projectStart", startDate.toISOString().split("T")[0]);
     }
 
-    const handler = setTimeout(() => {
-      if (searchTerm) {
-        params.set("projectName", searchTerm);
-      } else {
-        params.delete("projectName");
-      }
+    if (searchTerm) {
+      const handler = setTimeout(() => {
+        if (searchTerm) {
+          params.set("projectName", searchTerm);
+        } else {
+          params.delete("projectName");
+        }
 
+        navigate(`?${params.toString()}`);
+      }, 700);
+
+      return () => {
+        clearTimeout(handler);
+      };
+    } else {
       navigate(`?${params.toString()}`);
-    }, 700);
-
-    return () => {
-      clearTimeout(handler);
-    };
-
+    }
   }, [searchTerm, pageSize, sortOrder, startDate, navigate]);
 
   const handleClearFilters = () => {
@@ -47,11 +52,11 @@ const ProjectFilter = () => {
     setSearchTerm("");
     setStartDate(new Date());
     setPageSize(null);
-    navigate("/projects");
+    setPage(null);
   };
 
   return (
-    <div className="flex flex-col gap-4  p-4 bg-white mb-4 rounded-xl">
+    <div className="flex flex-col gap-4 p-4 bg-white rounded-xl w-full">
       <div className="flex sm:flex-row flex-col gap-4 items-center">
         <select
           value={pageSize || 10}

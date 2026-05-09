@@ -50,7 +50,6 @@ const HomePage = () => {
 
         <div className="flex gap-2 justify-between w-full mb-10">
           <div
-            div
             className="w-50 max-w-sm rounded-2xl bg-white p-6 shadow-xl border border-gray-100"
           >
             <div className="flex items-center justify-between h-40">
@@ -121,7 +120,7 @@ const HomePage = () => {
             </button>
           </div>
 
-          <div className="flex h-80 gap-4 justify-between">
+          <div className="flex h-fit gap-4 justify-between">
             {projects.map((project) => (
               <ProjectCard
                 key={project.projectId}
