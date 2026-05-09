@@ -1,7 +1,6 @@
 import HomePage from "./pages/public/HomePage";
 import LoginPage from "./pages/auth/LoginPage";
 import { Routes, Route } from "react-router";
-import { useEffect } from "react";
 import ProjectsPage from "./pages/public/projects/ProjectsPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import PrivateRoute from "./components/shared/PrivateRoute";
@@ -9,7 +8,6 @@ import ClientPage from "./pages/private/clientPage/ClientPage";
 import FreelancerPage from "./pages/private/freelancerPage/FreelancerPage";
 import AdminPage from "./pages/private/AdminPage";
 import AuthProvider from "./pages/auth/AuthProvider";
-import useProjectsStore from "./store/projectsStore";
 import ProjectInfo from "./pages/public/projects/ProjectInfo";
 import ProjectBidsTable from "./pages/private/clientPage/projectBids/ProjectBidsTable";
 import ClientDashboard from "./pages/private/clientPage/dashboard/ClientDashboard";
@@ -18,11 +16,6 @@ import FreelancerDashboard from "./pages/private/freelancerPage/freelancerDashbo
 import "./App.css";
 
 function App() {
-  const { fetchProjects } = useProjectsStore((state) => state);
-
-  useEffect(() => {
-    fetchProjects();
-  }, [fetchProjects]);
 
   return (
     <>

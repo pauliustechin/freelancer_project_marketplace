@@ -32,7 +32,7 @@ export default function ProfileDropdown({ theme }) {
         Profile
       </Menu.Button>
 
-      <Menu.Items className="absolute right-0 mt-2 w-48 bg-slate-300/90 shadow-lg rounded-lg p-4 flex flex-col gap-4 outline-none">
+      <Menu.Items className={`absolute right-0 mt-2 w-48 shadow-lg rounded-lg p-4 flex flex-col gap-4 outline-none ${theme}`}>
         <Menu.Item>
           <div className="flex items-center gap-2 cursor-pointer" onClick={handleNavigate}>
             <CgProfile />

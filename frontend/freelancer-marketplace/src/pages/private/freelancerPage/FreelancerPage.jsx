@@ -22,24 +22,6 @@ const FreelancerPage = () => {
         <Outlet></Outlet>
       </div>
     </main>
-
-    // <SideBar role={"seller"}>
-    //   <div className="flex justify-between mb-6 items-center">
-    //     <div className="text-start">
-    //       <h1 className="text-2xl font-bold">Freelancer dashboard</h1>
-    //       <p>Manage your active bids.</p>
-    //     </div>
-    //     <div className="text-black">
-    //       <ProfileDropdown
-    //         theme={"bg-slate-300 text-slate-800"}
-    //       ></ProfileDropdown>
-    //     </div>
-    //   </div>
-    //   <hr className="text-slate-300/50"/>
-    //   <div>
-    //     <FreelancerBidTable></FreelancerBidTable>
-    //   </div>
-    // </SideBar>
   );
 };
 

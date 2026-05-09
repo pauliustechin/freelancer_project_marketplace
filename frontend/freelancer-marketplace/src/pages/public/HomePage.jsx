@@ -4,9 +4,17 @@ import { FaArrowRight } from "react-icons/fa";
 import office from "../../assets/office.jpg";
 import Header from "../../components/shared/Header";
 import Footer from "../../components/shared/Footer";
+import { useNavigate } from "react-router";
+import { useEffect } from "react";
 
 const HomePage = () => {
-  const { projects } = useProjectsStore((state) => state);
+
+  const { projects, fetchProjects } = useProjectsStore((state) => state);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchProjects("?size=3");
+  }, [fetchProjects]);
 
   return (
     <>
@@ -23,7 +31,10 @@ const HomePage = () => {
             velit nemo reprehenderit asperiores illo.
           </p>
           <div className="flex gap-4 w-full justify-center">
-            <button className="btn primary bg-cyan-400">
+            <button
+              className="btn primary bg-cyan-400"
+              onClick={() => navigate("/projects")}
+            >
               Browse projects
               <FaArrowRight />
             </button>
@@ -31,7 +42,11 @@ const HomePage = () => {
           </div>
         </section>
 
-        <img src={office} alt="office" className="w-full rounded-2xl mb-10 h-100 object-cover" />
+        <img
+          src={office}
+          alt="office"
+          className="w-full rounded-2xl mb-10 h-100 object-cover"
+        />
 
         <div className="flex gap-2 justify-between w-full mb-10">
           <div
@@ -98,11 +113,16 @@ const HomePage = () => {
               officiis reiciendis, quam laborum dicta repudiandae consequuntur
               doloribus at facere quisquam odio.
             </p>
-            <button className="btn primary bg-white">View all projects</button>
+            <button
+              className="btn primary bg-white"
+              onClick={() => navigate("/projects")}
+            >
+              View all projects
+            </button>
           </div>
 
           <div className="flex h-80 gap-4 justify-between">
-            {projects.slice(0, 3).map((project) => (
+            {projects.map((project) => (
               <ProjectCard
                 key={project.projectId}
                 project={project}

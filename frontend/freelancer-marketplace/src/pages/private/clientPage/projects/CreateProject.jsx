@@ -74,6 +74,7 @@ const CreateProject = () => {
                   rules={{ required: "Start date is required" }}
                   render={({ field }) => (
                     <MyDatePicker
+                      theme={"bg-slate-800 text-white"}
                       value={field.value}
                       onChange={field.onChange}
                       minDate={new Date()}
@@ -85,13 +86,14 @@ const CreateProject = () => {
 
               <div>
                 <label htmlFor="projectName" className="text-slate-300">
-                  End Date
+                  End Date (Optional)
                 </label>
                 <Controller
                   name="endDate"
                   control={control}
                   render={({ field }) => (
                     <MyDatePicker
+                      theme={"bg-slate-800 text-white"}
                       value={field.value}
                       onChange={field.onChange}
                       placeholder="Select end date "
@@ -116,9 +118,9 @@ const CreateProject = () => {
 
           <button
             type="submit"
-            className="btn btn-primary bg-cyan-600 border-none w-[50%]"
+            className="btn btn-primary bg-cyan-600 border-none w-fit self-end"
           >
-            Sign in
+            Create Project
           </button>
         </form>
       </div>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Dropzone from "react-dropzone";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 const MyPdfDropzone = () => {
   
@@ -10,6 +11,11 @@ const MyPdfDropzone = () => {
       setSelectedFile(acceptedFiles[0]);
       console.log("Selected PDF:", acceptedFiles[0]);
     }
+  };
+
+  const removeFile = (e) => {
+    e.stopPropagation();
+    setSelectedFile(null);
   };
 
   return (
@@ -36,14 +42,15 @@ const MyPdfDropzone = () => {
                 ? "Drop the PDF here..."
                 : "Drag & drop a PDF here, or click to select"}
             </p>
-            <p className="text-sm text-gray-400">
-              Only PDF files are accepted
-            </p>
+            <p className="text-sm text-gray-400">Only PDF files are accepted</p>
 
             {selectedFile && (
-              <p className="text-sm text-green-400 mt-2">
-                Selected file: {selectedFile.name}
-              </p>
+              <div className="flex items-center gap-2">
+                <p className="text-sm text-green-400">
+                  Selected file: {selectedFile.name}
+                </p>
+                <FaRegTrashAlt className="text-sm" onClick={removeFile}/>
+              </div>
             )}
           </div>
         </section>

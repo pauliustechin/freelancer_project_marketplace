@@ -2,18 +2,18 @@ import DatePicker from "react-datepicker";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import "react-datepicker/dist/react-datepicker.css";
 
-const MyDatePicker = ({ onChange, value, placeholder, minDate, disabled }) => {
+const MyDatePicker = ({ onChange, value, placeholder, minDate, disabled, setDate, theme }) => {
 
 
   return (
     <div className="relative w-full">
       <DatePicker
         selected={value || null}
-        onChange={onChange}
+        onChange={onChange ? onChange : (newDate) => setDate(newDate)}
         minDate={minDate}
         disabled={disabled}
-        dateFormat="MM/dd/yyyy"
-        className="w-full bg-slate-800 text-white p-2 pl-10 border border-gray-600 rounded-xl focus:outline-none"
+        dateFormat="yyyy-MM-dd"
+        className={`w-full p-2 pl-10 border border-gray-400 rounded-xl focus:outline-none ${theme}`}
         placeholderText={placeholder || "Select a date"}
         wrapperClassName="w-full"
       />

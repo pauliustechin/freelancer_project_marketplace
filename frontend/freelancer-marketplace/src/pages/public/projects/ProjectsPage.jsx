@@ -1,38 +1,42 @@
 import useProjectsStore from "../../../store/projectsStore";
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
 import MyPagination from "../../../components/shared/MyPagination";
-import MyFiltering from "../../../components/shared/MyFiltering";
 import ProjectCard from "./ProjectCard";
-import { useState } from "react";
+import { useEffect } from "react";
 import Header from "../../../components/shared/Header";
 import Footer from "../../../components/shared/Footer";
+import ProjectFilter from "./ProjectFilter";
 
 const ProjectsPage = () => {
-  
-  const { projects } = useProjectsStore((state) => state);
-  const [currentProjectId, setCurrentProjectId] = useState(null);
+  const { projects, fetchProjects } = useProjectsStore((state) => state);
+  const location = useLocation();
+  const currentProjectId = Number(location.pathname.split("/").pop());
+  const project = projects.find((pr) => pr.projectId === currentProjectId);
+
+  useEffect(() => {
+    fetchProjects(location.search);
+  }, [location.search, fetchProjects]);
 
   return (
     <>
-      <Header></Header>
-      <main className="flexitems-center p-8 gap-8 flex">
+      <Header />
+      <main className="flex items-start p-8 gap-8">
         <div className="w-[60%]">
-          <MyFiltering></MyFiltering>
+          <ProjectFilter currentProjectId={currentProjectId}></ProjectFilter>
           <div className="flex flex-col gap-4 justify-between w-full">
-            {projects.slice(0, 3).map((project) => (
+            {projects?.map((project) => (
               <ProjectCard
                 key={project.projectId}
                 project={project}
-                styling={`width-full ${currentProjectId === project.projectId && "outline-3 outline-slate-600"}`}
-                setCurrentProjectId={setCurrentProjectId}
+                styling={`width-full ${currentProjectId === project.projectId && "outline-3 outline-cyan-600"}`}
               ></ProjectCard>
             ))}
           </div>
           <MyPagination></MyPagination>
         </div>
-        <Outlet></Outlet>
+        {project && <Outlet context={project}></Outlet>}
       </main>
-      <Footer></Footer>
+      <Footer />
     </>
   );
 };

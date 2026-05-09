@@ -1,17 +1,17 @@
-import { useParams } from "react-router";
-import useProjectsStore from "../../../store/projectsStore";
 import PlaceBidModal from "./PlaceBidModal";
 import { useState } from "react";
 import useUsersStore from "../../../store/usersStore";
 import { useNavigate } from "react-router";
 import { FaClockRotateLeft } from "react-icons/fa6";
 import { FaPeopleGroup } from "react-icons/fa6";
+import { useOutletContext } from "react-router";
 
 const ProjectInfo = () => {
-  const { projectId } = useParams("id");
-  const { projects } = useProjectsStore();
-  const project = projects.find((pr) => pr.projectId === Number(projectId));
-  const { projectName, description } = project;
+
+  const project = useOutletContext();
+  const projectName = project?.projectName;
+  const description = project?.description;
+
   const [open, setOpen] = useState(false);
   const { user } = useUsersStore((state) => state);
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ const ProjectInfo = () => {
   };
 
   return (
-    <aside className="h-full w-[40%] p-8">
+    <aside className="h-full w-[40%] p-8 mt-28">
       <div
         className="text-start text-2xl font-bold"
         onClick={handleOpen}
@@ -60,7 +60,7 @@ const ProjectInfo = () => {
             </div>
           </div>
         </div>
-        <pc className="font-bold">Project Description</pc>
+        <p className="font-bold">Project Description</p>
         <p>{description}</p>
         <hr className="border-gray-200" />
         <div>
@@ -89,7 +89,10 @@ const ProjectInfo = () => {
                 Sign in to Submit a Proposal
               </button>
               <p className="text-gray-400">
-                Don't have an account? <span className="underline text-slate-700 font-bold">Sign up</span>
+                Don't have an account?{" "}
+                <span className="underline text-slate-700 font-bold">
+                  Sign up
+                </span>
               </p>
             </>
           )}

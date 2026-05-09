@@ -8,9 +8,9 @@ const useProjectsStore = create(
     projects: [],
     clientProjects: [],
 
-    fetchProjects: async () => {
+    fetchProjects: async (filterParams) => {
       try {
-        const { data } = await api.get(`/projects`);
+        const { data } = await api.get(`/projects${filterParams ? filterParams : ""}`);
         set(() => ({ projects: [...data.content] }));
       } catch (error) {
         console.log(error);
