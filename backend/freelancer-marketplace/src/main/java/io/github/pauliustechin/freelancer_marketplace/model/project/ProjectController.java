@@ -58,6 +58,7 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @PreAuthorize("hasRole('CLIENT')")
     @PutMapping("/projects/{projectId}")
     public ResponseEntity<ProjectResponse> updateProject(@PathVariable Long projectId,
                                                          @Valid @RequestBody UpdateProjectRequest updateRequest) {
@@ -68,6 +69,7 @@ public class ProjectController {
 
     }
 
+    @PreAuthorize("hasRole('CLIENT')")
     @DeleteMapping("/projects/{projectId}")
     public ResponseEntity<ProjectResponse> deleteProject(@PathVariable Long projectId) {
 

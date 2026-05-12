@@ -135,11 +135,12 @@ public class ProjectServiceImpl implements ProjectService{
 
         ProjectStatus projectStatus = project.getProjectStatus();
         ProjectStatus updateStatus = updateRequest.getProjectStatus();
-        if(projectStatus.equals(ProjectStatus.COMPLETED) || projectStatus.equals(ProjectStatus.CANCELED)) {
+
+        if(!projectStatus.equals(ProjectStatus.OPEN)) {
             throw new IllegalProjectStateException(projectId, projectStatus);
-        } else if(projectStatus.equals(ProjectStatus.IN_PROGRESS) && updateStatus.equals(ProjectStatus.CANCELED)) {
-            throw new IllegalProjectStateException(projectId, projectStatus, updateStatus);
-        } else if(projectStatus.equals(ProjectStatus.OPEN) && !(updateStatus.equals(ProjectStatus.CANCELED))) {
+        }
+
+        if(!(updateStatus.equals(ProjectStatus.CANCELED)) && !(updateStatus.equals(ProjectStatus.OPEN)) ) {
             throw new IllegalProjectStateException();
         }
 
@@ -151,11 +152,11 @@ public class ProjectServiceImpl implements ProjectService{
         project.setProjectStatus(updateRequest.getProjectStatus());
         project.setUpdatedAt(Instant.now());
 
-        Project savedProject = projectRepository.save(project);
+        Project updatedProject = projectRepository.save(project);
 
-        logger.info("Project updated successfully with projectId={}", savedProject.getId());
+        logger.info("Project updated successfully with projectId={}", updatedProject.getId());
 
-        return projectMapper.projectToProjectResponse(savedProject);
+        return projectMapper.projectToProjectResponse(updatedProject);
     }
 
     @Transactional

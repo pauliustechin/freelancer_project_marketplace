@@ -4,14 +4,10 @@ import io.github.pauliustechin.freelancer_marketplace.model.project.ProjectStatu
 
 public class IllegalProjectStateException extends RuntimeException {
     public IllegalProjectStateException(Long projectId, ProjectStatus status) {
-        super("Project with id: " + projectId + " is " + status + " and cannot be updated.");
-    }
-
-    public IllegalProjectStateException(Long projectId, ProjectStatus projectStatus, ProjectStatus updateStatus) {
-        super("Project with id: " + projectId + " is " + projectStatus + " and cannot be set to " + updateStatus + ".");
+        super("Project with id: " + projectId + " is " + status + " and cannot be updated anymore.");
     }
 
     public IllegalProjectStateException() {
-        super("Client can only cancel the project.");
+        super("Project status can be set to CANCELED only.");
     }
 }
