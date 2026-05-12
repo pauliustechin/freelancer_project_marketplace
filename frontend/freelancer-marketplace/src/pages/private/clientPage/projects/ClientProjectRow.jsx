@@ -1,13 +1,13 @@
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router";
 import { MdEdit } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
 
 const ClientProjectRow = ({ project, index }) => {
-  const { projectName, description, projectStatus } = project;
+  const { projectId, projectName, description, projectStatus } = project;
   const navigate = useNavigate();
 
   const handleOpen = () => {
-    navigate(`/client/projects/${project.projectId}`);
+    navigate(`/client/projects/${projectId}`);
   };
 
   return (
@@ -33,7 +33,10 @@ const ClientProjectRow = ({ project, index }) => {
           <p className="bg-gray-300/20 rounded-4xl max-fit p-1">12</p>
         </td>
         <td className="flex gap-2 items-center justify-end">
-          <MdEdit />
+          <Link to={`/client/edit-project/${projectId}`} >
+            <MdEdit />
+          </Link>
+
           <MdDeleteOutline />
           <button
             className="btn btn-primary text-cyan-500 font-bold bg-cyan-400/15 p-2 rounded-xl w-fit border-none outline-none"

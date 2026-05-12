@@ -14,10 +14,12 @@ const ProjectInfo = () => {
 
   const [open, setOpen] = useState(false);
   const { user } = useUsersStore((state) => state);
+  const isFreelancer = user.roles?.includes("ROLE_SELLER");
+  const isLoggedIn = !!user.id;
   const navigate = useNavigate();
 
   const handleOpen = () => {
-    if (!user.userId) {
+    if (!isLoggedIn) {
       navigate("/login");
     }
     setOpen(true);
@@ -73,14 +75,14 @@ const ProjectInfo = () => {
           </div>
         </div>
         <div className="flex flex-col items-center gap-2">
-          {user.userId ? (
+          {isFreelancer ? (
             <button
               className="mt-auto btn btn-primary w-full self-end bg-slate-700 text-white"
               onClick={handleOpen}
             >
               Submit a proposal
             </button>
-          ) : (
+          ) : !isLoggedIn ? (
             <>
               <button
                 className="mt-auto btn btn-primary w-full self-end bg-slate-700 text-white"
@@ -95,7 +97,7 @@ const ProjectInfo = () => {
                 </span>
               </p>
             </>
-          )}
+          ) : null}
         </div>
       </div>
       <PlaceBidModal open={open} setOpen={setOpen}></PlaceBidModal>

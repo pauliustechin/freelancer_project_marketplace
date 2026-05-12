@@ -27,6 +27,31 @@ const useProjectsStore = create(
       }
     },
 
+    createProject: async (formData, userId, navigate) => {
+      try {
+        const { data } = await api.post(`/users/${userId}/projects`, formData, { withCredentials : true })
+        console.log(data)
+        set((state) => ({ projects : [data, ...state.projects]}));
+        navigate("/client")
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    editProject: async (formData, projectId, navigate) => {
+      try {
+        const { data } = await api.put(`/projects/${projectId}`, formData, { withCredentials: true });
+        set((state) => ({ projects : state.projects.map(project => 
+          project.id === projectId
+          ? { ...project, ...data}
+          : project),
+        }))
+        navigate("/client")
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
   })),
 );
 

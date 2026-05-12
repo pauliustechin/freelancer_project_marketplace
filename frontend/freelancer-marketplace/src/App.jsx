@@ -13,6 +13,7 @@ import ProjectBidsTable from "./pages/private/clientPage/projectBids/ProjectBids
 import ClientDashboard from "./pages/private/clientPage/dashboard/ClientDashboard";
 import CreateProject from "./pages/private/clientPage/projects/CreateProject";
 import FreelancerDashboard from "./pages/private/freelancerPage/freelancerDashboard/FreelancerDashboard";
+import EditProject from "./pages/private/clientPage/projects/EditProject";
 import "./App.css";
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
               <Route path="" element={<ClientDashboard/>}/>
               <Route path="projects/:projectId" element={<ProjectBidsTable />}/>
               <Route path="create-project" element={<CreateProject />}/>
+              <Route path="edit-project/:projectId" element={<EditProject />}/>
             </Route>
           </Route>
 

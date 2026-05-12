@@ -13,7 +13,7 @@ const HomePage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchProjects("?size=3");
+    fetchProjects();
   }, [fetchProjects]);
 
   return (
@@ -121,7 +121,7 @@ const HomePage = () => {
           </div>
 
           <div className="flex h-fit gap-4 justify-between">
-            {projects.map((project) => (
+            {projects.splice(0, 3).map((project) => (
               <ProjectCard
                 key={project.projectId}
                 project={project}
