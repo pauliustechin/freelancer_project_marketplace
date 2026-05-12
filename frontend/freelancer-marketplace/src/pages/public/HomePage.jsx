@@ -63,7 +63,6 @@ const HomePage = () => {
           </div>
 
           <div
-            div
             className="w-50 max-w-sm rounded-2xl bg-slate-700 p-6 shadow-xl border border-gray-100"
           >
             <div className="flex items-center justify-between h-40">
@@ -75,7 +74,6 @@ const HomePage = () => {
           </div>
 
           <div
-            div
             className="w-50 max-w-sm rounded-2xl bg-gray-300 p-6 shadow-xl border border-gray-100"
           >
             <div className="flex items-center justify-between h-40">
@@ -89,7 +87,6 @@ const HomePage = () => {
           </div>
 
           <div
-            div
             className="w-50 max-w-sm rounded-2xl bg-cyan-400 p-6 shadow-xl border border-gray-100"
           >
             <div className="flex items-center justify-between h-40">

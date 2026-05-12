@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import Header from "../../../components/shared/Header";
 import Footer from "../../../components/shared/Footer";
 import ProjectFilter from "./ProjectFilter";
-import useUsersStore from "../../../store/usersStore";
 
 const ProjectsPage = () => {
   const { projects, fetchProjects } = useProjectsStore((state) => state);

@@ -20,7 +20,7 @@ const useProjectsStore = create(
 
     fetchClientProjects: async (clientId) => {
       try {
-        const { data } = await api.get(`/users/${clientId}/projects`, {withCredentials: true});
+        const { data } = await api.get(`/users/${clientId}/projects`, { withCredentials: true });
         set(() => ({ clientProjects: [...data] }));
       } catch (error) {
         console.log(error);
@@ -29,9 +29,9 @@ const useProjectsStore = create(
 
     createProject: async (formData, userId, navigate) => {
       try {
-        const { data } = await api.post(`/users/${userId}/projects`, formData, { withCredentials : true })
+        const { data } = await api.post(`/users/${userId}/projects`, formData, { withCredentials: true })
         console.log(data)
-        set((state) => ({ projects : [data, ...state.projects]}));
+        set((state) => ({ projects: [data, ...state.projects] }));
         navigate("/client")
       } catch (error) {
         console.log(error);
@@ -41,14 +41,27 @@ const useProjectsStore = create(
     editProject: async (formData, projectId, navigate) => {
       try {
         const { data } = await api.put(`/projects/${projectId}`, formData, { withCredentials: true });
-        set((state) => ({ projects : state.projects.map(project => 
-          project.id === projectId
-          ? { ...project, ...data}
-          : project),
+        set((state) => ({
+          clientProjects: state.clientProjects.map(project =>
+            project.projectId === projectId
+              ? { ...project, ...data }
+              : project),
         }))
         navigate("/client")
       } catch (error) {
         console.log(error);
+      }
+    },
+
+    deleteProject: async (projectId) => {
+      try {
+        await api.delete(`/projects/${projectId}`, { withCredentials: true });
+        set((state) => ({
+          clientProjects: state.clientProjects.filter(p => p.projectId !== projectId)
+        }));
+
+      } catch (error) {
+        console.log(error)
       }
     }
 

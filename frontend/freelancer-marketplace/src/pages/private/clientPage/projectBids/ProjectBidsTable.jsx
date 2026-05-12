@@ -4,38 +4,34 @@ import ClientProjectBid from "./ProjectBidRow";
 import { useParams, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import ConfirmationModal from "../../../../components/shared/ConfirmationModal";
-import { ConfirmationStatus } from "../../../../enums/confirmationStatus";
+import { BidStatus } from "../../../../enums/bidStatus";
 
 const ProjectBidsTable = () => {
+
   const { projectId } = useParams();
+  const navigate = useNavigate();
+  const { register, watch, handleSubmit } = useForm();
+  const selectedBid = watch("selectedBid");
+  const [modal, setModal] = useState(null);
+
   const { fetchBidsByProject, projectBids, acceptBid } = useBidsStore(
     (state) => state,
   );
 
-  const navigate = useNavigate();
-  const { register, watch, handleSubmit } = useForm();
-  const selectedBid = watch("selectedBid");
+  const handleConfirm = () => {
 
-  const [open, setOpen] = useState(false);
-  const [message, setMessage] = useState("");
-  const [status, setStatus] = useState(ConfirmationStatus.WAITING);
-
-  const onSubmit = () => {
     const bid = projectBids.find((b) => b.bidId === Number(selectedBid));
-    if (!bid) return;
-    setMessage(
-      `Are you sure you want to accept bid from ${bid.freelancer.firstName + ", amount: " + bid.amount} $`,
-    );
-    setOpen(true);
-  };
 
-  useEffect(() => {
-    if (status === ConfirmationStatus.ACCEPTED) {
+    setModal({
+      title: "Confirm project",
+      message: `Are you sure you want to accept bid from ${bid.freelancer.firstName + ", amount: " + bid.amount} $`,
+      confirmButton: "Accept",
+      onConfirm: () =>
       acceptBid(selectedBid, navigate, {
-        status: "ACCEPTED",
-      });
-    }
-  }, [status, acceptBid, navigate, selectedBid]);
+        status: BidStatus.ACCEPTED,
+      }),
+    });
+  };
 
   useEffect(() => {
     fetchBidsByProject(projectId);
@@ -44,7 +40,7 @@ const ProjectBidsTable = () => {
   return (
     <div className="overflow-x-auto text-slate-200 bg-slate-400 min-h-screen p-8">
       <h1 className="text-start text-2xl font-bold p-2">Project bids</h1>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
+      <form onSubmit={handleSubmit(handleConfirm)} className="flex flex-col">
         <div className="modal-action flex flex-col">
           <div className="overflow-x-auto">
             <table className="table bg-slate-700">
@@ -84,12 +80,8 @@ const ProjectBidsTable = () => {
         </button>
       </form>
       <ConfirmationModal
-        open={open}
-        setOpen={setOpen}
-        setStatus={setStatus}
-        message={message}
-        confirmButton={"Accept bid"}
-        title={"Accept a bid"}
+        modal={modal}
+        setModal={setModal}
       ></ConfirmationModal>
     </div>
   );

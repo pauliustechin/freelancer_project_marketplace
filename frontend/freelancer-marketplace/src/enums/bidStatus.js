@@ -1,0 +1,5 @@
+export const BidStatus = {
+  ACCEPTED: "ACCEPTED",
+  CONFIRMED: "CONFIRMED",
+  CANCELED: "CANCELED",
+};

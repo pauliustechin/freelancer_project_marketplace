@@ -1,53 +1,49 @@
-import { useRef } from "react";
-import { useEffect } from "react";
-import { ConfirmationStatus } from "../../enums/confirmationStatus";
 import { IoClose } from "react-icons/io5";
 
-const ConfirmationModal = ({
-  open,
-  setOpen,
-  title,
-  message,
-  setStatus,
-  confirmButton,
-  rejectButton,
-}) => {
-  const modalRef = useRef(null);
+const ConfirmationModal = ({ modal, setModal }) => {
 
-  useEffect(() => {
-    if (open) {
-      modalRef.current?.showModal();
-    }
-  }, [open]);
+  if (!modal) return null;
+
+  const { title, message, rejectButton, confirmButton } = modal || {};
+
+  const handleClose = () => {
+    setModal(null);
+  };
+
+  const handleConfirm = () => {
+     modal.onConfirm?.();
+    setModal(null);
+  };
+
+  const handleReject = async () => {
+    await modal.onReject?.();
+    setModal(null);
+  };
 
   return (
     <>
-      <dialog ref={modalRef} className="modal text-center">
+      <dialog open className="modal text-center">
         <div className="modal-box p-0">
-          <div className="bg-gray-200">
+          <div className="bg-slate-400">
             <div className="flex justify-between items-center p-4">
-              <h3 className="font-medium text-slate-800">{title}</h3>
+              <h3 className="font-bold text-slate-800">{title}</h3>
               <IoClose
-                className="text-2xl text-gray-400 cursor-pointer"
-                onClick={() => {
-                  setOpen(false);
-                  modalRef.current?.close();
-                }}
+                className="text-2xl text-gray-200 cursor-pointer"
+                onClick={handleClose}
               />
             </div>
             <hr className="text-gray-300" />
           </div>
           <div className="modal-action flex flex-col p-4 m-0">
-            <h3 className="font-medium text-lg text-slate-800">{message}</h3>
+            <h3 className="font-medium text-lg text-slate-800">
+              {message}
+            </h3>
 
             <div className="flex gap-2 font-bold text-white justify-end mt-6">
               <button
                 type="button"
                 className="my-btn-secondary"
-                onClick={() => {
-                  setOpen(false);
-                  modalRef.current?.close();
-                }}
+                onClick={handleClose}
               >
                 Cancel
               </button>
@@ -56,11 +52,7 @@ const ConfirmationModal = ({
                 <button
                   type="submit"
                   className="btn btn-primary w-20 bg-rose-400 border-none"
-                  onClick={() => {
-                    setStatus(ConfirmationStatus.REJECTED);
-                    setOpen(false);
-                    modalRef.current?.close();
-                  }}
+                  onClick={handleReject}
                 >
                   {rejectButton}
                 </button>
@@ -70,11 +62,7 @@ const ConfirmationModal = ({
                 <button
                   type="submit"
                   className="my-btn-primary w-fit bg-cyan-600 text-white "
-                  onClick={() => {
-                    setStatus(ConfirmationStatus.ACCEPTED);
-                    setOpen(false);
-                    modalRef.current?.close();
-                  }}
+                  onClick={handleConfirm}
                 >
                   {confirmButton}
                 </button>

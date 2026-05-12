@@ -38,7 +38,7 @@ const SideBar = ({ role }) => {
                   <NavLink
                     end
                     className={({ isActive }) =>
-                      isActive && "text-white border-b-2 border-cyan-600"
+                      isActive ? "text-white border-b-2 border-cyan-600" : ""
                     }
                     to={item.href}
                   >

@@ -1,14 +1,16 @@
 import ClientProject from "./ClientProjectRow";
 import useProjectsStore from "../../../../store/projectsStore";
 import useUsersStore from "../../../../store/usersStore";
-import { useEffect } from "react";
+import ConfirmationModal from "../../../../components/shared/ConfirmationModal";
+import { useEffect, useState } from "react";
 import { Link } from "react-router";
 
 const ClientProjectTable = () => {
+
+  const [modal, setModal] = useState(null);
   const { user } = useUsersStore((state) => state);
-  const { fetchClientProjects, clientProjects } = useProjectsStore(
-    (state) => state,
-  );
+  const { fetchClientProjects, clientProjects, deleteProject } =
+    useProjectsStore((state) => state);
 
   useEffect(() => {
     fetchClientProjects(user.userId);
@@ -45,10 +47,18 @@ const ClientProjectTable = () => {
               key={project.projectId}
               project={project}
               index={index + 1}
+              deleteProject={deleteProject}
+              setModal={setModal}
             ></ClientProject>
           ))}
         </tbody>
       </table>
+      {modal && (
+        <ConfirmationModal
+          modal={modal}
+          setModal={setModal}
+        ></ConfirmationModal>
+      )}
     </div>
   );
 };

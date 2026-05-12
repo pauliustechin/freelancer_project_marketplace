@@ -1,20 +1,34 @@
 import { MdEdit } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
+import { BidStatus } from "../../../../enums/bidStatus";
 
-const FreelancerBidRow = ({ bid, index, setMessage, setBid, setOpen }) => {
+const FreelancerBidRow = ({ bid, index, updateBid, setModal }) => {
+
   const {
+    bidId,
     amount,
     bidStatus,
     projectSummary: { projectName, projectStart },
-  } = bid;
+  } = bid || {};
 
+  const handleConfirm = () => {
+    setModal({
+      title: "Confirm project",
+      message: "Are you sure you want to accept this project?",
+      confirmButton: "Accept",
+      rejectButton: "Reject",
+      onConfirm: () =>
+        updateBid(bidId, {
+          amount: bid.amount,
+          status: BidStatus.CONFIRMED,
+        }),
 
-  const handleOpen = () => {
-    setMessage(
-      "Are you sure you want to confirm your bid? Once confirmed, this action cannot be undone.",
-    );
-    setBid(bid);
-    setOpen(true);
+      onReject: () =>
+        updateBid(bidId, {
+          amount: bid.amount,
+          status: BidStatus.CANCELED,
+        }),
+    });
   };
 
   return (
@@ -26,7 +40,6 @@ const FreelancerBidRow = ({ bid, index, setMessage, setBid, setOpen }) => {
         </td>
         <td className="flex justify-center">${amount}</td>
         <td>
-          {" "}
           <div className="text-cyan-500 font-bold bg-cyan-400/15 p-2 rounded-xl w-fit">
             {bidStatus}
           </div>
@@ -35,16 +48,16 @@ const FreelancerBidRow = ({ bid, index, setMessage, setBid, setOpen }) => {
         <td className="flex gap-2 items-center justify-end">
           <MdEdit />
           <MdDeleteOutline />
-          <td>
+          <div>
             {bidStatus === "PENDING" && (
               <button
                 className={`btn btn-primary text-cyan-500 font-bold bg-cyan-400/15 p-2 rounded-xl w-fit border-none outline-none`}
-                onClick={handleOpen}
+                onClick={handleConfirm}
               >
                 CONFIRM
               </button>
             )}
-          </td>
+          </div>
         </td>
       </tr>
     </>

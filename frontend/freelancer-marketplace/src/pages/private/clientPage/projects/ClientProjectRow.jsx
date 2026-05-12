@@ -2,12 +2,23 @@ import { useNavigate, Link } from "react-router";
 import { MdEdit } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
 
-const ClientProjectRow = ({ project, index }) => {
+
+const ClientProjectRow = ({ project, index, deleteProject, setModal }) => {
   const { projectId, projectName, description, projectStatus } = project;
+  
   const navigate = useNavigate();
 
-  const handleOpen = () => {
+  const openProjectBids = () => {
     navigate(`/client/projects/${projectId}`);
+  };
+
+  const handleDelete = () => {
+    setModal({
+      title: "Delete project",
+      message: "Are you sure you want to delete this project?",
+      confirmButton: "Delete",
+      onConfirm: () => deleteProject(projectId),
+    });
   };
 
   return (
@@ -33,14 +44,15 @@ const ClientProjectRow = ({ project, index }) => {
           <p className="bg-gray-300/20 rounded-4xl max-fit p-1">12</p>
         </td>
         <td className="flex gap-2 items-center justify-end">
-          <Link to={`/client/edit-project/${projectId}`} >
+          <Link to={`/client/edit-project/${projectId}`}>
             <MdEdit />
           </Link>
-
-          <MdDeleteOutline />
+          <div>
+            <MdDeleteOutline onClick={handleDelete} />
+          </div>
           <button
             className="btn btn-primary text-cyan-500 font-bold bg-cyan-400/15 p-2 rounded-xl w-fit border-none outline-none"
-            onClick={handleOpen}
+            onClick={openProjectBids}
           >
             View bids
           </button>
