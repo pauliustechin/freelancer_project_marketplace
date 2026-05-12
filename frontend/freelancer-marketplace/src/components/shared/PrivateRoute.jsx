@@ -3,15 +3,11 @@ import { Navigate, Outlet } from "react-router";
 
 const PrivateRoute = ({ publicPage = false, freelancerOnly = false, clientOnly = false, adminOnly = false }) => {
 
-  const { user, isLoading } = useUsersStore(state => state);
+  const { user } = useUsersStore(state => state);
   const { username, roles } = user;
   const isFreelancer = roles?.includes("ROLE_SELLER");
   const isClient = roles?.includes("ROLE_CLIENT");
   const isAdmin = roles?.includes("ROLE_ADMIN");
-
-  if(isLoading) {
-    return <div>Is loading...</div>
-  }
 
   if(publicPage) {
     return username ? <Navigate to="/" /> : < Outlet />;

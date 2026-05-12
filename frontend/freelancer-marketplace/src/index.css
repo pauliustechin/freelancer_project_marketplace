@@ -23,7 +23,6 @@ button:disabled {
   opacity: 0.6;
 }
 
-
 @layer components {
   .my-error {
     color: #ac1f1f;
@@ -31,11 +30,27 @@ button:disabled {
     margin-bottom: 5px;
   }
 
-  .my-button {
-    border: 1px solid gray;
-    padding: 5px 10px;
-    border-radius: 10px;
-    font-weight: bold;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  .input-dark {
+    @apply bg-slate-800 text-slate-300;
+  }
+
+  .input-light {
+    @apply text-slate-900 ;
+  }
+
+  .my-btn-primary {
+    @apply btn btn-primary border-none;
+  }
+
+  .my-btn-secondary {
+    @apply btn btn-secondary bg-white border-slate-400 shadow-none text-slate-800;
+  }
+}
+
+@layer utilities {
+  .no-spinner::-webkit-outer-spin-button,
+  .no-spinner::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 }

@@ -35,7 +35,7 @@ const ProjectBidsTable = () => {
         status: "ACCEPTED",
       });
     }
-  }, [status]);
+  }, [status, acceptBid, navigate, selectedBid]);
 
   useEffect(() => {
     fetchBidsByProject(projectId);
@@ -88,7 +88,8 @@ const ProjectBidsTable = () => {
         setOpen={setOpen}
         setStatus={setStatus}
         message={message}
-        confirmButton={"ACCEPT"}
+        confirmButton={"Accept bid"}
+        title={"Accept a bid"}
       ></ConfirmationModal>
     </div>
   );

@@ -53,6 +53,7 @@ const LoginPage = () => {
             required
             min={3}
             errors={errors}
+            theme={"input-dark"}
           />
 
           <InputField
@@ -64,6 +65,7 @@ const LoginPage = () => {
             required
             min={8}
             errors={errors}
+            theme={"input-dark"}
           />
 
           <button

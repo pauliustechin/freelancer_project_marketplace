@@ -16,7 +16,6 @@ const ProjectsPage = () => {
 
   useEffect(() => {
     fetchProjects(location.search);
-    console.log("fetching projects")
   }, [location.search, fetchProjects]);
 
   return (

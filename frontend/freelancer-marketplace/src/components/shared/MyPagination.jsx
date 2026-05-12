@@ -11,7 +11,6 @@ export default function MyPagination() {
   const location = useLocation();
   const navigate = useNavigate();
 
-
   const params = new URLSearchParams(location.search);
   params.set("page", page - 1);
   navigate(`?${params.toString()}`)

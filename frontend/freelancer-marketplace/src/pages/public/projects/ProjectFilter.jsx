@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import MyDatePicker from "../../../components/shared/MyDatePicker";
 
 const ProjectFilter = ({ setPage }) => {
+  
   const navigate = useNavigate();
 
   const [sortOrder, setSortOrder] = useState("");
@@ -14,7 +15,6 @@ const ProjectFilter = ({ setPage }) => {
 
   useEffect(() => {
     const params = new URLSearchParams();
-    console.log("render filter");
 
     if (pageSize) {
       params.set("size", pageSize);

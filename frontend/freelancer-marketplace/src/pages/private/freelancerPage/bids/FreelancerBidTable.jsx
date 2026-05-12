@@ -40,7 +40,7 @@ const FreelancerBidTable = () => {
       }
     };
     updateBidStatus();
-  }, [status]);
+  }, [status, bid.amount, bid.bidId, fetchFreelancerBids, updateBid, user.userId]);
 
   useEffect(() => {
     fetchFreelancerBids(user.userId);
@@ -81,6 +81,7 @@ const FreelancerBidTable = () => {
           confirmButton={"Confirm"}
           rejectButton={"Reject"}
           setStatus={setStatus}
+          title={"Confirm bid"}
         ></ConfirmationModal>
       </div>
     </>

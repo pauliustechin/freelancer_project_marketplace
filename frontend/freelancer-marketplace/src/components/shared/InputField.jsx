@@ -8,6 +8,7 @@ const InputField = ({
   min,
   max,
   placeholder,
+  theme
 }) => {
   return (
     <div>
@@ -16,7 +17,7 @@ const InputField = ({
         <input
           type={type}
           id={id}
-          className="m-1 rounded-lg p-2 bg-slate-800 w-full text-sm text-slate-300"
+          className={`m-1 rounded-lg p-2 w-full text-sm ${theme}`}
           placeholder={placeholder}
           {...register(id, {
             required: required
