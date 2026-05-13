@@ -15,7 +15,7 @@ const ProjectInfo = () => {
   const [open, setOpen] = useState(false);
   const { user } = useUsersStore((state) => state);
   const isFreelancer = user.roles?.includes("ROLE_SELLER");
-  const isLoggedIn = !!user.id;
+  const isLoggedIn = !!user.userId;
   const navigate = useNavigate();
 
   const handleOpen = () => {

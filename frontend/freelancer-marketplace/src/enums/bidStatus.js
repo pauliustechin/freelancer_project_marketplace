@@ -1,5 +1,8 @@
 export const BidStatus = {
+  OPEN: "OPEN",
+  PENDING: "PENDING",
   ACCEPTED: "ACCEPTED",
   CONFIRMED: "CONFIRMED",
   CANCELED: "CANCELED",
+  
 };

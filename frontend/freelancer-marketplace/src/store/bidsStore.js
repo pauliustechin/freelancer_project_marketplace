@@ -63,6 +63,15 @@ const useBidsStore = create(
       }
     },
 
+    deleteBid: async (bidId) => {
+      try {
+        await api.delete(`/bids/${bidId}`, { withCredentials: true });
+        set((state) => ({ freelancerBids: state.freelancerBids.filter(bid => bid.bidId !== bidId) }));
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
   })),
 );
 

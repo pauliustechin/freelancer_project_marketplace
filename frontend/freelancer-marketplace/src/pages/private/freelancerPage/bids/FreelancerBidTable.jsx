@@ -2,17 +2,17 @@ import useBidsStore from "../../../../store/bidsStore";
 import useUsersStore from "../../../../store/usersStore";
 import FreelancerBidRow from "./FreelancerBidRow";
 import ConfirmationModal from "../../../../components/shared/ConfirmationModal";
+import EditBidModal from "./EditBidModal";
 import { useState, useEffect } from "react";
 
 const FreelancerBidTable = () => {
-  
   const { user } = useUsersStore((state) => state);
   const { fetchFreelancerBids, freelancerBids } = useBidsStore(
     (state) => state,
   );
 
-  const { updateBid } = useBidsStore((state) => state);
-  const [modal, setModal] = useState(null);
+  const [confirmModal, setConfirmModal] = useState(null);
+  const [editModal, setEditModal] = useState(null);
 
   useEffect(() => {
     fetchFreelancerBids(user.userId);
@@ -39,16 +39,14 @@ const FreelancerBidTable = () => {
                 key={bid.bidId}
                 bid={bid}
                 index={index}
-                setModal={setModal}
-                updateBid={updateBid}
+                setConfirmModal={setConfirmModal}
+                setEditModal={setEditModal}
               ></FreelancerBidRow>
             ))}
           </tbody>
         </table>
-        <ConfirmationModal
-          modal={modal}
-          setModal={setModal}
-        ></ConfirmationModal>
+        <ConfirmationModal modal={confirmModal} setModal={setConfirmModal} />
+        <EditBidModal editModal={editModal} setEditModal={setEditModal} />
       </div>
     </>
   );

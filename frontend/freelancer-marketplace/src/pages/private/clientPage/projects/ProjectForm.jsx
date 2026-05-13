@@ -5,7 +5,6 @@ import MyDatePicker from "../../../../components/shared/MyDatePicker";
 import { useEffect } from "react";
 
 const ProjectForm = ({ onSubmit, defaultValues }) => {
-
   const {
     register,
     handleSubmit,
@@ -18,17 +17,14 @@ const ProjectForm = ({ onSubmit, defaultValues }) => {
   const startDate = watch("projectStart");
 
   useEffect(() => {
-    if(defaultValues) {
+    if (defaultValues) {
       reset(defaultValues);
     }
-  }, [defaultValues, reset])
+  }, [defaultValues, reset]);
 
   return (
     <div className="bg-slate-700 p-8 rounded-xl">
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="w-full flex flex-col gap-4 "
-      >
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full flex flex-col gap-4 ">
         <div className="flex flex-col text-start">
           <label htmlFor="projectName" className="text-slate-300">
             Project Title
@@ -121,12 +117,11 @@ const ProjectForm = ({ onSubmit, defaultValues }) => {
           </label>
           <MyPdfDropzone></MyPdfDropzone>
         </div>
-
         <button
           type="submit"
           className="btn btn-primary bg-cyan-600 border-none w-fit self-end"
         >
-          Create Project
+          Edit Project
         </button>
       </form>
     </div>

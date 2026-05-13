@@ -24,9 +24,9 @@ const ConfirmationModal = ({ modal, setModal }) => {
     <>
       <dialog open className="modal text-center">
         <div className="modal-box p-0">
-          <div className="bg-slate-400">
+          <div className="bg-slate-500">
             <div className="flex justify-between items-center p-4">
-              <h3 className="font-bold text-slate-800">{title}</h3>
+              <h3 className="font-bold ">{title}</h3>
               <IoClose
                 className="text-2xl text-gray-200 cursor-pointer"
                 onClick={handleClose}

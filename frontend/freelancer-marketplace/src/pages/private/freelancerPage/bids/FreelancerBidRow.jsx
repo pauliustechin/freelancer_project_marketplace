@@ -1,8 +1,14 @@
 import { MdEdit } from "react-icons/md";
 import { MdDeleteOutline } from "react-icons/md";
 import { BidStatus } from "../../../../enums/bidStatus";
+import useBidsStore from "../../../../store/bidsStore";
 
-const FreelancerBidRow = ({ bid, index, updateBid, setModal }) => {
+const FreelancerBidRow = ({
+  bid,
+  index,
+  setConfirmModal,
+  setEditModal,
+}) => {
 
   const {
     bidId,
@@ -11,22 +17,51 @@ const FreelancerBidRow = ({ bid, index, updateBid, setModal }) => {
     projectSummary: { projectName, projectStart },
   } = bid || {};
 
+  const { updateBid, deleteBid } = useBidsStore((state) => state);
+
   const handleConfirm = () => {
-    setModal({
+    setConfirmModal({
       title: "Confirm project",
-      message: "Are you sure you want to accept this project?",
+      message: "Are you sure you want to confirm this project?",
       confirmButton: "Accept",
       rejectButton: "Reject",
       onConfirm: () =>
         updateBid(bidId, {
-          amount: bid.amount,
+          amount: amount,
           status: BidStatus.CONFIRMED,
         }),
 
       onReject: () =>
         updateBid(bidId, {
-          amount: bid.amount,
+          amount: amount,
           status: BidStatus.CANCELED,
+        }),
+    });
+  };
+
+  const handleEdit = () => {
+    setEditModal({
+      title: "Edit bid",
+      message: "Update bid amount",
+      confirmButton: "Edit",
+      bid: bid,
+      onConfirm: () =>
+        deleteBid(bidId, {
+          amount: amount,
+          status: BidStatus.OPEN,
+        }),
+    });
+  };
+
+  const handleDelete = () => {
+    setConfirmModal({
+      title: "Delete bid",
+      message: "Are you sure you want to delete a bid? ",
+      confirmButton: "Delete",
+      onConfirm: () =>
+        deleteBid(bidId, {
+          amount: amount,
+          status: BidStatus.OPEN,
         }),
     });
   };
@@ -46,10 +81,10 @@ const FreelancerBidRow = ({ bid, index, updateBid, setModal }) => {
         </td>
         <td>{projectStart}</td>
         <td className="flex gap-2 items-center justify-end">
-          <MdEdit />
-          <MdDeleteOutline />
+          <MdEdit onClick={handleEdit} />
+          <MdDeleteOutline onClick={handleDelete}/>
           <div>
-            {bidStatus === "PENDING" && (
+            {bidStatus === BidStatus.PENDING && (
               <button
                 className={`btn btn-primary text-cyan-500 font-bold bg-cyan-400/15 p-2 rounded-xl w-fit border-none outline-none`}
                 onClick={handleConfirm}
