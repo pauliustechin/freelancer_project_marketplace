@@ -20,4 +20,6 @@ public class ContractResponse {
 
     private BigDecimal escrowAmount;
 
+    private String projectName;
+
 }

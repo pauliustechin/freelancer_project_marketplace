@@ -1,6 +1,8 @@
 package io.github.pauliustechin.freelancer_marketplace.model.bid;
 
 import io.github.pauliustechin.freelancer_marketplace.model.bid.dto.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,8 @@ public class BidController {
 
     private final BidService bidService;
 
+    @Tag(name = "Freelancer APIs", description = "APIs for managing freelancer requests")
+    @Operation(summary = "Get all freelancer's bids")
     @PreAuthorize("hasRole('SELLER')")
     @GetMapping("/users/{userId}/bids")
     public ResponseEntity<BidListResponse> getFreelancerBids(@PathVariable Long userId) {
@@ -25,6 +29,8 @@ public class BidController {
         return ResponseEntity.ok().body(response);
     }
 
+    @Tag(name = "Client APIs", description = "APIs for managing client requests")
+    @Operation(summary = "Get client bid by project")
     @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/projects/{projectId}/bids")
     public ResponseEntity<ClientBidListResponse> getBidsByProject(@PathVariable Long projectId) {
@@ -34,6 +40,8 @@ public class BidController {
         return ResponseEntity.ok().body(response);
     }
 
+    @Tag(name = "Freelancer APIs")
+    @Operation(summary = "Create Bid")
     @PreAuthorize("hasRole('SELLER')")
     @PostMapping("/projects/{projectId}/bids")
     public ResponseEntity<BidResponse> createBid(@PathVariable Long projectId,
@@ -45,6 +53,8 @@ public class BidController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @Tag(name = "Freelancer APIs")
+    @Operation(summary = "Update Bid")
     @PreAuthorize("hasRole('SELLER')")
     @PutMapping("/bids/{bidId}")
     public ResponseEntity<BidResponse> updateBid(@PathVariable Long bidId,
@@ -55,6 +65,8 @@ public class BidController {
         return ResponseEntity.ok().body(response);
     }
 
+    @Tag(name = "Client APIs")
+    @Operation(summary = "Update bid status", description = "Client can only accept freelancer's bid.")
     @PreAuthorize("hasRole('CLIENT')")
     @PatchMapping("/bids/{bidId}")
     public ResponseEntity<ClientBidResponse> updateBidStatus(@PathVariable Long bidId,
@@ -65,6 +77,8 @@ public class BidController {
         return ResponseEntity.ok().body(response);
     }
 
+    @Tag(name = "Freelancer APIs")
+    @Operation(summary = "Deleted Bid")
     @PreAuthorize("hasRole('SELLER')")
     @DeleteMapping("/bids/{bidId}")
     public ResponseEntity<Void> deleteBid(@PathVariable Long bidId) {

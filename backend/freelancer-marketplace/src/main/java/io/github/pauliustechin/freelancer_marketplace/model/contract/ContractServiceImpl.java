@@ -80,25 +80,35 @@ public class ContractServiceImpl implements ContractService {
         return savedBid;
     }
 
+    @Transactional
     @Override
     public ContractListResponse getBidderContracts(Long bidderId) {
 
         List<Contract> contracts = contractRepository.findContractsByBidderId(bidderId);
 
         List<ContractResponse> response = contracts.stream()
-                .map(contract -> contractMapper.contractToContractResponse(contract))
+                .map(contract -> {
+                    ContractResponse cr = contractMapper.contractToContractResponse(contract);
+                    cr.setProjectName(contract.getBid().getProject().getProjectName());
+                    return cr;
+                })
                 .toList();
 
         return new ContractListResponse(response);
     }
 
+    @Transactional
     @Override
     public ContractListResponse getClientContracts(Long clientId) {
 
         List<Contract> contracts = contractRepository.findContractsByClientId(clientId);
 
         List<ContractResponse> response = contracts.stream()
-                .map(contract -> contractMapper.contractToContractResponse(contract))
+                .map(contract -> {
+                    ContractResponse cr = contractMapper.contractToContractResponse(contract);
+                    cr.setProjectName(contract.getBid().getProject().getProjectName());
+                    return cr;
+                })
                 .toList();
 
         return new ContractListResponse(response);

@@ -4,8 +4,11 @@ import io.github.pauliustechin.freelancer_marketplace.model.project.dto.CreatePr
 import io.github.pauliustechin.freelancer_marketplace.model.project.dto.ProjectResponse;
 import io.github.pauliustechin.freelancer_marketplace.model.project.dto.ProjectListResponse;
 import io.github.pauliustechin.freelancer_marketplace.model.project.dto.UpdateProjectRequest;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -26,12 +29,14 @@ public class ProjectController {
 
     private final ProjectService projectService;
 
+    @Tag(name = "Public APIs", description = "APIs for managing public requests")
+    @Operation(summary = "Get projects depending on search criteria")
     @GetMapping("/projects")
     public ResponseEntity<ProjectListResponse> searchForProjects(
             @RequestParam(required = false) ProjectStatus status,
             @RequestParam(required = false) String projectName,
             @RequestParam(required = false) LocalDate projectStart,
-            @PageableDefault(page = 0, size = 10, sort="createdAt", direction = Sort.Direction.DESC) Pageable pageable
+            @ParameterObject @PageableDefault(page = 0, size = 10, sort="createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
 
         ProjectListResponse projectListResponse = projectService.searchForProject(status, projectName, projectStart, pageable);
@@ -39,6 +44,8 @@ public class ProjectController {
         return ResponseEntity.ok().body(projectListResponse);
     }
 
+    @Tag(name = "Client APIs")
+    @Operation(summary = "Get client projects")
     @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/users/{clientId}/projects")
     public ResponseEntity<List<ProjectResponse>> getClientProjects(Authentication authentication) {
@@ -48,6 +55,8 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    @Tag(name = "Client APIs")
+    @Operation(summary = "Create project")
     @PreAuthorize("hasRole('CLIENT')")
     @PostMapping("/users/{clientId}/projects")
     public ResponseEntity<ProjectResponse> createProject(@Valid @RequestBody CreateProjectRequest createRequest,
@@ -58,6 +67,8 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @Tag(name = "Client APIs")
+    @Operation(summary = "Update Project")
     @PreAuthorize("hasRole('CLIENT')")
     @PutMapping("/projects/{projectId}")
     public ResponseEntity<ProjectResponse> updateProject(@PathVariable Long projectId,
@@ -69,6 +80,8 @@ public class ProjectController {
 
     }
 
+    @Tag(name = "Client APIs")
+    @Operation(summary = "Delete project")
     @PreAuthorize("hasRole('CLIENT')")
     @DeleteMapping("/projects/{projectId}")
     public ResponseEntity<Void> deleteProject(@PathVariable Long projectId) {

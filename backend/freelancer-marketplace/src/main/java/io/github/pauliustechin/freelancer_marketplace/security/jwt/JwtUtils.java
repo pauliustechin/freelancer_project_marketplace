@@ -59,6 +59,8 @@ public class JwtUtils {
                 .path("/")
                 .maxAge(60*60)
                 .httpOnly(true)
+                .secure(false) // in dev
+                .sameSite("Lax")
                 .build();
 
         return cookie;

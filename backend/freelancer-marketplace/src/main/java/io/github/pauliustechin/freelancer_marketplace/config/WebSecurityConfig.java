@@ -1,15 +1,10 @@
-package io.github.pauliustechin.freelancer_marketplace.security.service;
+package io.github.pauliustechin.freelancer_marketplace.config;
 
-import io.github.pauliustechin.freelancer_marketplace.model.role.AppRole;
-import io.github.pauliustechin.freelancer_marketplace.model.role.Role;
-import io.github.pauliustechin.freelancer_marketplace.model.role.RoleRepository;
-import io.github.pauliustechin.freelancer_marketplace.model.user.User;
-import io.github.pauliustechin.freelancer_marketplace.model.user.UserRepository;
 import io.github.pauliustechin.freelancer_marketplace.security.jwt.AuthEntryPointJwt;
 import io.github.pauliustechin.freelancer_marketplace.security.jwt.AuthTokenFilter;
+import io.github.pauliustechin.freelancer_marketplace.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -20,7 +15,6 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,10 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
 import java.util.Arrays;
-import java.util.Set;
-
 
 @Configuration
 @EnableWebSecurity
@@ -96,14 +87,16 @@ public class WebSecurityConfig {
                 )
                 .authorizeHttpRequests(auth ->
                 auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/v3/api-docs/**").permitAll()
+                        .requestMatchers("/api/auth/login", "/api/auth/register").permitAll()
+                        .requestMatchers("/api/auth/logout", "/api/auth/me").authenticated()
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/webjars/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/swagger-ui/**").permitAll()
                         .requestMatchers("/api/test/**").permitAll()
-                        .requestMatchers("/images/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/freelancers").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/projects").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/freelancers", "/api/projects").permitAll()
                         .anyRequest().authenticated());
 
         http.authenticationProvider(authenticationProvider());
@@ -116,17 +109,6 @@ public class WebSecurityConfig {
 
         return http.build();
 
-    }
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer(){
-        return (web -> web.ignoring().requestMatchers(
-                "/configuration/ui",
-                "/swagger-resources/**",
-                "/configuration/security",
-                "/swagger-ui.html",
-                "/webjars/**"
-        ));
     }
 
 }

@@ -4,6 +4,8 @@ import io.github.pauliustechin.freelancer_marketplace.security.jwt.JwtUtils;
 import io.github.pauliustechin.freelancer_marketplace.security.request.*;
 import io.github.pauliustechin.freelancer_marketplace.security.service.AuthService;
 import io.github.pauliustechin.freelancer_marketplace.security.service.UserDetailsImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -27,6 +29,8 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
 
+    @Tag(name = "Authentication APIs")
+    @Operation(summary = "Register user")
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> register(@Valid @RequestBody RegisterRequest request) {
 
@@ -36,6 +40,8 @@ public class AuthController {
 
     }
 
+    @Tag(name = "Authentication APIs")
+    @Operation(summary = "Login user")
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> authenticateUser(@Valid @RequestBody LoginRequest request) {
 
@@ -47,6 +53,8 @@ public class AuthController {
 
     }
 
+    @Tag(name = "Authentication APIs", description = "APIs for authentication and session management")
+    @Operation(summary = "Logout user")
     @PostMapping("/logout")
     public ResponseEntity<LogoutResponse> logout() {
 
@@ -58,6 +66,8 @@ public class AuthController {
 
     }
 
+    @Tag(name = "Authentication APIs")
+    @Operation(summary = "Get authenticated user details")
     @GetMapping("/me")
     public ResponseEntity<UserResponse> me(Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
