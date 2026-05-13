@@ -143,7 +143,6 @@ public class ProjectServiceImpl implements ProjectService{
         if(!(updateStatus.equals(ProjectStatus.CANCELED)) && !(updateStatus.equals(ProjectStatus.OPEN)) ) {
             throw new IllegalProjectStateException();
         }
-
         project.setProjectName(updateRequest.getProjectName());
         project.setDescription(updateRequest.getDescription());
         project.setProjectFileUrl(updateRequest.getProjectFileUrl());

@@ -10,4 +10,5 @@ public interface BidService {
     BidResponse updateBid(Long bidId, UpdateBidRequest request);
     ClientBidResponse updateBidStatus(Long bidId, BidStatus status);
     BidListResponse getFreelancerBids(Long userId);
+    void deleteBid(Long bidId);
 }

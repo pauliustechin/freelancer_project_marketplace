@@ -25,6 +25,7 @@ public class BidController {
         return ResponseEntity.ok().body(response);
     }
 
+    @PreAuthorize("hasRole('CLIENT')")
     @GetMapping("/projects/{projectId}/bids")
     public ResponseEntity<ClientBidListResponse> getBidsByProject(@PathVariable Long projectId) {
 
@@ -33,6 +34,7 @@ public class BidController {
         return ResponseEntity.ok().body(response);
     }
 
+    @PreAuthorize("hasRole('SELLER')")
     @PostMapping("/projects/{projectId}/bids")
     public ResponseEntity<BidResponse> createBid(@PathVariable Long projectId,
                                                  @Valid @RequestBody CreateBidRequest request,
@@ -43,6 +45,7 @@ public class BidController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @PreAuthorize("hasRole('SELLER')")
     @PutMapping("/bids/{bidId}")
     public ResponseEntity<BidResponse> updateBid(@PathVariable Long bidId,
                                                  @Valid @RequestBody UpdateBidRequest request) {
@@ -52,6 +55,7 @@ public class BidController {
         return ResponseEntity.ok().body(response);
     }
 
+    @PreAuthorize("hasRole('SELLER')")
     @PatchMapping("/bids/{bidId}")
     public ResponseEntity<ClientBidResponse> updateBidStatus(@PathVariable Long bidId,
                                                        @RequestParam BidStatus status) {
@@ -59,6 +63,15 @@ public class BidController {
         ClientBidResponse response = bidService.updateBidStatus(bidId, status);
 
         return ResponseEntity.ok().body(response);
+    }
+
+    @PreAuthorize("hasRole('SELLER')")
+    @DeleteMapping("/bids/{bidId}")
+    public ResponseEntity<Void> deleteBid(@PathVariable Long bidId) {
+
+        bidService.deleteBid(bidId);
+
+        return ResponseEntity.noContent().build();
     }
 
 }

@@ -57,10 +57,28 @@ public class BidServiceImpl implements BidService{
     }
 
     @Override
+    public void deleteBid(Long bidId) {
+
+        if(bidId == null) {
+            throw new ResourceNotFoundException("BidId");
+        }
+
+        Bid bid = bidRepository.findById(bidId)
+                .orElseThrow(() -> new ResourceNotFoundException("Bid", bidId));
+
+        if(!bid.getBidStatus().equals(BidStatus.OPEN)) {
+            throw new IllegalBidStateException("A bid can only be deleted when it is OPEN.");
+        }
+
+        bidRepository.delete(bid);
+
+    }
+
+    @Override
     public ClientBidListResponse getBidsByProject(Long projectId) {
 
         if(projectId == null) {
-            throw new ResourceNotFoundException("projectId");
+            throw new ResourceNotFoundException("ProjectId");
         }
 
         Project project = projectRepository.findById(projectId)
