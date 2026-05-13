@@ -22,12 +22,14 @@ const ProjectBidsTable = () => {
 
     const bid = projectBids.find((b) => b.bidId === Number(selectedBid));
 
+    const { bidId, amount, freelancer: { firstName }} = bid || {};
+
     setModal({
       title: "Confirm project",
-      message: `Are you sure you want to accept bid from ${bid.freelancer.firstName + ", amount: " + bid.amount} $`,
+      message: `Are you sure you want to accept bid from ${firstName + ", amount: " + amount} $`,
       confirmButton: "Accept",
       onConfirm: () =>
-      acceptBid(selectedBid, navigate, {
+      acceptBid(bidId, navigate, {
         status: BidStatus.ACCEPTED,
       }),
     });

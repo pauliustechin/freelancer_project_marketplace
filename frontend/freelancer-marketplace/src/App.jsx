@@ -14,6 +14,7 @@ import ClientDashboard from "./pages/private/clientPage/dashboard/ClientDashboar
 import CreateProject from "./pages/private/clientPage/projects/CreateProject";
 import FreelancerDashboard from "./pages/private/freelancerPage/freelancerDashboard/FreelancerDashboard";
 import EditProject from "./pages/private/clientPage/projects/EditProject";
+import ContractsTable from "./pages/private/shared/ContractsTable";
 import "./App.css";
 
 function App() {
@@ -39,12 +40,14 @@ function App() {
               <Route path="projects/:projectId" element={<ProjectBidsTable />}/>
               <Route path="create-project" element={<CreateProject />}/>
               <Route path="edit-project/:projectId" element={<EditProject />}/>
+              <Route path="contracts" element={<ContractsTable />}/>
             </Route>
           </Route>
 
           <Route path="/" element={<PrivateRoute freelancerOnly />}>
             <Route path="/freelancer" element={<FreelancerPage />} >
               <Route path="" element={<FreelancerDashboard/>}/>
+              <Route path="contracts" element={<ContractsTable />}/>
             </Route>
           </Route>
 
