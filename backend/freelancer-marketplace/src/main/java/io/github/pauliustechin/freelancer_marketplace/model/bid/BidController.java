@@ -55,7 +55,7 @@ public class BidController {
         return ResponseEntity.ok().body(response);
     }
 
-    @PreAuthorize("hasRole('SELLER')")
+    @PreAuthorize("hasRole('CLIENT')")
     @PatchMapping("/bids/{bidId}")
     public ResponseEntity<ClientBidResponse> updateBidStatus(@PathVariable Long bidId,
                                                        @RequestParam BidStatus status) {

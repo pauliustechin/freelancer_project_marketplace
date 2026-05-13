@@ -3,22 +3,26 @@ package io.github.pauliustechin.freelancer_marketplace.model.contract;
 import io.github.pauliustechin.freelancer_marketplace.model.bid.Bid;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "contracts")
 public class Contract {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     private EscrowStatus escrowStatus;
 
     private BigDecimal agreedAmount;
@@ -32,6 +36,5 @@ public class Contract {
     @OneToOne
     @JoinColumn(name = "bid_id")
     private Bid bid;
-
 
 }

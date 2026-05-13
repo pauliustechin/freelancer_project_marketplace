@@ -4,8 +4,10 @@ import io.github.pauliustechin.freelancer_marketplace.model.bid.Bid;
 import io.github.pauliustechin.freelancer_marketplace.model.bid.BidRepository;
 import io.github.pauliustechin.freelancer_marketplace.model.bid.BidServiceImpl;
 import io.github.pauliustechin.freelancer_marketplace.model.bid.BidStatus;
+import io.github.pauliustechin.freelancer_marketplace.model.contract.dto.ContractListResponse;
 import io.github.pauliustechin.freelancer_marketplace.model.contract.dto.ContractMapper;
 import io.github.pauliustechin.freelancer_marketplace.exception.ResourceNotFoundException;
+import io.github.pauliustechin.freelancer_marketplace.model.contract.dto.ContractResponse;
 import io.github.pauliustechin.freelancer_marketplace.model.project.Project;
 import io.github.pauliustechin.freelancer_marketplace.model.project.ProjectRepository;
 import io.github.pauliustechin.freelancer_marketplace.model.project.ProjectStatus;
@@ -76,5 +78,29 @@ public class ContractServiceImpl implements ContractService {
                 bidFromDb.getBidder().getId(), bidFromDb.getId(), savedContract.getId());
 
         return savedBid;
+    }
+
+    @Override
+    public ContractListResponse getBidderContracts(Long bidderId) {
+
+        List<Contract> contracts = contractRepository.findContractsByBidderId(bidderId);
+
+        List<ContractResponse> response = contracts.stream()
+                .map(contract -> contractMapper.contractToContractResponse(contract))
+                .toList();
+
+        return new ContractListResponse(response);
+    }
+
+    @Override
+    public ContractListResponse getClientContracts(Long clientId) {
+
+        List<Contract> contracts = contractRepository.findContractsByClientId(clientId);
+
+        List<ContractResponse> response = contracts.stream()
+                .map(contract -> contractMapper.contractToContractResponse(contract))
+                .toList();
+
+        return new ContractListResponse(response);
     }
 }
