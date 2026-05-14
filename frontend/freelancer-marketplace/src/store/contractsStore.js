@@ -10,7 +10,7 @@ const useContractsStore = create(
 
     fetchClientContracts: async () => {
       try {
-        const { data } = await api.get(`/contracts/client`, { withCredentials: true });
+        const { data } = await api.get(`/contracts/client`);
         console.log(data)
         console.log(data.content)
         set(() => ({ contracts: [...data.content] }))
@@ -21,7 +21,7 @@ const useContractsStore = create(
 
     fetchFreelancerContracts: async () => {
       try {
-        const { data } = await api.get(`/contracts/freelancer`, { withCredentials: true });
+        const { data } = await api.get(`/contracts/freelancer`);
         set(() => ({ contracts: [...data.content] }))
       } catch (error) {
         console.log(error);

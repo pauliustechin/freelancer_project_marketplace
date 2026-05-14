@@ -51,7 +51,7 @@ const ClientProjectRow = ({ project, index, deleteProject, setModal }) => {
             <MdDeleteOutline onClick={handleDelete} />
           </div>
           <button
-            className="btn btn-primary text-cyan-500 font-bold bg-cyan-400/15 p-2 rounded-xl w-fit border-none outline-none"
+            className="my-btn-primary text-cyan-500 font-bold bg-cyan-400/15 p-2 rounded-xl w-fit shadow-none"
             onClick={openProjectBids}
           >
             View bids

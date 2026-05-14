@@ -20,7 +20,7 @@ const useProjectsStore = create(
 
     fetchClientProjects: async (clientId) => {
       try {
-        const { data } = await api.get(`/users/${clientId}/projects`, { withCredentials: true });
+        const { data } = await api.get(`/users/${clientId}/projects`);
         set(() => ({ clientProjects: [...data] }));
       } catch (error) {
         console.log(error);
@@ -29,7 +29,7 @@ const useProjectsStore = create(
 
     createProject: async (formData, userId, navigate) => {
       try {
-        const { data } = await api.post(`/users/${userId}/projects`, formData, { withCredentials: true })
+        const { data } = await api.post(`/users/${userId}/projects`, formData)
         console.log(data)
         set((state) => ({ projects: [data, ...state.projects] }));
         navigate("/client")
@@ -40,7 +40,7 @@ const useProjectsStore = create(
 
     editProject: async (formData, projectId, navigate) => {
       try {
-        const { data } = await api.put(`/projects/${projectId}`, formData, { withCredentials: true });
+        const { data } = await api.put(`/projects/${projectId}`, formData);
         set((state) => ({
           clientProjects: state.clientProjects.map(project =>
             project.projectId === projectId
@@ -55,7 +55,7 @@ const useProjectsStore = create(
 
     deleteProject: async (projectId) => {
       try {
-        await api.delete(`/projects/${projectId}`, { withCredentials: true });
+        await api.delete(`/projects/${projectId}`);
         set((state) => ({
           clientProjects: state.clientProjects.filter(p => p.projectId !== projectId)
         }));

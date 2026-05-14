@@ -17,7 +17,7 @@ const useUsersStore = create(
 
     loginUser: async (formData, navigate) => {
       try {
-        const { data } = await api.post(`/auth/login`, formData, { withCredentials: true });
+        const { data } = await api.post(`/auth/login`, formData);
         set(() => ({ user: {...data} }))
         navigate("/");
       } catch (error) {
@@ -27,7 +27,7 @@ const useUsersStore = create(
 
     registerNewAccount: async (formData, navigate) => {
       try {
-        await api.post(`/auth/register`, formData, { withCredentials: true });
+        await api.post(`/auth/register`, formData);
         navigate("/");
       } catch (error) {
         console.log(error);
@@ -36,7 +36,7 @@ const useUsersStore = create(
 
     logoutUser: async (navigate) => {
       try {
-        await api.post(`/auth/logout`, {}, { withCredentials: true });
+        await api.post(`/auth/logout`);
         set(() => ({ user: initialState }))
         navigate("/");
       } catch (error) {
@@ -47,7 +47,7 @@ const useUsersStore = create(
     fetchCurrentUser: async () => {
       try {
         set({ isLoading : true })
-        const { data } = await api.get("/auth/me", { withCredentials: true });
+        const { data } = await api.get("/auth/me");
         set(() => ({ user: data }));
       } catch {
         set({ user: initialState});

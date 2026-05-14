@@ -11,7 +11,7 @@ const useBidsStore = create(
 
     placeBid: async (projectId, navigate, formData) => {
       try {
-        await api.post(`/projects/${projectId}/bids`, formData, { withCredentials: true });
+        await api.post(`/projects/${projectId}/bids`, formData);
         navigate("/")
       } catch (error) {
         console.log(error);
@@ -20,7 +20,7 @@ const useBidsStore = create(
 
     fetchBidsByProject: async (projectId) => {
       try {
-        const { data } = await api.get(`/projects/${projectId}/bids`, { withCredentials: true });
+        const { data } = await api.get(`/projects/${projectId}/bids`);
         set(() => ({ projectBids: [...data.bids] }));
       } catch (error) {
         console.log(error);
@@ -29,7 +29,7 @@ const useBidsStore = create(
 
     fetchFreelancerBids: async (userId) => {
       try {
-        const { data } = await api.get(`/users/${userId}/bids`, { withCredentials: true });
+        const { data } = await api.get(`/users/${userId}/bids`);
         set(() => ({ freelancerBids: [...data.bids] }));
       } catch (error) {
         console.log(error);
@@ -38,7 +38,7 @@ const useBidsStore = create(
 
     acceptBid: async (bidId, navigate, formData) => {
       try {
-        const { data } = await api.patch(`/bids/${bidId}`, null, { params: formData, withCredentials: true });
+        const { data } = await api.patch(`/bids/${bidId}`, null, { params: formData });
         set((state) => ({
           freelancerBids: state.freelancerBids.map(bid =>
             bid.bidId === bidId ? { ...bid, ...data } : bid
@@ -52,7 +52,7 @@ const useBidsStore = create(
 
     updateBid: async (bidId, formData) => {
       try {
-        const { data } = await api.put(`/bids/${bidId}`, formData, { withCredentials: true });
+        const { data } = await api.put(`/bids/${bidId}`, formData);
         set((state) => ({
           freelancerBids: state.freelancerBids.map(bid =>
             bid.bidId === bidId ? { ...bid, ...data } : bid
@@ -65,7 +65,7 @@ const useBidsStore = create(
 
     deleteBid: async (bidId) => {
       try {
-        await api.delete(`/bids/${bidId}`, { withCredentials: true });
+        await api.delete(`/bids/${bidId}`);
         set((state) => ({ freelancerBids: state.freelancerBids.filter(bid => bid.bidId !== bidId) }));
       } catch (error) {
         console.log(error);
