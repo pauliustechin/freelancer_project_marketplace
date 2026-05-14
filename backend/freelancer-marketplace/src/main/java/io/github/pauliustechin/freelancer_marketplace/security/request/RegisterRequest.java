@@ -1,6 +1,6 @@
 package io.github.pauliustechin.freelancer_marketplace.security.request;
 
-import io.github.pauliustechin.freelancer_marketplace.model.role.AppRole;
+import io.github.pauliustechin.freelancer_marketplace.feature.role.AppRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

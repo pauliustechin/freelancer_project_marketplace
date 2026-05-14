@@ -1,6 +1,6 @@
 package io.github.pauliustechin.freelancer_marketplace.security.request;
 
-import io.github.pauliustechin.freelancer_marketplace.model.role.AppRole;
+import io.github.pauliustechin.freelancer_marketplace.feature.role.AppRole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

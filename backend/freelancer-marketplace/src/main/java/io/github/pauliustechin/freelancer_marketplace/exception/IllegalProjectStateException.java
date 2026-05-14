@@ -1,6 +1,6 @@
 package io.github.pauliustechin.freelancer_marketplace.exception;
 
-import io.github.pauliustechin.freelancer_marketplace.model.project.ProjectStatus;
+import io.github.pauliustechin.freelancer_marketplace.feature.project.ProjectStatus;
 
 public class IllegalProjectStateException extends RuntimeException {
     public IllegalProjectStateException(Long projectId, ProjectStatus status) {

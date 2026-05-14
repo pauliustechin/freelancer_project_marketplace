@@ -1,7 +1,7 @@
 package io.github.pauliustechin.freelancer_marketplace.security.service;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.github.pauliustechin.freelancer_marketplace.model.user.User;
+import io.github.pauliustechin.freelancer_marketplace.feature.user.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

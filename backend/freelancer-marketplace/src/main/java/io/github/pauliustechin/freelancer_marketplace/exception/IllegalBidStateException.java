@@ -1,6 +1,6 @@
 package io.github.pauliustechin.freelancer_marketplace.exception;
 
-import io.github.pauliustechin.freelancer_marketplace.model.bid.BidStatus;
+import io.github.pauliustechin.freelancer_marketplace.feature.bid.BidStatus;
 
 public class IllegalBidStateException extends RuntimeException {
     public IllegalBidStateException(Long bidId) {

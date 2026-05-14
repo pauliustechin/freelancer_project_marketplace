@@ -1,7 +1,7 @@
 package io.github.pauliustechin.freelancer_marketplace.security.service;
 
-import io.github.pauliustechin.freelancer_marketplace.model.user.User;
-import io.github.pauliustechin.freelancer_marketplace.model.user.UserRepository;
+import io.github.pauliustechin.freelancer_marketplace.feature.user.User;
+import io.github.pauliustechin.freelancer_marketplace.feature.user.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

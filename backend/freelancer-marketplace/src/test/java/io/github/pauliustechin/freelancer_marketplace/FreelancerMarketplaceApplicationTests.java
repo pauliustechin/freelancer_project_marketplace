@@ -9,7 +9,6 @@ import org.springframework.test.context.ActiveProfiles;
 class FreelancerMarketplaceApplicationTests {
 
 	@Test
-
 	void contextLoads() {
 	}
 
