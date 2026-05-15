@@ -75,13 +75,14 @@ Install the following before running the project:
 - Docker
 - Visual Studio Code (recommended)
 - Git
+- At least 480 MB of free disk space
 
 ### Run application
 
 In IDE's terminal window:
 >git clone https://github.com/pauliustechin/freelancer_marketplace.git
 
->cd freelancer-marketplace
+>cd freelancer_marketplace
 
 Run Docker containers in the background (make sure Docker is up and running):
 >docker compose up -d
