@@ -23,7 +23,7 @@ The application demonstrates core marketplace functionality, including role-base
 - Spring Web (REST API)
 - Spring Data JPA (Hibernate ORM)
 - PostgreSQL
-- JWT Authentication
+- Cookie based authentication
 - Unit & Integration Testing (JUnit, Mockito, Testcontainers)
 - Maven
 - Swagger / OpenAPI
@@ -70,7 +70,6 @@ project-root/
 ```
 
 ### Prerequisites
-Install the following before running the project:
 
 - Docker
 - Visual Studio Code (recommended)
@@ -116,7 +115,7 @@ Users:
     "roles": ["ROLE_SELLER"]
 },
 {
-    "username" : "bidder",
+    "username" : "bidder2",
     "password": "password",
     "roles": ["ROLE_SELLER"]
 }
