@@ -1,40 +1,31 @@
 services:
-
   postgres:
     image: postgres:16
-    container_name: postgres_db
     restart: always
     environment:
       POSTGRES_DB: freelancer_marketplace
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
 
   backend:
-    build:
-      context: ./backend/freelancer-marketplace
-    container_name: spring_backend
+    image: pauliustechin/freelancer-marketplace-backend:latest
     restart: always
-    depends_on:
-      - postgres
     environment:
       SPRING_PROFILES_ACTIVE: docker
-
-      SPRING_DATASOURCE_URL: ${DATASOURCE_URL}
-      SPRING_DATASOURCE_USERNAME: ${DB_USER}
-      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
-      JWT_SECRET: ${JWT_SECRET}
-      JWT_EXPIRATION_MS: ${JWT_EXPIRATION_MS}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/freelancer_marketplace
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
+      JWT_SECRET: myTestSecret123912738aopsgjnspkmndfsopkvajoirjg94gf2opfng2moknm
+      JWT_EXPIRATION_MS: 3600000
     ports:
       - "8080:8080"
 
   frontend:
-    build:
-      context: ./frontend/freelancer-marketplace
-    container_name: react_frontend
+    image: pauliustechin/freelancer-marketplace-frontend:latest
     restart: always
     ports:
       - "3000:80"
