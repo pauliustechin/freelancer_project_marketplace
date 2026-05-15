@@ -61,7 +61,7 @@ public class AuthServiceImpl implements AuthService{
 
         User user = userMapper.registerUserToUser(request);
         user.setPassword(encoder.encode(request.getPassword()));
-        user.setCreateAt(Instant.now());
+        user.setCreatedAt(Instant.now());
 
         Set<Role> roles = new HashSet<>();
         roles.add(role);

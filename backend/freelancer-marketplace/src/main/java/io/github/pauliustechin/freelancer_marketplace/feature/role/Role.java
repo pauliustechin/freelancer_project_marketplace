@@ -7,8 +7,8 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-@Table(name = "roles")
 @NoArgsConstructor
+@Table(name = "roles")
 public class Role {
 
     @Id

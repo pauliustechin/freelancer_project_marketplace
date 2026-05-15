@@ -1,5 +1,7 @@
 FROM node:22 AS build
 
+ENV VITE_BACK_END_URL=http://localhost:8080/api
+
 WORKDIR /app
 
 COPY package*.json ./

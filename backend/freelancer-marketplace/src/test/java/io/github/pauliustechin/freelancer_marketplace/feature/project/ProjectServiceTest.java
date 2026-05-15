@@ -57,7 +57,7 @@ class ProjectServiceTest {
                 .firstName("firstName")
                 .lastName("lastName")
                 .email("user@email.com")
-                .createAt(Instant.now())
+                .createdAt(Instant.now())
                 .updatedAt(null)
                 .build();
 

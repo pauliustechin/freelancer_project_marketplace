@@ -51,7 +51,7 @@ class ProjectRepositoryTest {
                 .firstName("firstName")
                 .lastName("lastName")
                 .email("user@email.com")
-                .createAt(null)
+                .createdAt(null)
                 .updatedAt(null)
                 .build();
 
