@@ -121,6 +121,11 @@ Users:
 }
 ```
 
+
+### API endpoints
+
+> http://localhost:8080/swagger-ui/index.html
+
 ### Future Improvements
 - Admin panel for user/project moderation
 - Additional fields in project model
